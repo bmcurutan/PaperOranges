@@ -7,7 +7,6 @@
 
 import UIKit
 
-// TODO add footer gradient when table view is scrollable
 class SortingViewController: UIViewController {
 	private var viewModel: SortingViewModel
 
@@ -17,7 +16,7 @@ class SortingViewController: UIViewController {
 		return currentStepIndex == 0 || currentStepIndex == viewModel.steps.count - 1 ? nil : viewModel.endingMessage
 	}
 
-	private var currentStepIndex: Int = 0 // TODO2 move to shared prefs? or just put a warning on the back button "are you sure? you will lose your progress"
+	private var currentStepIndex: Int = 0 
 	private var currentStep: Step {
 		return viewModel.steps[currentStepIndex]
 	}
