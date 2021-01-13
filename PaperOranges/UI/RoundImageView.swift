@@ -1,5 +1,5 @@
 //
-//  RoundedImageView.swift
+//  RoundImageView.swift
 //  PaperOranges
 //
 //  Created by Bianca Curutan on 1/10/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RoundedImageView: UIImageView {
+class RoundImageView: UIImageView {
 	convenience init() {
 		self.init(frame: .zero)
 	}

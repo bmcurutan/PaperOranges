@@ -7,25 +7,23 @@
 
 import UIKit
 
-// TODO convert this outright into a table view cell?
 class HeroView: UIView {
-	var image: UIImage? {
-		didSet {
-			imageView.image = image
-		}
-	}
-
-	var title: String? {
-		didSet {
-			titleLabel.text = title?.uppercased()
-		}
-	}
+	private var handleBar: UIView = {
+		let view = UIView()
+		view.layer.cornerRadius = 2
+		view.backgroundColor = UIColor.borderColor.withAlphaComponent(0.4)
+		view.translatesAutoresizingMaskIntoConstraints = false
+		view.widthAnchor.constraint(equalToConstant: 32).isActive = true
+		view.heightAnchor.constraint(equalToConstant: 4).isActive = true
+		return view
+	}()
 
 	private var imageView: UIImageView = {
 		let imageView = UIImageView()
-		imageView.contentMode = .scaleAspectFit
+		imageView.clipsToBounds = true
+		imageView.contentMode = .scaleAspectFill
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-		imageView.heightAnchor.constraint(equalToConstant: 129).isActive = true // TODO screen math
+		imageView.heightAnchor.constraint(equalToConstant: 136).isActive = true
 		return imageView
 	}()
 
@@ -38,17 +36,23 @@ class HeroView: UIView {
 		return label
 	}()
 
-	init(title: String?, image: UIImage?) {
+	init(image: UIImage, title: String?) {
 		self.init()
-		titleLabel.text = title?.uppercased()
 		imageView.image = image
+		if let title = title {
+			titleLabel.text = title.uppercased()
+		}
 	}
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 
+		addSubview(handleBar)
+		handleBar.topAnchor.constraint(equalTo: topAnchor).isActive = true
+		handleBar.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+
 		addSubview(imageView)
-		imageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+		imageView.topAnchor.constraint(equalTo: handleBar.bottomAnchor, constant: 8).isActive = true
 		imageView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
 		bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16).isActive = true
 		rightAnchor.constraint(equalTo: imageView.rightAnchor).isActive = true

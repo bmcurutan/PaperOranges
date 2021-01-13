@@ -46,12 +46,12 @@ class SectionHeaderView: UIView {
 
 	init(title: String) {
 		self.init()
-		textLabel.text = title.uppercased() // TODO don't use default textLabel
+		textLabel.text = title.uppercased() 
 	}
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		backgroundColor = .clear
+		backgroundColor = .backgroundColor
 
 		addSubview(separator)
 		separator.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true

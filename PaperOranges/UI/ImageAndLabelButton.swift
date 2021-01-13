@@ -1,5 +1,5 @@
 //
-//  RoundImageAndLabelButton.swift
+//  ImageAndLabelButton.swift
 //  PaperOranges
 //
 //  Created by Bianca Curutan on 1/10/21.
@@ -7,12 +7,12 @@
 
 import UIKit
 
-protocol RoundImageAndLabelButtonDelegate {
-	func buttonTapped(_ sender: RoundImageAndLabelButton)
+protocol ImageAndLabelButtonDelegate {
+	func buttonTapped(_ sender: ImageAndLabelButton)
 }
 
-class RoundImageAndLabelButton: UIButton {
-	var delegate: RoundImageAndLabelButtonDelegate?
+class ImageAndLabelButton: UIButton {
+	var delegate: ImageAndLabelButtonDelegate?
 	
 	var image: UIImage? {
 		didSet {
@@ -36,11 +36,10 @@ class RoundImageAndLabelButton: UIButton {
 		}
 	}
 
-	private var roundImageView: RoundedImageView = {
-		let imageView = RoundedImageView()
+	private var roundImageView: RoundImageView = {
+		let imageView = RoundImageView()
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-		imageView.widthAnchor.constraint(equalToConstant: 56).isActive = true // TODO math
-		imageView.heightAnchor.constraint(equalToConstant: 56).isActive = true // TODO math
+		imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
 		return imageView
 	}()
 
@@ -56,7 +55,8 @@ class RoundImageAndLabelButton: UIButton {
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		layer.cornerRadius = 16
-		clipsToBounds = true
+		layer.masksToBounds = true
+		setBackgroundImage(UIImage.withColor(UIColor.highlightColor.withAlphaComponent(0.4)), for: .highlighted)
 
 		addSubview(roundImageView)
 		roundImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
@@ -80,16 +80,20 @@ class RoundImageAndLabelButton: UIButton {
 		delegate?.buttonTapped(self)
 	}
 
+	func setImageWidth(_ width: CGFloat) {
+		roundImageView.widthAnchor.constraint(equalToConstant: width).isActive = true
+	}
+
 	// Create copy for UI purposes (doesn't have tap functionality)
-	func createCopy() -> RoundImageAndLabelButton {
-		let button = RoundImageAndLabelButton()
+	func createCopy() -> ImageAndLabelButton {
+		let button = ImageAndLabelButton()
 		button.image = image
 		button.name = name
 		button.isSelected = isSelected
 		return button
 	}
 
-	func copyData(from button: RoundImageAndLabelButton) {
+	func copyData(from button: ImageAndLabelButton) {
 		image = button.image
 		name = button.name
 		// Doesn't include isSelected state

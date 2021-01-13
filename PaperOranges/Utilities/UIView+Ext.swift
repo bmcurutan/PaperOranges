@@ -8,11 +8,8 @@
 import UIKit
 
 extension UIView {
-	func addVerticalGradient(alpha: CGFloat = 0.6) {
-		if let _ = layer.sublayers?.first as? CAGradientLayer {
-			return
-		}
-
+	func addVerticalGradient(alpha: CGFloat = 0.4) {
+		if let _ = layer.sublayers?.first as? CAGradientLayer { return }
 		let gradient = CAGradientLayer()
 		gradient.frame = bounds
 		gradient.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(alpha).cgColor]

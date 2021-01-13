@@ -7,8 +7,7 @@
 
 import UIKit
 
-// TODO move some things out of this file -  it's too long now
-
+// TODO add footer gradient when table view is scrollable
 class SortingViewController: UIViewController {
 	private var viewModel: SortingViewModel
 
@@ -18,15 +17,14 @@ class SortingViewController: UIViewController {
 		return currentStepIndex == 0 || currentStepIndex == viewModel.steps.count - 1 ? nil : viewModel.endingMessage
 	}
 
-	private var currentStepIndex: Int = 0 // TODO move to shared prefs? or just put a warning on the back button "are you sure? you will lose your progress"
+	private var currentStepIndex: Int = 0 // TODO2 move to shared prefs? or just put a warning on the back button "are you sure? you will lose your progress"
 	private var currentStep: Step {
 		return viewModel.steps[currentStepIndex]
 	}
 
 	private var tableView: UITableView = {
 		let tableView = UITableView()
-		tableView.backgroundColor = .clear
-		tableView.tableFooterView = UIView()
+		tableView.backgroundColor = .backgroundColor
 		tableView.translatesAutoresizingMaskIntoConstraints = false
 		return tableView
 	}()
@@ -56,10 +54,10 @@ class SortingViewController: UIViewController {
 		tableView.separatorStyle = .none
 
 		view.addSubview(tableView)
-		tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
+		tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
 		tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
 		view.rightAnchor.constraint(equalTo: tableView.rightAnchor).isActive = true
-		view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 24).isActive = true
+		view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor).isActive = true
 	}
 
 	@objc private func infoButtonTapped() {
@@ -69,17 +67,12 @@ class SortingViewController: UIViewController {
 
 extension SortingViewController: UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		switch viewModel.sections[section].type {
-		case .speaker, .buttons:
-			return 1
-		case .steps:
-			return 1
-		}
+		return 1
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let section = viewModel.sections[indexPath.section]
-		switch section.type {
+		switch section {
 		case .speaker:
 			let cell = tableView.dequeueReusableCell(withIdentifier: "SpeakerCell", for: indexPath) as! SpeakerTableViewCell
 			var title: String?
@@ -114,8 +107,7 @@ extension SortingViewController: UITableViewDataSource {
 
 extension SortingViewController: UITableViewDelegate {
 	func numberOfSections(in tableView: UITableView) -> Int {
-		// If current step index is 0, there are no completed steps
-		return viewModel.sections.count - (currentStepIndex == 0 ? 1 : 0)
+		return viewModel.sections.count
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -123,15 +115,21 @@ extension SortingViewController: UITableViewDelegate {
 	}
 
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		if let title = viewModel.sections[section].title {
+		switch viewModel.sections[section] {
+		case let .steps(title):
 			return SectionHeaderView(title: title)
-		} else {
+		default:
 			return UIView()
 		}
 	}
 
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return viewModel.sections[section].title != nil ? UITableView.automaticDimension : .leastNonzeroMagnitude
+		switch viewModel.sections[section] {
+		case .steps(_):
+			return UITableView.automaticDimension
+		default:
+			return .leastNonzeroMagnitude
+		}
 	}
 }
 
@@ -142,7 +140,6 @@ extension SortingViewController: ButtonsTableViewCellDelegate {
 		if (id0 == solution.0 && id1 == solution.1) || (id1 == solution.0 && id0 == solution.1) {
 			// Successful solution
 			speechTitle = .success
-
 			// If the buttons are already in order, do nothing
 			// i.e., treat like an incorrect solution
 			if id0 < id1 {
@@ -157,7 +154,30 @@ extension SortingViewController: ButtonsTableViewCellDelegate {
 			}
 
 			currentStepIndex += 1
-			tableView.reloadDataAfterDelay() // Use a delay to give the button swap animation time to complete
+
+			// Reload speaker section first so it appears less jumpy
+			let indexSet = IndexSet(viewModel.sections.filter({
+				switch $0 {
+				case .speaker:
+					return true
+				default:
+					return false
+				}
+			}).indices)
+			tableView.reloadSections(indexSet, with: .automatic)
+
+			// If current step index is > 0, there is at least one completed step so add steps section
+			if currentStepIndex > 0, viewModel.sections.filter({
+				switch $0 {
+				case .steps:
+					return true
+				default:
+					return false
+				}
+			   }).count == 0 {
+				viewModel.sections.append(viewModel.stepsSection)
+			}
+			tableView.reloadDataAfterDelay()
 
 			// Last successful step - show confetti!
 			if currentStepIndex == viewModel.steps.count - 1 {
@@ -168,16 +188,21 @@ extension SortingViewController: ButtonsTableViewCellDelegate {
 			}
 
 		} else {
-			// Don't need to error out for last step - nothing else to do
+			// Don't need to error out for the last step - nothing else to do
 			guard currentStepIndex != viewModel.steps.count - 1 else { return }
 
 			// Incorrect solution
 			speechTitle = .error
-			if let speakerSection = viewModel.sections.firstIndex(where: { $0.type == .speaker }) {
-				let indexSet: IndexSet = [speakerSection]
-				tableView.reloadSections(indexSet, with: .automatic)
-				completion?(false)
-			}
+			let indexSet = IndexSet(viewModel.sections.filter({
+				switch $0 {
+				case .speaker:
+					return true
+				default:
+					return false
+				}
+			}).indices)
+			tableView.reloadSections(indexSet, with: .automatic)
+			completion?(false)
 		}
 	}
 
@@ -208,8 +233,8 @@ private class SpeakerTableViewCell: UITableViewCell {
 		return label
 	}()
 
-	private var speakerImageView: RoundedImageView = {
-		let imageView = RoundedImageView(image: #imageLiteral(resourceName: "av_sorting_vanilla"))
+	private var speakerImageView: RoundImageView = {
+		let imageView = RoundImageView(image: #imageLiteral(resourceName: "av_sorting_vanilla"))
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		imageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
 		imageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
@@ -221,7 +246,7 @@ private class SpeakerTableViewCell: UITableViewCell {
 		contentView.backgroundColor = .backgroundColor
 
 		contentView.addSubview(speakerImageView)
-		speakerImageView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+		speakerImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16).isActive = true
 		speakerImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
 
 		contentView.addSubview(speechBubbleView)
@@ -254,132 +279,6 @@ private class SpeakerTableViewCell: UITableViewCell {
 	}
 }
 
-protocol ButtonsTableViewCellDelegate {
-	func evaluate(id0: Int, id1: Int, with completion: ((Bool) -> Void)?)
-}
-
-private class ButtonsTableViewCell: UITableViewCell {
-	var delegate: ButtonsTableViewCellDelegate?
-
-	private var buttons: [SortingButton] = []
-
-	private let stackView: UIStackView = {
-		let stackView = UIStackView()
-		stackView.distribution = .fillEqually
-		stackView.spacing = 4
-		stackView.translatesAutoresizingMaskIntoConstraints = false
-		return stackView
-	}()
-
-	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-		super.init(style: style, reuseIdentifier: reuseIdentifier)
-		contentView.backgroundColor = .backgroundColor
-
-		contentView.addSubview(stackView)
-		stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24).isActive = true
-		stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
-		contentView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16).isActive = true
-		contentView.rightAnchor.constraint(equalTo: stackView.rightAnchor, constant: 16).isActive = true
-	}
-
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
-
-	func addButtons(_ buttons: [SortingButton]) {
-		// Reset stack view
-		stackView.arrangedSubviews.forEach {
-			$0.removeFromSuperview()
-		}
-
-		self.buttons = buttons
-		buttons.forEach {
-			let button = RoundImageAndLabelButton()
-			button.delegate = self
-			button.tag = $0.id
-			button.image = $0.image
-			button.name = $0.name
-			button.isSelected = $0.isSelected
-			stackView.addArrangedSubview(button)
-		}
-	}
-}
-
-// TODO2 on button long press, scale up??
-extension ButtonsTableViewCell: RoundImageAndLabelButtonDelegate {
-	func buttonTapped(_ sender: RoundImageAndLabelButton) {
-		if let index = buttons.firstIndex(where: { $0.id == sender.tag }) {
-			buttons[index].isSelected = sender.isSelected
-		}
-
-		// If two buttons are selected, determine the associated indices and button views
-		if buttons.filter({ $0.isSelected }).count == 2,
-		    let index0 = buttons.firstIndex(where: { $0.isSelected }),
-		    index0 < buttons.count - 1,
-		    let index1 = buttons[index0 + 1...buttons.count - 1].firstIndex(where: { $0.isSelected }),
-			let button0 = stackView.arrangedSubviews[index0] as? RoundImageAndLabelButton,
-			let button1 = stackView.arrangedSubviews[index1] as? RoundImageAndLabelButton {
-
-			delegate?.evaluate(id0: button0.tag, id1: button1.tag) { [weak self] result in
-				guard let `self` = self else { return }
-
-				guard result else {
-					// Error - reset selection UI without swapping buttons
-					self.resetButtonSelection(button0: button0, button1: button1)
-					return
-				}
-
-				// If evaluation is successful, make copies of the two buttons
-				let copy0 = button0.createCopy()
-				copy0.frame = self.stackView.convert(button0.frame, to: self.contentView)
-				self.contentView.addSubview(copy0)
-
-				let copy1 = button1.createCopy()
-				copy1.frame = self.stackView.convert(button1.frame, to: self.contentView)
-				self.contentView.addSubview(copy1)
-
-				// Hide the original buttons temporarily
-				// Use alpha instead of removing to maintain arranged subviews positions
-				button0.alpha = 0
-				button1.alpha = 0
-
-				// Animate the buttons swapping positions
-				UIView.animate(withDuration: 0.3, animations: {
-					let tmp = copy0.frame
-					copy0.frame = copy1.frame
-					copy1.frame = tmp
-				}) { _ in
-					// Update buttons with new (swapped) data, then show
-					button0.copyData(from: copy1)
-					button1.copyData(from: copy0)
-					button0.alpha = 1
-					button1.alpha = 1
-
-					// Remove copies
-					copy0.removeFromSuperview()
-					copy1.removeFromSuperview()
-				}
-
-				// Reset selection UI
-				self.resetButtonSelection(button0: button0, button1: button1)
-			}
-		}
-	}
-
-	private func resetButtonSelection(button0: RoundImageAndLabelButton, button1: RoundImageAndLabelButton) {
-		// Update button UI
-		UIView.animate(withDuration: 0.3, animations: {
-			button0.isSelected = false
-			button1.isSelected = false
-		})
-
-		// Update button data
-		buttons.indices.forEach { index in
-			buttons[index].isSelected = false
-		}
-	}
-}
-
 private class StepsTableViewCell: UITableViewCell {
 	var stepsText: [String] = [] {
 		didSet {
@@ -391,18 +290,19 @@ private class StepsTableViewCell: UITableViewCell {
 		let stackView = UIStackView()
 		stackView.axis = .vertical
 		stackView.distribution = .fillProportionally
-		stackView.spacing = 8
+		stackView.spacing = 12
 		stackView.translatesAutoresizingMaskIntoConstraints = false
 		return stackView
 	}()
 
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
+		selectionStyle = .none
 
 		contentView.addSubview(stackView)
-		stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8).isActive = true
+		stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16).isActive = true
 		stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
-		contentView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 8).isActive = true
+		contentView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16).isActive = true
 		contentView.rightAnchor.constraint(equalTo: stackView.rightAnchor, constant: 16).isActive = true
 	}
 
@@ -440,7 +340,6 @@ private class StepView: UIView {
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		backgroundColor = .white
 
 		addSubview(stepLabel)
 		stepLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true

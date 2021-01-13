@@ -7,26 +7,29 @@
 
 import UIKit
 
+// TODO2 support dark mode
+// TODO fix white background color below table view cells
 class HomeViewController: UIViewController {
 	private var viewModel = HomeViewModel()
 
 	private var heroImageView: UIImageView = {
 		let imageView = UIImageView(image: #imageLiteral(resourceName: "hr_home"))
-		imageView.contentMode = .scaleAspectFit
+		imageView.clipsToBounds = true
+		imageView.contentMode = .scaleAspectFill
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		return imageView
 	}()
 
 	private var tableView: UITableView = {
 		let tableView = UITableView()
-		tableView.tableFooterView = UIView()
+		tableView.backgroundColor = .backgroundColor
 		tableView.translatesAutoresizingMaskIntoConstraints = false
 		return tableView
 	}()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		view.backgroundColor = .white
+		view.backgroundColor = .backgroundColor
 
 		navigationController?.navigationBar.barTintColor = .white
 		navigationController?.navigationBar.tintColor = .accentColor
@@ -59,12 +62,12 @@ class HomeViewController: UIViewController {
 		view.addSubview(tableView)
 		tableView.topAnchor.constraint(equalTo: heroImageView.bottomAnchor).isActive = true
 		tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-		view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 24).isActive = true
+		view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor).isActive = true
 		view.rightAnchor.constraint(equalTo: tableView.rightAnchor).isActive = true
 	}
 
 	@objc private func menuButtonTapped() {
-		present(MenuViewController(), animated: true, completion: nil)
+		present(InfoViewController(viewModel: MenuInfoViewModel()), animated: true, completion: nil)
 	}
 }
 
@@ -119,7 +122,7 @@ extension HomeViewController: TopicTableViewCellDelegate {
 
 extension HomeViewController: SectionHeaderViewDelegate {
 	func infoButtonTapped() {
-		present(InfoViewController(viewModel: HomeInfoViewModel()), animated: true, completion: nil)
+		present(InfoViewController(viewModel: SortingInfoViewModel()), animated: true, completion: nil)
 	}
 }
 
@@ -134,47 +137,38 @@ private class TopicTableViewCell: UITableViewCell {
 		didSet {
 			guard let topic = topic else { return }
 			buttonImageView.image = topic.image
-			buttonLabel.text = topic.title
+			button.setTitle(topic.title, for: .normal)
 			if let text = topic.text {
-				buttonLabel.text?.append("\n\(text)")
+				button.setTitle("\(topic.title)\n\(text)", for: .normal)
+			} else {
+				button.setTitle(topic.title, for: .normal)
 			}
 			if !topic.isActive {
 				button.layer.borderColor = UIColor.secondaryTextColor.cgColor
-				buttonLabel.textColor = .secondaryTextColor
+				button.setTitleColor(.secondaryTextColor, for: .normal)
+				button.isEnabled = false
 			}
 		}
 	}
 
-	var button: UIButton = {
-		let button = UIButton()
-		button.layer.borderColor = UIColor.primaryButtonColor.cgColor
-		button.layer.borderWidth = 1
-		button.layer.cornerRadius = 16
+	var button: RoundedImageButton = {
+		let button = RoundedImageButton()
+		button.backgroundColor = .white
 		button.translatesAutoresizingMaskIntoConstraints = false
 		return button
-		// TODO add button highlighting on select
 	}()
 
-	private var buttonImageView: RoundedImageView = {
-		let imageView = RoundedImageView()
+	private var buttonImageView: RoundImageView = {
+		let imageView = RoundImageView()
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		imageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
 		imageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
 		return imageView
 	}()
 
-	private var buttonLabel: UILabel = {
-		let label = UILabel()
-		label.font = UIFont.boldSystemFont(ofSize: 16.0)
-		label.lineBreakMode = .byWordWrapping
-		label.numberOfLines = 0
-		label.textColor = .primaryButtonColor
-		label.translatesAutoresizingMaskIntoConstraints = false
-		return label
-	}()
-
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
+		contentView.backgroundColor = .backgroundColor
 		selectedBackgroundView = UIView()
 
 		contentView.addSubview(button)
@@ -188,11 +182,6 @@ private class TopicTableViewCell: UITableViewCell {
 		buttonImageView.leftAnchor.constraint(equalTo: button.leftAnchor, constant: 16).isActive = true
 		button.bottomAnchor.constraint(greaterThanOrEqualTo: buttonImageView.bottomAnchor, constant: 8).isActive = true
 
-		button.addSubview(buttonLabel)
-		buttonLabel.topAnchor.constraint(equalTo: button.topAnchor, constant: 8).isActive = true
-		buttonLabel.leftAnchor.constraint(equalTo: buttonImageView.rightAnchor, constant: 16).isActive = true
-		button.bottomAnchor.constraint(equalTo: buttonLabel.bottomAnchor, constant: 8).isActive = true
-		button.rightAnchor.constraint(equalTo: buttonLabel.rightAnchor, constant: 16).isActive = true
 		button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 	}
 
@@ -202,8 +191,7 @@ private class TopicTableViewCell: UITableViewCell {
 
 	@objc private func buttonTapped() {
 		if let topic = topic {
-			delegate?.buttonTapped(topic: topic) // TODO2 add some sort of button tap UI
+			delegate?.buttonTapped(topic: topic)
 		}
 	}
 }
-
