@@ -22,7 +22,6 @@ class HomeViewController: UIViewController {
 
 	private var tableView: UITableView = {
 		let tableView = UITableView()
-		tableView.backgroundColor = .backgroundColor
 		tableView.translatesAutoresizingMaskIntoConstraints = false
 		return tableView
 	}()
@@ -48,16 +47,15 @@ class HomeViewController: UIViewController {
 
 		tableView.dataSource = self
 		tableView.delegate = self
+		tableView.backgroundColor = .backgroundColor // Keep this in viewDidLoad
 		tableView.register(TopicTableViewCell.self, forCellReuseIdentifier: "TopicCell")
 		tableView.separatorStyle = .none
 
 		view.addSubview(heroImageView)
 		heroImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
 		heroImageView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+		heroImageView.heightAnchor.constraint(equalToConstant: 136).isActive = true
 		view.rightAnchor.constraint(equalTo: heroImageView.rightAnchor).isActive = true
-
-		let newHeight = heroImageView.frame.height / heroImageView.frame.width * UIScreen.main.bounds.width
-		heroImageView.heightAnchor.constraint(equalToConstant: newHeight).isActive = true
 
 		view.addSubview(tableView)
 		tableView.topAnchor.constraint(equalTo: heroImageView.bottomAnchor).isActive = true
