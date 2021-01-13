@@ -40,8 +40,8 @@ class PersonTableViewCell: UITableViewCell {
 	private var roundImageView: RoundImageView = {
 		let imageView = RoundImageView()
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-		imageView.widthAnchor.constraint(equalToConstant: 56).isActive = true // TODO math
-		imageView.heightAnchor.constraint(equalToConstant: 56).isActive = true // TODO math
+		imageView.widthAnchor.constraint(equalToConstant: 56).isActive = true
+		imageView.heightAnchor.constraint(equalToConstant: 56).isActive = true
 		return imageView
 	}()
 

@@ -8,7 +8,6 @@
 import UIKit
 
 // TODO2 support dark mode
-// TODO fix white background color below table view cells
 class HomeViewController: UIViewController {
 	private var viewModel = HomeViewModel()
 
