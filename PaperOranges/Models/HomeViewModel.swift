@@ -14,7 +14,7 @@ class HomeViewModel {
 
 	private var sortingTopics: [Topic] = [
 		Topic(type: .bubbleSort, title: "Intro to Bubble Sort", image: #imageLiteral(resourceName: "av_sorting_bb"), isActive: true),
-		Topic(type: .insertionSort, title: "Intro to Insertion Sort", text: "(Coming Soon)", image: #imageLiteral(resourceName: "av_sorting_mandy"), isActive: false),
+		Topic(type: .insertionSort, title: "Intro to Insertion Sort", image: #imageLiteral(resourceName: "av_sorting_mandy"), isActive: true),
 		Topic(type: .mergeSort, title: "Intro to Merge Sort", text: "(Coming Soon)", image: #imageLiteral(resourceName: "av_sorting_liam"), isActive: false)
    ]
 }

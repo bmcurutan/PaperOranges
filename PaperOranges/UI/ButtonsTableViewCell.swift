@@ -29,9 +29,22 @@ class ButtonsTableViewCell: UITableViewCell {
 		return stackView
 	}()
 
+	private var lineView: UIView = {
+		let view = UIView()
+		view.backgroundColor = UIColor.desertBlue.withAlphaComponent(0.4)
+		view.translatesAutoresizingMaskIntoConstraints = false
+		return view
+	}()
+
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		contentView.backgroundColor = .backgroundColor
+
+		contentView.addSubview(lineView)
+		lineView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 32).isActive = true
+		lineView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+		contentView.rightAnchor.constraint(equalTo: lineView.rightAnchor).isActive = true
+		lineView.heightAnchor.constraint(equalToConstant: 8).isActive = true
 
 		contentView.addSubview(stackView)
 		stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8).isActive = true

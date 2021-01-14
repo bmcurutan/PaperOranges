@@ -45,6 +45,8 @@ class ImageLabelButton: UIButton {
 	private var nameLabel: UILabel = {
 		let label = UILabel()
 		label.font = UIFont.boldSystemFont(ofSize: 14.0)
+		label.lineBreakMode = .byWordWrapping
+		label.numberOfLines = 0
 		label.textAlignment = .center
 		label.textColor = .primaryButtonColor
 		label.translatesAutoresizingMaskIntoConstraints = false

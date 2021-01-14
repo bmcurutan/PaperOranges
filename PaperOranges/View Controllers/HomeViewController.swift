@@ -112,6 +112,8 @@ extension HomeViewController: TopicTableViewCellDelegate {
 		switch topic.type {
 		case .bubbleSort:
 			navigationController?.pushViewController(SortingViewController(viewModel: BubbleSortViewModel(), title: topic.title), animated: true)
+		case .insertionSort:
+			navigationController?.pushViewController(SortingViewController(viewModel: InsertionSortViewModel(), title: topic.title), animated: true)
 		default:
 			break
 		}

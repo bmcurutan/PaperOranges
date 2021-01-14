@@ -72,7 +72,14 @@ class SortingViewController: UIViewController {
 	}
 
 	@objc private func infoButtonTapped() {
-		present(InfoViewController(viewModel: BubbleSortInfoViewModel()), animated: true, completion: nil)
+		switch viewModel {
+		case is BubbleSortViewModel:
+			present(InfoViewController(viewModel: BubbleSortInfoViewModel()), animated: true, completion: nil)
+		case is InsertionSortViewModel:
+			present(InfoViewController(viewModel: InsertionSortInfoViewModel()), animated: true, completion: nil)
+		default:
+			break
+		}
 	}
 }
 
@@ -103,8 +110,12 @@ extension SortingViewController: UITableViewDataSource {
 			let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonsCell", for: indexPath) as! ButtonsTableViewCell
 			cell.delegate = self
 			cell.addButtons(viewModel.sortingButtons)
+			// Special case - change background color for insertion sort
+			if viewModel is InsertionSortViewModel {
+//				cell.contentView.backgroundColor = UIColor.desertBlue.withAlphaComponent(0.4)
+			}
 			// Disable all sort buttons on last step
-			if currentStepIndex == viewModel.steps.count - 1 {
+			if currentStepIndex != 0 && currentStepIndex == viewModel.steps.count - 1 {
 				cell.disableAllButtons()
 			}
 			return cell
@@ -269,7 +280,7 @@ private class SpeakerTableViewCell: UITableViewCell {
 		speakerImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
 
 		contentView.addSubview(speechBubbleView)
-		speechBubbleView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+		speechBubbleView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16).isActive = true
 		speechBubbleView.leftAnchor.constraint(equalTo: speakerImageView.rightAnchor, constant: 8).isActive = true
 		contentView.rightAnchor.constraint(equalTo: speechBubbleView.rightAnchor, constant: 16).isActive = true
 		contentView.bottomAnchor.constraint(equalTo: speechBubbleView.bottomAnchor, constant: 16).isActive = true

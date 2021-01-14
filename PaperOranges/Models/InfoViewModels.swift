@@ -46,10 +46,15 @@ class BubbleSortInfoViewModel: InfoViewModel {
 		.description("Description", "Bubble Sort is a sorting algorithm that compares pairs of elements. If elements are out of order, swap them. Repeat the algorithm (from the beginning to the end) until all the elements are sorted."),
 		.description("How are indices used?", "The students are displayed as if they are stored in an array. Arrays use zero-based indexing, meaning the first item of the array has index 0 and the last element has the index \"total number of items minus one\".")
 	]
-
-	var test: [Info] = []
 }
 
+class InsertionSortInfoViewModel: InfoViewModel {
+	var hero: Info = .hero(#imageLiteral(resourceName: "hr_insertion_sort"), "Insertion Sort")
+
+	var rows: [Info] = [
+		.description("Description", "Insertion Sort is a sorting algorithm that creates a list one element at a time by inserting the element into the proper sorted position.")
+	]
+}
 enum Info {
 	case hero(UIImage, String?) // image, title
 	case description(String?, String?) // title, description

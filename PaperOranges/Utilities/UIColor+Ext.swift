@@ -39,4 +39,8 @@ extension UIColor {
 	static var highlightColor: UIColor {
 		return UIColor(red: 233/255, green: 196/255, blue: 106/255, alpha: 1.0) // #E9C46A Yellow
 	}
+
+	static var desertBlue: UIColor {
+		return UIColor(red: 17/255, green: 138/255, blue: 178/255, alpha: 1.0) // #118AB2 Blue
+	}
 }
