@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ButtonsTableViewCellDelegate {
-	func evaluate(id0: Int, id1: Int, with completion: ((Bool) -> Void)?)
+	func evaluateAndSwap(id0: Int, id1: Int, with completion: ((Bool) -> Void)?)
 }
 
 class ButtonsTableViewCell: UITableViewCell {
@@ -77,7 +77,7 @@ extension ButtonsTableViewCell: ImageAndLabelButtonDelegate {
 			let button0 = stackView.arrangedSubviews[index0] as? ImageAndLabelButton,
 			let button1 = stackView.arrangedSubviews[index1] as? ImageAndLabelButton {
 
-			delegate?.evaluate(id0: button0.tag, id1: button1.tag) { [weak self] result in
+			delegate?.evaluateAndSwap(id0: button0.tag, id1: button1.tag) { [weak self] result in
 				guard let `self` = self else { return }
 
 				guard result else {
@@ -102,9 +102,9 @@ extension ButtonsTableViewCell: ImageAndLabelButtonDelegate {
 
 				// Animate the buttons swapping positions
 				UIView.animate(withDuration: 0.3, animations: {
-					let tmp = copy0.frame
-					copy0.frame = copy1.frame
-					copy1.frame = tmp
+					let tmp = copy0.frame.origin.x
+					copy0.frame.origin.x = copy1.frame.origin.x
+					copy1.frame.origin.x = tmp
 				}) { _ in
 					// Update buttons with new (swapped) data, then show
 					button0.copyData(from: copy1)

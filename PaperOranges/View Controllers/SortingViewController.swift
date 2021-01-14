@@ -132,9 +132,8 @@ extension SortingViewController: UITableViewDelegate {
 	}
 }
 
-// TODO2 scale so one button is "behind" the other one, add interpolator curve
 extension SortingViewController: ButtonsTableViewCellDelegate {
-	func evaluate(id0: Int, id1: Int, with completion: ((Bool) -> Void)?) {
+	func evaluateAndSwap(id0: Int, id1: Int, with completion: ((Bool) -> Void)?) {
 		let solution = currentStep.solution
 		if (id0 == solution.0 && id1 == solution.1) || (id1 == solution.0 && id0 == solution.1) {
 			// Successful solution
@@ -176,14 +175,15 @@ extension SortingViewController: ButtonsTableViewCellDelegate {
 			   }).count == 0 {
 				viewModel.sections.append(viewModel.stepsSection)
 			}
-			tableView.reloadDataAfterDelay()
-
-			// Last successful step - show confetti!
-			if currentStepIndex == viewModel.steps.count - 1 {
-				confettiView.frame = view.bounds
-				view.addSubview(confettiView)
-				confettiView.startConfetti()
-				perform(#selector(stopConfetti), with: nil, afterDelay: 1.0)
+			tableView.reloadDataAfterDelay { [weak self] in
+				guard let `self` = self else { return }
+				// Last successful step - show confetti!
+				if self.currentStepIndex == self.viewModel.steps.count - 1 {
+					self.confettiView.frame = self.view.bounds
+					self.view.addSubview(self.confettiView)
+					self.confettiView.startConfetti()
+					self.perform(#selector(self.stopConfetti), with: nil, afterDelay: 1.0)
+				}
 			}
 
 		} else {
@@ -235,8 +235,6 @@ private class SpeakerTableViewCell: UITableViewCell {
 	private var speakerImageView: RoundImageView = {
 		let imageView = RoundImageView(image: #imageLiteral(resourceName: "av_sorting_vanilla"))
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-		imageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
-		imageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
 		return imageView
 	}()
 
@@ -247,6 +245,8 @@ private class SpeakerTableViewCell: UITableViewCell {
 		contentView.addSubview(speakerImageView)
 		speakerImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16).isActive = true
 		speakerImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
+		speakerImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
+		speakerImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
 
 		contentView.addSubview(speechBubbleView)
 		speechBubbleView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true

@@ -13,8 +13,6 @@ class HeroView: UIView {
 		view.layer.cornerRadius = 2
 		view.backgroundColor = UIColor.borderColor.withAlphaComponent(0.4)
 		view.translatesAutoresizingMaskIntoConstraints = false
-		view.widthAnchor.constraint(equalToConstant: 32).isActive = true
-		view.heightAnchor.constraint(equalToConstant: 4).isActive = true
 		return view
 	}()
 
@@ -50,6 +48,8 @@ class HeroView: UIView {
 		addSubview(handleBar)
 		handleBar.topAnchor.constraint(equalTo: topAnchor).isActive = true
 		handleBar.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+		handleBar.widthAnchor.constraint(equalToConstant: 32).isActive = true
+		handleBar.heightAnchor.constraint(equalToConstant: 4).isActive = true
 
 		addSubview(imageView)
 		imageView.topAnchor.constraint(equalTo: handleBar.bottomAnchor, constant: 8).isActive = true

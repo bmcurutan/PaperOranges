@@ -158,8 +158,6 @@ private class TopicTableViewCell: UITableViewCell {
 	private var buttonImageView: RoundImageView = {
 		let imageView = RoundImageView()
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-		imageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
-		imageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
 		return imageView
 	}()
 
@@ -178,6 +176,8 @@ private class TopicTableViewCell: UITableViewCell {
 		buttonImageView.topAnchor.constraint(equalTo: button.topAnchor, constant: 8).isActive = true
 		buttonImageView.leftAnchor.constraint(equalTo: button.leftAnchor, constant: 16).isActive = true
 		button.bottomAnchor.constraint(greaterThanOrEqualTo: buttonImageView.bottomAnchor, constant: 8).isActive = true
+		buttonImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
+		buttonImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
 
 		button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 	}

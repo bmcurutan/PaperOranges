@@ -8,7 +8,8 @@
 import UIKit
 
 extension UITableView {
-	func reloadDataAfterDelay(_ delay: TimeInterval = 0.3) -> Void {
+	func reloadDataAfterDelay(_ delay: TimeInterval = 0.3, completion: (() -> Void)?) {
 		perform(#selector(reloadData), with: nil, afterDelay: delay)
+		completion?()
 	}
 }
