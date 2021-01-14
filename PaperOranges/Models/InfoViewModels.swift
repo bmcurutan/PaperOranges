@@ -22,7 +22,7 @@ class MenuInfoViewModel: InfoViewModel {
 			ButtonData(image: #imageLiteral(resourceName: "ic_gmail"), url: "mailto: @gmail.com"), // TODO1 fix
 			ButtonData(image: #imageLiteral(resourceName: "ic_cart"), url: "https://www.paperoranges.com/shop/"),
 			ButtonData(image: #imageLiteral(resourceName: "ic_instagram"), url: "https://www.instagram.com/paper_oranges/"),
-			ButtonData(image: #imageLiteral(resourceName: "ic_facebook"), url: "https://www.facebook.com/paperoranges/"),
+//			ButtonData(image: #imageLiteral(resourceName: "ic_facebook"), url: "https://www.facebook.com/paperoranges/"), // TODO1 facebook link is broken
 			ButtonData(image: #imageLiteral(resourceName: "ic_medium"), url: "https://medium.com/paper-oranges")]),
 		.textLink("Version \(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String) • ©\(Calendar.current.component(.year, from: Date())) Paper Oranges", nil),
 		.textLink("www.paperoranges.com", "https://www.paperoranges.com/")

@@ -67,6 +67,7 @@ class ButtonsTableViewCell: UITableViewCell {
 			} else {
 				// Otherwise default to buttons without sort/swap functionality
 				let linkButton = LinkButton()
+				linkButton.translatesAutoresizingMaskIntoConstraints = false
 				if let urlString = button.url,
 				   let url = URL(string: urlString) {
 					linkButton.url = url
