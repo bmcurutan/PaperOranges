@@ -1,5 +1,5 @@
 //
-//  ImageAndLabelButton.swift
+//  ImageLabelButton.swift
 //  PaperOranges
 //
 //  Created by Bianca Curutan on 1/10/21.
@@ -7,12 +7,12 @@
 
 import UIKit
 
-protocol ImageAndLabelButtonDelegate {
+protocol ImageLabelButtonDelegate {
 	func imageLabelButtonTapped(_ sender: ImageLabelButton)
 }
 
 class ImageLabelButton: UIButton {
-	var delegate: ImageAndLabelButtonDelegate?
+	var delegate: ImageLabelButtonDelegate?
 	
 	var image: UIImage? {
 		didSet {
@@ -69,7 +69,7 @@ class ImageLabelButton: UIButton {
 		bottomAnchor.constraint(equalTo: nameLabel.bottomAnchor).isActive = true
 		rightAnchor.constraint(equalTo: nameLabel.rightAnchor, constant: 8).isActive = true
 
-		addTarget(self, action: #selector(imageLabelButtonTapped), for: .touchUpInside)
+		addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 	}
 
 	required init?(coder: NSCoder) {

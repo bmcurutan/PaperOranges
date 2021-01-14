@@ -11,7 +11,7 @@ import UIKit
 protocol SortingViewModel {
 	var sections: [SortingSection] { get set }
 	var stepsSection: SortingSection { get }
-	var sortingButtons: [SortingButton] { get set } 
+	var sortingButtons: [ButtonData] { get set }
 	var steps: [Step] { get }
 	var successMessage: String { get }
 	var errorMessage: String { get }
@@ -40,12 +40,12 @@ class BubbleSortViewModel: SortingViewModel {
 
 	var stepsSection: SortingSection = .steps("Steps")
 
-	var sortingButtons: [SortingButton] = [
-		SortingButton(id: 0, name: "Alex", image: #imageLiteral(resourceName: "av_sorting_alex")),
-		SortingButton(id: 4, name: "Mandy", image: #imageLiteral(resourceName: "av_sorting_mandy")),
-		SortingButton(id: 2, name: "Felicia", image: #imageLiteral(resourceName: "av_sorting_felicia")),
-		SortingButton(id: 3, name: "Liam", image: #imageLiteral(resourceName: "av_sorting_liam")),
-		SortingButton(id: 1, name: "BB", image: #imageLiteral(resourceName: "av_sorting_bb"))
+	var sortingButtons: [ButtonData] = [
+		ButtonData(image: #imageLiteral(resourceName: "av_sorting_alex"), name: "Alex", sortId: 0),
+		ButtonData(image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "Mandy", sortId: 4),
+		ButtonData(image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "Felicia", sortId: 2),
+		ButtonData(image: #imageLiteral(resourceName: "av_sorting_liam"), name: "Liam", sortId: 3),
+		ButtonData(image: #imageLiteral(resourceName: "av_sorting_bb"), name: "BB", sortId: 1)
 	]
 
 	// TODO2 translate into Italian
@@ -70,13 +70,6 @@ enum SortingSection {
 	case speaker
 	case buttons
 	case steps(String) // title
-}
-
-struct SortingButton {
-	var id: Int // Determines final sort order
-	var name: String
-	var image: UIImage
-	var isSelected: Bool = false
 }
 
 struct Step {

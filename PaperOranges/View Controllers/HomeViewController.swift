@@ -37,6 +37,7 @@ class HomeViewController: UIViewController {
 			let button = UIButton(type: .custom)
 			button.tintColor = .accentColor
 			button.setImage(#imageLiteral(resourceName: "ic_menu").withRenderingMode(.alwaysTemplate), for: .normal)
+			button.setImage(#imageLiteral(resourceName: "ic_menu").withTintColor(.secondaryAccentColor, renderingMode: .alwaysOriginal), for: .highlighted)
 			button.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
 			return button
 		}()

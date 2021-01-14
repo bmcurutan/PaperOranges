@@ -43,7 +43,19 @@ class SortingViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		view.backgroundColor = .backgroundColor
-		navigationItem.rightBarButtonItem = UIBarButtonItem(title: "ⓘ", style: .plain, target: self, action: #selector(infoButtonTapped))
+
+		let rightButton: UIButton = {
+			let button = UIButton(type: .custom)
+			button.tintColor = .accentColor
+			button.setTitle("ⓘ", for: .normal)
+			button.setTitleColor(.accentColor, for: .normal)
+			button.setTitleColor(.secondaryAccentColor, for: .highlighted)
+			button.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
+			return button
+		}()
+		navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightButton)
+		navigationItem.rightBarButtonItem?.customView?.widthAnchor.constraint(equalToConstant: 24).isActive = true
+		navigationItem.rightBarButtonItem?.customView?.heightAnchor.constraint(equalToConstant: 24).isActive = true
 
 		tableView.dataSource = self
 		tableView.delegate = self
@@ -133,19 +145,23 @@ extension SortingViewController: UITableViewDelegate {
 }
 
 extension SortingViewController: ButtonsTableViewCellDelegate {
-	func evaluateAndSwap(id0: Int, id1: Int, with completion: ((Bool) -> Void)?) {
+	func openURL(_ url: URL) {
+		// Do nothing
+	}
+
+	func evaluateAndSwap(sortId0: Int, sortId1: Int, with completion: ((Bool) -> Void)?) {
 		let solution = currentStep.solution
-		if (id0 == solution.0 && id1 == solution.1) || (id1 == solution.0 && id0 == solution.1) {
+		if (sortId0 == solution.0 && sortId1 == solution.1) || (sortId1 == solution.0 && sortId0 == solution.1) {
 			// Successful solution
 			speechTitle = .success
 			// If the buttons are already in order, do nothing
 			// i.e., treat like an incorrect solution
-			if id0 < id1 {
+			if sortId0 < sortId1 {
 				completion?(false)
 			} else {
 				// Update data (swap buttons)
-				if let index0 = viewModel.sortingButtons.firstIndex(where: { $0.id == id0 }),
-					let index1 = viewModel.sortingButtons.firstIndex(where: { $0.id == id1 }) {
+				if let index0 = viewModel.sortingButtons.firstIndex(where: { $0.sortId == sortId0 }),
+					let index1 = viewModel.sortingButtons.firstIndex(where: { $0.sortId == sortId1 }) {
 					viewModel.sortingButtons.swapAt(index0, index1)
 				}
 				completion?(true)
@@ -252,7 +268,7 @@ private class SpeakerTableViewCell: UITableViewCell {
 		speechBubbleView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
 		speechBubbleView.leftAnchor.constraint(equalTo: speakerImageView.rightAnchor, constant: 8).isActive = true
 		contentView.rightAnchor.constraint(equalTo: speechBubbleView.rightAnchor, constant: 16).isActive = true
-		contentView.bottomAnchor.constraint(equalTo: speechBubbleView.bottomAnchor).isActive = true
+		contentView.bottomAnchor.constraint(equalTo: speechBubbleView.bottomAnchor, constant: 16).isActive = true
 
 		speechBubbleView.addSubview(speechBubbleLabel)
 		speechBubbleLabel.topAnchor.constraint(equalTo: speechBubbleView.topAnchor, constant: 8).isActive = true

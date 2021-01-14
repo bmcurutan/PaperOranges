@@ -35,6 +35,8 @@ class InfoViewController: UIViewController {
 		tableView.delegate = self
 		tableView.register(DescriptionTableViewCell.self, forCellReuseIdentifier: "DescriptionCell")
 		tableView.register(PersonTableViewCell.self, forCellReuseIdentifier: "PersonCell")
+		tableView.register(TextLinkTableViewCell.self, forCellReuseIdentifier: "TextLinkCell")
+		tableView.register(ButtonsTableViewCell.self, forCellReuseIdentifier: "ButtonsCell")
 		tableView.separatorStyle = .none
 
 		view.addSubview(tableView)
@@ -64,6 +66,17 @@ extension InfoViewController: UITableViewDataSource {
 			cell.role = role
 			cell.details = details
 			return cell
+		case let .buttons(buttons):
+			let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonsCell") as! ButtonsTableViewCell
+			cell.delegate = self
+			cell.addButtons(buttons)
+			return cell
+		case let .textLink(text, link):
+			let cell = tableView.dequeueReusableCell(withIdentifier: "TextLinkCell") as! TextLinkTableViewCell
+			cell.delegate = self
+			cell.displayText = text
+			cell.link = link
+			return cell
 		default:
 			return UITableViewCell()
 		}
@@ -87,6 +100,84 @@ extension InfoViewController: UITableViewDelegate {
 			return UITableView.automaticDimension
 		default:
 			return .leastNonzeroMagnitude
+		}
+	}
+}
+
+extension InfoViewController: TextLinkTableViewCellDelegate {
+	func openURL(_ url: URL) {
+		UIApplication.shared.open(url)
+	}
+}
+
+extension InfoViewController: ButtonsTableViewCellDelegate {
+	func evaluateAndSwap(sortId0: Int, sortId1: Int, with completion: ((Bool) -> Void)?) {
+		// Do nothing
+	}
+
+	func linkButtonTapped(_ sender: LinkButton) {
+		if let url = sender.url {
+			openURL(url)
+		}
+	}
+}
+
+protocol TextLinkTableViewCellDelegate {
+	func openURL(_ url: URL)
+}
+
+private class TextLinkTableViewCell: UITableViewCell {
+	var delegate: TextLinkTableViewCellDelegate?
+
+	var displayText: String? {
+		didSet {
+			linkButton.setTitle(displayText, for: .normal)
+		}
+	}
+
+	var link: String? {
+		didSet {
+			if let _ = link {
+				linkButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
+				linkButton.setTitleColor(.accentColor, for: .normal)
+				linkButton.setTitleColor(.secondaryAccentColor, for: .highlighted)
+			} else {
+				linkButton.isUserInteractionEnabled = false
+			}
+		}
+	}
+
+	private var linkButton: UIButton = {
+		let button = UIButton()
+		button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+		button.titleLabel?.textAlignment = .center
+		button.translatesAutoresizingMaskIntoConstraints = false
+		button.setTitleColor(.primaryTextColor, for: .normal)
+		return button
+	}()
+	private var linkLabelTopConstraint: NSLayoutConstraint?
+	
+	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+		super.init(style: style, reuseIdentifier: reuseIdentifier)
+		contentView.backgroundColor = .backgroundColor
+
+		contentView.addSubview(linkButton)
+		linkButton.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+		linkButton.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
+		contentView.bottomAnchor.constraint(equalTo: linkButton.bottomAnchor).isActive = true
+		contentView.rightAnchor.constraint(equalTo: linkButton.rightAnchor, constant: 16).isActive = true
+		linkButton.heightAnchor.constraint(equalToConstant: 16).isActive = true
+		linkButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+	}
+
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
+	@objc private func buttonTapped() {
+		if let link = link,
+		   let url = URL(string: link) {
+			delegate?.openURL(url)
 		}
 	}
 }

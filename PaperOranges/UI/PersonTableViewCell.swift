@@ -74,8 +74,8 @@ class PersonTableViewCell: UITableViewCell {
 		roundImageView.topAnchor.constraint(equalTo: borderedView.topAnchor, constant: 8).isActive = true
 		roundImageView.leftAnchor.constraint(equalTo: borderedView.leftAnchor, constant: 16).isActive = true
 		borderedView.bottomAnchor.constraint(greaterThanOrEqualTo: roundImageView.bottomAnchor, constant: 8).isActive = true
-		roundImageView.widthAnchor.constraint(equalToConstant: 56).isActive = true
-		roundImageView.heightAnchor.constraint(equalToConstant: 56).isActive = true
+		roundImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
+		roundImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
 
 		borderedView.addSubview(roleLabel)
 		roleLabel.topAnchor.constraint(equalTo: borderedView.topAnchor, constant: 8).isActive = true

@@ -40,6 +40,7 @@ class SectionHeaderView: UIView {
 		button.titleLabel?.font = UIFont.systemFont(ofSize: 18.0)
 		button.setTitle("ⓘ", for: .normal)
 		button.setTitleColor(.accentColor, for: .normal)
+		button.setTitleColor(.secondaryAccentColor, for: .highlighted)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		return button
 	}()
