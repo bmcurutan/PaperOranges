@@ -84,6 +84,14 @@ class ButtonsTableViewCell: UITableViewCell {
 		}
 	}
 
+	func disableAllButtons() {
+		stackView.arrangedSubviews.forEach { button in
+			if let button = button as? UIButton {
+				button.isUserInteractionEnabled = false
+			}
+		}
+	}
+
 	@objc func linkButtonTapped(_ sender: LinkButton) {
 		if let url = sender.url {
 			delegate?.openURL(url)
@@ -91,7 +99,6 @@ class ButtonsTableViewCell: UITableViewCell {
 	}
 }
 
-// TODO2 on button long press, scale up??
 extension ButtonsTableViewCell: ImageLabelButtonDelegate {
 	func imageLabelButtonTapped(_ sender: ImageLabelButton) {
 		if let index = buttons.firstIndex(where: { $0.sortId == sender.tag }) {

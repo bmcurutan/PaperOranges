@@ -48,7 +48,6 @@ class BubbleSortViewModel: SortingViewModel {
 		ButtonData(image: #imageLiteral(resourceName: "av_sorting_bb"), name: "BB", sortId: 1)
 	]
 
-	// TODO2 translate into Italian
 	var steps: [Step] = [
 		Step(speech: "Sort the students alphabetically using Bubble Sort. The catch is only two of them can interact at a time.", solution: (0, 4), completedText: "Compare Alex and Mandy (indices 0 and 1)"),
 		Step(speech: "A and M are already in order, so Alex and Mandy didn't swap places.", solution: (4, 2), completedText: "Compare Mandy and Felicia (indices 1 and 2)"),

@@ -103,6 +103,10 @@ extension SortingViewController: UITableViewDataSource {
 			let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonsCell", for: indexPath) as! ButtonsTableViewCell
 			cell.delegate = self
 			cell.addButtons(viewModel.sortingButtons)
+			// Disable all sort buttons on last step
+			if currentStepIndex == viewModel.steps.count - 1 {
+				cell.disableAllButtons()
+			}
 			return cell
 		case .steps:
 			let cell = tableView.dequeueReusableCell(withIdentifier: "StepsCell", for: indexPath) as! StepsTableViewCell
@@ -331,8 +335,8 @@ private class StepsTableViewCell: UITableViewCell {
 			$0.removeFromSuperview()
 		}
 
-		stepsText.forEach {
-			stackView.addArrangedSubview(StepView($0, count: stackView.arrangedSubviews.count))
+		stepsText.forEach { stepText in
+			stackView.addArrangedSubview(StepView(stepText, count: stackView.arrangedSubviews.count))
 		}
 	}
 }
@@ -348,9 +352,9 @@ private class StepView: UIView {
 		return label
 	}()
 
-	init(_ step: String, count: Int) {
+	init(_ stepText: String, count: Int) {
 		self.init()
-		stepLabel.text = "\(count + 1). \(step)"
+		stepLabel.text = "\(count + 1). \(stepText)"
 	}
 
 	override init(frame: CGRect) {
