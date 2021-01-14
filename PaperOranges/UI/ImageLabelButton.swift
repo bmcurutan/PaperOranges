@@ -8,10 +8,10 @@
 import UIKit
 
 protocol ImageAndLabelButtonDelegate {
-	func buttonTapped(_ sender: ImageAndLabelButton)
+	func imageLabelButtonTapped(_ sender: ImageLabelButton)
 }
 
-class ImageAndLabelButton: UIButton {
+class ImageLabelButton: UIButton {
 	var delegate: ImageAndLabelButtonDelegate?
 	
 	var image: UIImage? {
@@ -39,7 +39,6 @@ class ImageAndLabelButton: UIButton {
 	private var roundImageView: RoundImageView = {
 		let imageView = RoundImageView()
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-		imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
 		return imageView
 	}()
 
@@ -61,6 +60,8 @@ class ImageAndLabelButton: UIButton {
 		addSubview(roundImageView)
 		roundImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
 		roundImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+		roundImageView.widthAnchor.constraint(equalToConstant: 56).isActive = true
+		roundImageView.heightAnchor.constraint(equalToConstant: 56).isActive = true
 
 		addSubview(nameLabel)
 		nameLabel.topAnchor.constraint(equalTo: roundImageView.bottomAnchor, constant: 8).isActive = true
@@ -68,7 +69,7 @@ class ImageAndLabelButton: UIButton {
 		bottomAnchor.constraint(equalTo: nameLabel.bottomAnchor).isActive = true
 		rightAnchor.constraint(equalTo: nameLabel.rightAnchor, constant: 8).isActive = true
 
-		addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+		addTarget(self, action: #selector(imageLabelButtonTapped), for: .touchUpInside)
 	}
 
 	required init?(coder: NSCoder) {
@@ -77,23 +78,19 @@ class ImageAndLabelButton: UIButton {
 
 	@objc private func buttonTapped() {
 		isSelected = !isSelected
-		delegate?.buttonTapped(self)
-	}
-
-	func setImageWidth(_ width: CGFloat) {
-		roundImageView.widthAnchor.constraint(equalToConstant: width).isActive = true
+		delegate?.imageLabelButtonTapped(self)
 	}
 
 	// Create copy for UI purposes (doesn't have tap functionality)
-	func createCopy() -> ImageAndLabelButton {
-		let button = ImageAndLabelButton()
+	func createCopy() -> ImageLabelButton {
+		let button = ImageLabelButton()
 		button.image = image
 		button.name = name
 		button.isSelected = isSelected
 		return button
 	}
 
-	func copyData(from button: ImageAndLabelButton) {
+	func copyData(from button: ImageLabelButton) {
 		image = button.image
 		name = button.name
 		// Doesn't include isSelected state
