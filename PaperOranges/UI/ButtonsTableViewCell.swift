@@ -71,6 +71,9 @@ class ButtonsTableViewCell: UITableViewCell {
 				   let url = URL(string: urlString) {
 					linkButton.url = url
 				}
+				linkButton.imageView?.translatesAutoresizingMaskIntoConstraints = false
+				linkButton.imageView?.widthAnchor.constraint(equalToConstant: 40).isActive = true
+				linkButton.imageView?.heightAnchor.constraint(equalToConstant: 40).isActive = true
 				linkButton.tintColor = .accentColor
 				linkButton.setImage(button.image.withRenderingMode(.alwaysTemplate), for: .normal)
 				linkButton.setImage(button.image.withTintColor(.secondaryAccentColor, renderingMode: .alwaysOriginal), for: .highlighted)
