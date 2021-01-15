@@ -115,7 +115,7 @@ class InsertionSortButtonsTableViewCell: UITableViewCell {
 
 			// TODO bottom
 			let imageLabelButton1 = ImageLabelButton()
-			imageLabelButton1.layer.borderColor = UIColor.secondaryTextColor.cgColor
+			imageLabelButton1.layer.borderColor = UIColor.borderColor.cgColor
 			imageLabelButton1.layer.borderWidth = 1
 			imageLabelButton1.delegate = self
 //			imageLabelButton1.image = button.image

@@ -11,7 +11,7 @@ class HeroView: UIView {
 	private var handleBar: UIView = {
 		let view = UIView()
 		view.layer.cornerRadius = 2
-		view.backgroundColor = UIColor.borderColor.withAlphaComponent(0.4)
+		view.backgroundColor = .borderColor
 		view.translatesAutoresizingMaskIntoConstraints = false
 		return view
 	}()

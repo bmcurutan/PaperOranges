@@ -16,7 +16,7 @@ class SpeakerTableViewCell: UITableViewCell {
 
 	private var speechBubbleView: UIButton = {
 		let button = UIButton()
-		button.layer.borderColor = UIColor.lightGray.cgColor
+		button.layer.borderColor = UIColor.borderColor.cgColor
 		button.layer.borderWidth = 1
 		button.layer.cornerRadius = 16
 		button.backgroundColor = .white

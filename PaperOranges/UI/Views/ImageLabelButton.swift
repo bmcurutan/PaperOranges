@@ -31,7 +31,7 @@ class ImageLabelButton: UIButton {
 			if isSelected {
 				backgroundColor = UIColor.highlightColor.withAlphaComponent(0.4)
 			} else {
-				backgroundColor = .clear
+                backgroundColor = UIColor.backgroundColor.withAlphaComponent(0.4)
 			}
 		}
 	}
@@ -57,8 +57,8 @@ class ImageLabelButton: UIButton {
 		super.init(frame: frame)
 		layer.cornerRadius = 16
 		layer.masksToBounds = true
-        backgroundColor = .backgroundColor
-		setBackgroundImage(UIImage.withColor(UIColor.highlightColor.withAlphaComponent(0.4)), for: .highlighted)
+        backgroundColor = UIColor.backgroundColor.withAlphaComponent(0.4)
+		setBackgroundImage(UIImage.withColor(UIColor.highlightColor), for: .highlighted)
 
 		addSubview(roundImageView)
 		roundImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true

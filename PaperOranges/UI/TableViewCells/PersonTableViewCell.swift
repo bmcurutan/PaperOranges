@@ -56,6 +56,7 @@ class PersonTableViewCell: UITableViewCell {
 		label.font = UIFont.systemFont(ofSize: 14)
 		label.lineBreakMode = .byWordWrapping
 		label.numberOfLines = 0
+        label.textColor = .primaryTextColor
 		label.translatesAutoresizingMaskIntoConstraints = false
 		return label
 	}()

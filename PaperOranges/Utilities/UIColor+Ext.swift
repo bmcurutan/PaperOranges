@@ -13,7 +13,7 @@ extension UIColor {
 	}
 
 	static var borderColor: UIColor {
-		return .lightGray
+        return UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1.0) // DCDCDC Light gray
 	}
 
 	static var accentColor: UIColor {
