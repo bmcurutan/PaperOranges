@@ -15,7 +15,6 @@ class SortingViewController: UIViewController {
 		// Don't show ending message for first or last steps
 		return currentStepIndex == 0 || currentStepIndex == viewModel.steps.count - 1 ? nil : viewModel.endingMessage
 	}
-
 	private var currentStepIndex: Int = 0 
 	private var currentStep: Step {
 		return viewModel.steps[currentStepIndex]
@@ -24,6 +23,7 @@ class SortingViewController: UIViewController {
 		// Only detect the last step if not also the first step
 		return currentStepIndex != 0 && currentStepIndex == viewModel.steps.count - 1
 	}
+	private var isCompletedCurrently: Bool = false // Detects if sorting game was completed during current instance
 
 	private var tableView: UITableView = {
 		let tableView = UITableView()
@@ -82,12 +82,6 @@ class SortingViewController: UIViewController {
 		}
 	}
 
-	// TODO2 allow user to play again without going Back first
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		saveCompletedProgress()
-	}
-
 	@objc private func infoButtonTapped() {
 		switch viewModel.id {
 		case .bubbleSort:
@@ -111,7 +105,7 @@ extension SortingViewController: UITableViewDataSource {
 		case .speaker:
 			// Overwrite current step speech if sorting game was completed
 			var speech = currentStep.speech
-			if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) {
+			if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) && !isCompletedCurrently {
 				speech = viewModel.completedSpeech
 			}
 
@@ -188,7 +182,7 @@ extension SortingViewController: UITableViewDelegate {
 
 extension SortingViewController: SpeakerTableViewCellDelegate {
 	func speechBubbleTapped() {
-		if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) {
+		if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) && !isCompletedCurrently {
 			// Reset to uncompleted state
 			UserDefaults.standard.setValue(false, forKey: viewModel.id.rawValue)
 			let stepsSection = viewModel.stepsSection
@@ -258,6 +252,7 @@ extension SortingViewController: ButtonsTableViewCellDelegate {
 					self.perform(#selector(self.stopConfetti), with: nil, afterDelay: 1.0)
 				}
 			}
+			saveCompletedProgress()
 
 		} else {
 			// Don't need to error out for the last step - nothing else to do
@@ -293,6 +288,7 @@ extension SortingViewController: ButtonsTableViewCellDelegate {
 		default:
 			break
 		}
+		isCompletedCurrently = true
 	}
 }
 
