@@ -77,56 +77,55 @@ extension BubbleSortButtonsTableViewCell: ImageLabelButtonDelegate {
 		}
 
 		// If two buttons are selected, determine the associated indices and button views
-		if buttons.filter({ $0.isSelected }).count == 2,
+		guard buttons.filter({ $0.isSelected }).count == 2,
 			let index0 = buttons.firstIndex(where: { $0.isSelected }),
 			index0 < buttons.count - 1,
 			let index1 = buttons[index0 + 1...buttons.count - 1].firstIndex(where: { $0.isSelected }),
 			let button0 = stackView.arrangedSubviews[index0] as? ImageLabelButton,
-			let button1 = stackView.arrangedSubviews[index1] as? ImageLabelButton {
+            let button1 = stackView.arrangedSubviews[index1] as? ImageLabelButton else { return }
 
-			delegate?.evaluate(sortID0: button0.tag, sortID1: button1.tag) { [weak self] result in
-				guard let `self` = self else { return }
+        delegate?.evaluate(sortID0: button0.tag, sortID1: button1.tag) { [weak self] result in
+            guard let `self` = self else { return }
 
-				guard result else {
-					// Error - reset selection UI without swapping buttons
-					self.resetButtonSelection(button0: button0, button1: button1)
-					return
-				}
+            guard result else {
+                // Error - reset selection UI without swapping buttons
+                self.resetButtonSelection(button0: button0, button1: button1)
+                return
+            }
 
-				// If evaluation is successful, make copies of the two buttons
-				let copy0 = button0.createCopy()
-				copy0.frame = self.stackView.convert(button0.frame, to: self.contentView)
-				self.contentView.addSubview(copy0)
+            // If evaluation is successful, make copies of the two buttons
+            let copy0 = button0.createCopy()
+            copy0.frame = self.stackView.convert(button0.frame, to: self.contentView)
+            self.contentView.addSubview(copy0)
 
-				let copy1 = button1.createCopy()
-				copy1.frame = self.stackView.convert(button1.frame, to: self.contentView)
-				self.contentView.addSubview(copy1)
+            let copy1 = button1.createCopy()
+            copy1.frame = self.stackView.convert(button1.frame, to: self.contentView)
+            self.contentView.addSubview(copy1)
 
-				// Hide the original buttons temporarily
-				// Use alpha instead of removing to maintain arranged subviews positions
-				button0.alpha = 0
-				button1.alpha = 0
+            // Hide the original buttons temporarily
+            // Use alpha instead of removing to maintain arranged subviews positions
+            button0.alpha = 0
+            button1.alpha = 0
 
-				// Animate the buttons swapping positions
-				UIView.animate(withDuration: 0.3, animations: {
-					let tmp = copy0.frame.origin.x
-					copy0.frame.origin.x = copy1.frame.origin.x
-					copy1.frame.origin.x = tmp
-				}) { _ in
-					// Update buttons with new (swapped) data, then show
-					button0.copyData(from: copy1)
-					button1.copyData(from: copy0)
-					button0.alpha = 1
-					button1.alpha = 1
+            // Animate the buttons swapping positions
+            UIView.animate(withDuration: 0.3, animations: {
+                let tmp = copy0.frame.origin.x
+                copy0.frame.origin.x = copy1.frame.origin.x
+                copy1.frame.origin.x = tmp
+            }) { _ in
+                // Update buttons with new (swapped) data, then show
+                button0.copyData(from: copy1)
+                button1.copyData(from: copy0)
+                button0.alpha = 1
+                button1.alpha = 1
 
-					// Remove copies
-					copy0.removeFromSuperview()
-					copy1.removeFromSuperview()
-				}
+                // Remove copies
+                copy0.removeFromSuperview()
+                copy1.removeFromSuperview()
+            }
 
-				// Reset selection UI
-				self.resetButtonSelection(button0: button0, button1: button1)
-			}
+            // Reset selection UI
+            self.resetButtonSelection(button0: button0, button1: button1)
 		}
 	}
 
