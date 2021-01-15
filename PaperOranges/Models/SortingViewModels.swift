@@ -99,7 +99,7 @@ class InsertionSortViewModel: SortingViewModel {
 
 	// TODO
 	var steps: [Step] = [
-		Step(speech: NSMutableAttributedString(string: "Sort the students by height using Insertion Sort - their heights are represented using the numbers 1 through 5.\n\nHint: Only one student can take a turn at a time."), solution: (0, 4), completedText: "TODO solution and completedText"),
+		Step(speech: NSMutableAttributedString(string: "Sort the students by height in ascending order using Insertion Sort - their heights are represented using the numbers 1 through 5.\n\nHint: Only one student can take a turn at a time."), solution: (0, 4), completedText: "TODO solution and completedText"),
 //		Step(speech: "A and M are already in order, so Alex and Mandy didn't swap places.", solution: (4, 2), completedText: "Compare Mandy and Felicia (indices 1 and 2)"),
 //		Step(speech: "F is before M, so Mandy and Felicia swapped places.", solution: (4, 3), completedText: "Compare Mandy and Liam (indices 2 and 3)"),
 //		Step(speech: "L is before M, so Mandy and Liam swapped places.", solution: (4, 1), completedText: "Compare Mandy and BB (indices 3 and 4)"),
