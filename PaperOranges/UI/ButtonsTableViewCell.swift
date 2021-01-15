@@ -9,7 +9,6 @@ import UIKit
 
 protocol ButtonsTableViewCellDelegate {
 	func evaluateAndSwap(sortId0: Int, sortId1: Int, with completion: ((Bool) -> Void)?)
-	func openURL(_ url: URL)
 }
 
 class ButtonsTableViewCell: UITableViewCell {
@@ -79,20 +78,20 @@ class ButtonsTableViewCell: UITableViewCell {
 				}
 				stackView.addArrangedSubview(imageLabelButton)
 			} else {
-				let linkButton = LinkButton()
-				linkButton.translatesAutoresizingMaskIntoConstraints = false
-				if let urlString = button.url,
-				   let url = URL(string: urlString) {
-					linkButton.url = url
-				}
-				linkButton.imageView?.translatesAutoresizingMaskIntoConstraints = false
-				linkButton.imageView?.widthAnchor.constraint(equalToConstant: 40).isActive = true
-				linkButton.imageView?.heightAnchor.constraint(equalToConstant: 40).isActive = true
-				linkButton.tintColor = .accentColor
-				linkButton.setImage(button.image.withRenderingMode(.alwaysTemplate), for: .normal)
-				linkButton.setImage(button.image.withTintColor(.secondaryAccentColor, renderingMode: .alwaysOriginal), for: .highlighted)
-				stackView.addArrangedSubview(linkButton)
-				linkButton.addTarget(self, action: #selector(linkButtonTapped(_:)), for: .touchUpInside)
+//				let linkButton = LinkButton()
+//				linkButton.translatesAutoresizingMaskIntoConstraints = false
+//				if let urlString = button.url,
+//				   let url = URL(string: urlString) {
+//					linkButton.url = url
+//				}
+//				linkButton.imageView?.translatesAutoresizingMaskIntoConstraints = false
+//				linkButton.imageView?.widthAnchor.constraint(equalToConstant: 40).isActive = true
+//				linkButton.imageView?.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//				linkButton.tintColor = .accentColor
+//				linkButton.setImage(button.image.withRenderingMode(.alwaysTemplate), for: .normal)
+//				linkButton.setImage(button.image.withTintColor(.secondaryAccentColor, renderingMode: .alwaysOriginal), for: .highlighted)
+//				stackView.addArrangedSubview(linkButton)
+//				linkButton.addTarget(self, action: #selector(linkButtonTapped(_:)), for: .touchUpInside)
 			}
 		}
 	}
@@ -102,12 +101,6 @@ class ButtonsTableViewCell: UITableViewCell {
 			if let button = button as? UIButton {
 				button.isUserInteractionEnabled = false
 			}
-		}
-	}
-
-	@objc func linkButtonTapped(_ sender: LinkButton) {
-		if let url = sender.url {
-			delegate?.openURL(url)
 		}
 	}
 }
@@ -186,14 +179,3 @@ extension ButtonsTableViewCell: ImageLabelButtonDelegate {
 	}
 }
 
-class LinkButton: UIButton {
-	var url: URL?
-
-	override init(frame: CGRect) {
-		super.init(frame: frame)
-	}
-
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
-}

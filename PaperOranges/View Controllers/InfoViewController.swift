@@ -36,7 +36,7 @@ class InfoViewController: UIViewController {
 		tableView.register(DescriptionTableViewCell.self, forCellReuseIdentifier: "DescriptionCell")
 		tableView.register(PersonTableViewCell.self, forCellReuseIdentifier: "PersonCell")
 		tableView.register(TextLinkTableViewCell.self, forCellReuseIdentifier: "TextLinkCell")
-		tableView.register(ButtonsTableViewCell.self, forCellReuseIdentifier: "ButtonsCell")
+		tableView.register(LinkButtonsTableViewCell.self, forCellReuseIdentifier: "LinkButtonsCell")
 		tableView.separatorStyle = .none
 
 		view.addSubview(tableView)
@@ -67,7 +67,7 @@ extension InfoViewController: UITableViewDataSource {
 			cell.details = details
 			return cell
 		case let .buttons(buttons):
-			let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonsCell") as! ButtonsTableViewCell
+			let cell = tableView.dequeueReusableCell(withIdentifier: "LinkButtonsCell") as! LinkButtonsTableViewCell
 			cell.delegate = self
 			cell.addButtons(buttons)
 			return cell
@@ -109,11 +109,7 @@ extension InfoViewController: TextLinkTableViewCellDelegate {
 	}
 }
 
-extension InfoViewController: ButtonsTableViewCellDelegate {
-	func evaluateAndSwap(sortId0: Int, sortId1: Int, with completion: ((Bool) -> Void)?) {
-		// Do nothing
-	}
-
+extension InfoViewController: LinkButtonsTableViewCellDelegate {
 	func linkButtonTapped(_ sender: LinkButton) {
 		if let url = sender.url {
 			openURL(url)
