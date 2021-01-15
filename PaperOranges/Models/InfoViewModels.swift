@@ -27,7 +27,7 @@ class MenuInfoViewModel: InfoViewModel {
 			ButtonData(image: #imageLiteral(resourceName: "ic_instagram"), url: "https://www.instagram.com/paper_oranges/"),
 //			ButtonData(image: #imageLiteral(resourceName: "ic_facebook"), url: "https://www.facebook.com/paperoranges/"), // TODO1 facebook link is broken
 			ButtonData(image: #imageLiteral(resourceName: "ic_medium"), url: "https://medium.com/paper-oranges")]),
-		.textLink("Version \(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String) • ©\(Calendar.current.component(.year, from: Date())) Paper Oranges", nil),
+		.textLink("Version \(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String) • ©\(Calendar.current.component(.year, from: Date())) Paper Oranges"),
 		.textLink("www.paperoranges.com", "https://www.paperoranges.com/")
 	]
 }
@@ -84,16 +84,16 @@ struct InfoSection {
 }
 
 enum Info {
-	case description(String?, String?) // title, description
-	case person(UIImage?, String?, String?) // image, role, details
-	case textLink(String, String?) // text, link
+	case description(String, String) // title, description
+	case person(UIImage, String, String) // image, role, details
+	case textLink(String, String? = nil) // text, link
 	case buttons([ButtonData])
 }
 
 struct ButtonData {
-	var image: UIImage
+	var image: UIImage = UIImage()
 	var isSelected: Bool = false
-	var url: String?
-	var name: String?
-	var sortId: Int? // Determines final sort order
+	var name: String? = nil
+	var sortID: Int? = nil // Determines final sort order
+	var url: String? = nil
 }

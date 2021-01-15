@@ -1,5 +1,5 @@
 //
-//  ButtonsTableViewCell.swift
+//  BubbleSortButtonsTableViewCell.swift
 //  PaperOranges
 //
 //  Created by Bianca Curutan on 1/13/21.
@@ -7,19 +7,14 @@
 
 import UIKit
 
-protocol ButtonsTableViewCellDelegate {
-	func evaluateAndSwap(sortId0: Int, sortId1: Int, with completion: ((Bool) -> Void)?)
+protocol BubbleSortButtonsTableViewCellDelegate {
+	func evaluate(sortID0: Int, sortID1: Int, with completion: ((Bool) -> Void)?)
 }
 
-class ButtonsTableViewCell: UITableViewCell {
-	var delegate: ButtonsTableViewCellDelegate?
+class BubbleSortButtonsTableViewCell: UITableViewCell {
+	var delegate: BubbleSortButtonsTableViewCellDelegate?
 
 	private var buttons: [ButtonData] = []
-
-	private var shouldSort: Bool {
-		// Only implements sorting functionality if all buttons have sort IDs
-		return buttons.filter({ $0.sortId != nil }).count == buttons.count
-	}
 
 	private let stackView: UIStackView = {
 		let stackView = UIStackView()
@@ -29,23 +24,9 @@ class ButtonsTableViewCell: UITableViewCell {
 		return stackView
 	}()
 
-	var lineView: UIView = {
-		let view = UIView()
-		view.backgroundColor = UIColor.desertBlue.withAlphaComponent(0.4)
-		view.isHidden = true
-		view.translatesAutoresizingMaskIntoConstraints = false
-		return view
-	}()
-
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		contentView.backgroundColor = .backgroundColor
-
-		contentView.addSubview(lineView)
-		lineView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 32).isActive = true
-		lineView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-		contentView.rightAnchor.constraint(equalTo: lineView.rightAnchor).isActive = true
-		lineView.heightAnchor.constraint(equalToConstant: 8).isActive = true
 
 		contentView.addSubview(stackView)
 		stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8).isActive = true
@@ -67,32 +48,15 @@ class ButtonsTableViewCell: UITableViewCell {
 		}
 
 		buttons.forEach { button in
-			if shouldSort {
-				let imageLabelButton = ImageLabelButton()
-				imageLabelButton.delegate = self
-				imageLabelButton.image = button.image
-				imageLabelButton.isSelected = button.isSelected
-				imageLabelButton.name = button.name
-				if let sortId = button.sortId {
-					imageLabelButton.tag = sortId
-				}
-				stackView.addArrangedSubview(imageLabelButton)
-			} else {
-//				let linkButton = LinkButton()
-//				linkButton.translatesAutoresizingMaskIntoConstraints = false
-//				if let urlString = button.url,
-//				   let url = URL(string: urlString) {
-//					linkButton.url = url
-//				}
-//				linkButton.imageView?.translatesAutoresizingMaskIntoConstraints = false
-//				linkButton.imageView?.widthAnchor.constraint(equalToConstant: 40).isActive = true
-//				linkButton.imageView?.heightAnchor.constraint(equalToConstant: 40).isActive = true
-//				linkButton.tintColor = .accentColor
-//				linkButton.setImage(button.image.withRenderingMode(.alwaysTemplate), for: .normal)
-//				linkButton.setImage(button.image.withTintColor(.secondaryAccentColor, renderingMode: .alwaysOriginal), for: .highlighted)
-//				stackView.addArrangedSubview(linkButton)
-//				linkButton.addTarget(self, action: #selector(linkButtonTapped(_:)), for: .touchUpInside)
+			let imageLabelButton = ImageLabelButton()
+			imageLabelButton.delegate = self
+			imageLabelButton.image = button.image
+			imageLabelButton.isSelected = button.isSelected
+			imageLabelButton.name = button.name
+			if let sortID = button.sortID {
+				imageLabelButton.tag = sortID
 			}
+			stackView.addArrangedSubview(imageLabelButton)
 		}
 	}
 
@@ -105,9 +69,10 @@ class ButtonsTableViewCell: UITableViewCell {
 	}
 }
 
-extension ButtonsTableViewCell: ImageLabelButtonDelegate {
+extension BubbleSortButtonsTableViewCell: ImageLabelButtonDelegate {
 	func imageLabelButtonTapped(_ sender: ImageLabelButton) {
-		if let index = buttons.firstIndex(where: { $0.sortId == sender.tag }) {
+		// Set selected state
+		if let index = buttons.firstIndex(where: { $0.sortID == sender.tag }) {
 			buttons[index].isSelected = sender.isSelected
 		}
 
@@ -119,7 +84,7 @@ extension ButtonsTableViewCell: ImageLabelButtonDelegate {
 			let button0 = stackView.arrangedSubviews[index0] as? ImageLabelButton,
 			let button1 = stackView.arrangedSubviews[index1] as? ImageLabelButton {
 
-			delegate?.evaluateAndSwap(sortId0: button0.tag, sortId1: button1.tag) { [weak self] result in
+			delegate?.evaluate(sortID0: button0.tag, sortID1: button1.tag) { [weak self] result in
 				guard let `self` = self else { return }
 
 				guard result else {

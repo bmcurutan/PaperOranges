@@ -11,11 +11,16 @@ import UIKit
 protocol SortingViewModel {
 	var id: SortingID { get }
 	var sections: [SortingSection] { get set }
-	var stepsSection: SortingSection { get }
 	var sortingButtons: [ButtonData] { get set }
+	// Steps
+	var steps: [Step] { get }
+	func addStepsSection()
+	func removeStepsSection()
+	// Messages
+	var startMessage: String { get }
+	var endingMessage: String { get }
 	var successMessage: String { get }
 	var errorMessage: String { get }
-	var steps: [Step] { get }
 	var completedMessage: String { get }
 	var completedSpeech: NSMutableAttributedString { get }
 }
@@ -54,14 +59,12 @@ class BubbleSortViewModel: SortingViewModel {
 
 	var sections: [SortingSection] = [.speaker, .buttons]
 
-	var stepsSection: SortingSection = .steps("Steps")
-
 	var sortingButtons: [ButtonData] = [
-		ButtonData(image: #imageLiteral(resourceName: "av_sorting_alex"), name: "Alex", sortId: 0),
-		ButtonData(image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "Mandy", sortId: 4),
-		ButtonData(image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "Felicia", sortId: 2),
-		ButtonData(image: #imageLiteral(resourceName: "av_sorting_liam"), name: "Liam", sortId: 3),
-		ButtonData(image: #imageLiteral(resourceName: "av_sorting_bb"), name: "BB", sortId: 1)
+		ButtonData(image: #imageLiteral(resourceName: "av_sorting_alex"), name: "Alex", sortID: 0),
+		ButtonData(image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "Mandy", sortID: 4),
+		ButtonData(image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "Felicia", sortID: 2),
+		ButtonData(image: #imageLiteral(resourceName: "av_sorting_liam"), name: "Liam", sortID: 3),
+		ButtonData(image: #imageLiteral(resourceName: "av_sorting_bb"), name: "BB", sortID: 1)
 	]
 
 	var steps: [Step] = [
@@ -77,8 +80,32 @@ class BubbleSortViewModel: SortingViewModel {
 		Step(speech: NSMutableAttributedString(string: "A is before F, so Alex and Felicia didn't swap places."), solution: (2, 1), completedText: "Compare Felicia and BB (indices 1 and 2)"),
 		Step(speech: NSMutableAttributedString(string: "B is before F, so Felicia and BB swapped places."), solution: (2, 3), completedText: "Compare Felicia and Liam (indices 2 and 3)"),
 		Step(speech: NSMutableAttributedString(string: "F is before L, so Felicia and Liam didn't swap places."), solution: (3, 4), completedText: "Compare Liam and Mandy (indices 3 and 4)"),
-		Step(speech: NSMutableAttributedString(string: "L is before M, so Liam and Mandy didn't swap places.\n\nAll the students are sorted - well done! Tap Back to play another sorting game."))
+		  Step(speech: NSMutableAttributedString(string: "L is before M, so Liam and Mandy didn't swap places.\n\nAll the students are sorted - well done! Tap Back to play another sorting game."))
 	]
+
+	func addStepsSection() {
+		if sections.filter({
+			switch $0 {
+			case .steps:
+				return true
+			default:
+				return false
+			}
+		}).count == 0 {
+			sections.append(.steps("Steps", steps))
+		}
+	}
+
+	func removeStepsSection() {
+		sections.removeAll(where: {
+			switch $0 {
+			case .steps:
+				return true
+			default:
+				return false
+			}
+		})
+	}
 }
 
 class InsertionSortViewModel: SortingViewModel {
@@ -86,20 +113,18 @@ class InsertionSortViewModel: SortingViewModel {
 	
 	var sections: [SortingSection] = [.speaker, .buttons]
 
-	var stepsSection: SortingSection = .steps("Steps")
-
 	// TODO
 	var sortingButtons: [ButtonData] = [
-		ButtonData(image: #imageLiteral(resourceName: "av_sorting_liam"), name: "Liam\n3", sortId: 3),
-		ButtonData(image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "Felicia\n5", sortId: 5),
-		ButtonData(image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "Mandy\n2", sortId: 2),
-		ButtonData(image: #imageLiteral(resourceName: "av_sorting_alex"), name: "Alex\n4", sortId: 4),
-		ButtonData(image: #imageLiteral(resourceName: "av_sorting_bb"), name: "BB\n1", sortId: 1)
+		ButtonData(image: #imageLiteral(resourceName: "av_sorting_liam"), name: "Liam\n3", sortID: 3),
+		ButtonData(image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "Felicia\n5", sortID: 5),
+		ButtonData(image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "Mandy\n2", sortID: 2),
+		ButtonData(image: #imageLiteral(resourceName: "av_sorting_alex"), name: "Alex\n4", sortID: 4),
+		ButtonData(image: #imageLiteral(resourceName: "av_sorting_bb"), name: "BB\n1", sortID: 1)
 	]
 
 	// TODO
 	var steps: [Step] = [
-		Step(speech: NSMutableAttributedString(string: "The students' heights are represented using the numbers 1 through 5. Using Insertion Sort, sort them by moving them from the blue line to the red line. \n\nHint: Only one student can take a turn at a time."), solution: (0, 4), completedText: "TODO solution and completedText"),
+//		.step(speech: NSMutableAttributedString(string: "The students' heights are represented using the numbers 1 through 5. Using Insertion Sort, sort them by moving them from the blue line to the red line. \n\nHint: Only one student can take a turn at a time."), solution: (0, 4), completedText: "TODO solution and completedText"),
 //		Step(speech: "A and M are already in order, so Alex and Mandy didn't swap places.", solution: (4, 2), completedText: "Compare Mandy and Felicia (indices 1 and 2)"),
 //		Step(speech: "F is before M, so Mandy and Felicia swapped places.", solution: (4, 3), completedText: "Compare Mandy and Liam (indices 2 and 3)"),
 //		Step(speech: "L is before M, so Mandy and Liam swapped places.", solution: (4, 1), completedText: "Compare Mandy and BB (indices 3 and 4)"),
@@ -113,12 +138,36 @@ class InsertionSortViewModel: SortingViewModel {
 //		Step(speech: "F is before L, so Felicia and Liam didn't swap places.", solution: (3, 4), completedText: "Compare Liam and Mandy (indices 3 and 4)"),
 //		Step(speech: "L is before M, so Liam and Mandy didn't swap places.\n\nAll the students are sorted - well done! Tap Back to play another sorting game.")
 	]
+
+	func addStepsSection() {
+		if sections.filter({
+			switch $0 {
+			case .steps:
+				return true
+			default:
+				return false
+			}
+		}).count == 0 {
+			sections.append(.steps("Steps", steps))
+		}
+	}
+
+	func removeStepsSection() {
+		sections.removeAll(where: {
+			switch $0 {
+			case .steps:
+				return true
+		    default:
+				return false
+			}
+		})
+	}
 }
 
-enum SortingSection: Equatable {
+enum SortingSection {
 	case speaker
 	case buttons
-	case steps(String) // title
+	case steps(String = "Steps", [Step]) // title, steps
 }
 
 enum SortingID: String {

@@ -64,7 +64,8 @@ class SortingViewController: UIViewController {
 		tableView.dataSource = self
 		tableView.delegate = self
 		tableView.register(SpeakerTableViewCell.self, forCellReuseIdentifier: "SpeakerCell")
-		tableView.register(ButtonsTableViewCell.self, forCellReuseIdentifier: "ButtonsCell")
+		tableView.register(BubbleSortButtonsTableViewCell.self, forCellReuseIdentifier: "BubbleSortButtonsCell")
+		tableView.register(InsertionSortButtonsTableViewCell.self, forCellReuseIdentifier: "InsertionSortButtonsCell")
 		tableView.register(StepsTableViewCell.self, forCellReuseIdentifier: "StepsCell")
 		tableView.separatorStyle = .none
 
@@ -78,7 +79,7 @@ class SortingViewController: UIViewController {
 		if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) {
 			speechTitle = .completed
 			currentStepIndex = viewModel.steps.count - 1
-			viewModel.sections.append(viewModel.stepsSection)
+			viewModel.addStepsSection()
 		}
 	}
 
@@ -100,55 +101,75 @@ extension SortingViewController: UITableViewDataSource {
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let section = viewModel.sections[indexPath.section]
-		switch section {
+		switch viewModel.sections[indexPath.section] {
 		case .speaker:
-			// Overwrite current step speech if sorting game was completed
-			var speech = currentStep.speech
-			if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) && !isCompletedCurrently {
-				speech = viewModel.completedSpeech
-			}
-
-			let cell = tableView.dequeueReusableCell(withIdentifier: "SpeakerCell", for: indexPath) as! SpeakerTableViewCell
-			cell.delegate = self
-			var title: String?
-			switch speechTitle {
-			case .start:
-				title = viewModel.startMessage
-			case .success:
-				title = viewModel.successMessage
-			case .error:
-				title = viewModel.errorMessage
-			case .completed:
-				title = viewModel.completedMessage
-			case .none:
-				title = nil
-			}
-			cell.setText(title: title, text: speech, ending: speechEnding)
-			return cell
-
+			return speakerCellForRow(at: indexPath)
 		case .buttons:
-			let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonsCell", for: indexPath) as! ButtonsTableViewCell
+			return buttonsCellForRow(at: indexPath)
+		case .steps:
+			return stepsCellForRow(at: indexPath)
+		}
+	}
+
+	private func speakerCellForRow(at indexPath: IndexPath) -> SpeakerTableViewCell {
+		// Overwrite current step speech if sorting game was completed
+		var speech = currentStep.speech
+		if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) && !isCompletedCurrently {
+			speech = viewModel.completedSpeech
+		}
+
+		let cell = tableView.dequeueReusableCell(withIdentifier: "SpeakerCell", for: indexPath) as! SpeakerTableViewCell
+		cell.delegate = self
+		var title: String?
+		switch speechTitle {
+		case .start:
+			title = viewModel.startMessage
+		case .success:
+			title = viewModel.successMessage
+		case .error:
+			title = viewModel.errorMessage
+		case .completed:
+			title = viewModel.completedMessage
+		case .none:
+			title = nil
+		}
+		cell.setText(title: title, text: speech, ending: speechEnding)
+		return cell
+	}
+
+	private func buttonsCellForRow(at indexPath: IndexPath) -> UITableViewCell {
+		switch viewModel.id {
+		case .bubbleSort:
+			let cell = tableView.dequeueReusableCell(withIdentifier: "BubbleSortButtonsCell", for: indexPath) as! BubbleSortButtonsTableViewCell
 			cell.delegate = self
 			cell.addButtons(viewModel.sortingButtons)
-			if viewModel is InsertionSortViewModel {
-				cell.lineView.isHidden = false
-			}
 			// Disable all sorting buttons if sorting game was completed or user is on the last step
 			if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) || isLastStep {
 				cell.disableAllButtons()
 			}
 			return cell
-
-		case .steps:
-			let cell = tableView.dequeueReusableCell(withIdentifier: "StepsCell", for: indexPath) as! StepsTableViewCell
-			// Completed steps are steps up to (but not including) current step
-			let endIndex = currentStepIndex - 1
-			if viewModel.steps.indices.contains(endIndex) {
-				cell.stepsText = viewModel.steps[0...endIndex].map { $0.completedText }
+		case .insertionSort:
+			let cell = tableView.dequeueReusableCell(withIdentifier: "InsertionSortButtonsCell", for: indexPath) as! InsertionSortButtonsTableViewCell
+//			cell.delegate = self // TODO
+			cell.addButtons(viewModel.sortingButtons)
+			// Disable all sorting buttons if sorting game was completed or user is on the last step
+			if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) || isLastStep {
+				cell.disableAllButtons()
 			}
 			return cell
+		default:
+			return UITableViewCell()
 		}
+	}
+
+	private func stepsCellForRow(at indexPath: IndexPath) -> StepsTableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "StepsCell", for: indexPath) as! StepsTableViewCell
+		// Completed steps are steps up to (but not including) current step
+		let endIndex = currentStepIndex - 1
+		if viewModel.steps.indices.contains(endIndex) {
+			cell.stepsText = viewModel.steps[0...endIndex].map { $0.completedText }
+		}
+		return cell
 	}
 }
 
@@ -163,7 +184,7 @@ extension SortingViewController: UITableViewDelegate {
 
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		switch viewModel.sections[section] {
-		case let .steps(title):
+		case let .steps(title, _):
 			return SectionHeaderView(title: title)
 		default:
 			return UIView()
@@ -172,7 +193,7 @@ extension SortingViewController: UITableViewDelegate {
 
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		switch viewModel.sections[section] {
-		case .steps(_):
+		case .steps:
 			return UITableView.automaticDimension
 		default:
 			return .leastNonzeroMagnitude
@@ -185,8 +206,7 @@ extension SortingViewController: SpeakerTableViewCellDelegate {
 		if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) && !isCompletedCurrently {
 			// Reset to uncompleted state
 			UserDefaults.standard.setValue(false, forKey: viewModel.id.rawValue)
-			let stepsSection = viewModel.stepsSection
-			viewModel.sections.removeAll(where: { $0 == stepsSection })
+			viewModel.removeStepsSection()
 			speechTitle = .start
 			currentStepIndex = 0
 			tableView.reloadData()
@@ -195,24 +215,24 @@ extension SortingViewController: SpeakerTableViewCellDelegate {
 	}
 }
 
-extension SortingViewController: ButtonsTableViewCellDelegate {
+extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 	func openURL(_ url: URL) {
 		// Do nothing
 	}
 
-	func evaluateAndSwap(sortId0: Int, sortId1: Int, with completion: ((Bool) -> Void)?) {
+	func evaluate(sortID0: Int, sortID1: Int, with completion: ((Bool) -> Void)?) {
 		let solution = currentStep.solution
-		if (sortId0 == solution.0 && sortId1 == solution.1) || (sortId1 == solution.0 && sortId0 == solution.1) {
+		if (sortID0 == solution.0 && sortID1 == solution.1) || (sortID1 == solution.0 && sortID0 == solution.1) {
 			// Successful solution
 			speechTitle = .success
 			// If the buttons are already in order, do nothing
 			// i.e., treat like an incorrect solution
-			if sortId0 < sortId1 {
+			if sortID0 < sortID1 {
 				completion?(false)
 			} else {
 				// Update data (swap buttons)
-				if let index0 = viewModel.sortingButtons.firstIndex(where: { $0.sortId == sortId0 }),
-					let index1 = viewModel.sortingButtons.firstIndex(where: { $0.sortId == sortId1 }) {
+				if let index0 = viewModel.sortingButtons.firstIndex(where: { $0.sortID == sortID0 }),
+					let index1 = viewModel.sortingButtons.firstIndex(where: { $0.sortID == sortID1 }) {
 					viewModel.sortingButtons.swapAt(index0, index1)
 				}
 				completion?(true)
@@ -232,15 +252,8 @@ extension SortingViewController: ButtonsTableViewCellDelegate {
 			tableView.reloadSections(indexSet, with: .automatic)
 
 			// If current step index is > 0, there is at least one completed step so add steps section
-			if currentStepIndex > 0, viewModel.sections.filter({
-				switch $0 {
-				case .steps:
-					return true
-				default:
-					return false
-				}
-			   }).count == 0 {
-				viewModel.sections.append(viewModel.stepsSection)
+			if currentStepIndex > 0 {
+				viewModel.addStepsSection()
 			}
 			tableView.reloadDataAfterDelay { [weak self] in
 				guard let `self` = self else { return }
