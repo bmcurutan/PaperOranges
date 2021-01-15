@@ -8,14 +8,17 @@
 import UIKit
 
 protocol InfoViewModel {
-	var hero: Info { get }
-	var rows: [Info] { get }
+	var sections: [InfoSection] { get }
 }
 
 class MenuInfoViewModel: InfoViewModel {
-	var hero: Info = .hero(#imageLiteral(resourceName: "hr_home"), nil) // TODO1 change image
+	var sections: [InfoSection] {
+		return [
+			InfoSection(image: #imageLiteral(resourceName: "hr_home"), rows: menuRows) // TODO1 change image
+		]
+	}
 
-	var rows: [Info] = [
+	private var menuRows: [Info] = [
 		.description("What is Paper Oranges?", "Paper Oranges is a community and storytelling platform to elevate the voices of people in tech.\n\nWe partner with creators of color to develop educational materials related to STEAM featuring a diverse cast of characters."),
 		.person(#imageLiteral(resourceName: "av_christine_pham"), "Founder", "Christine is a Software Engineer at VMware, Inc. She is passionate about increasing diversity in STEAM fields by creating stories and sharing perspectives from the field."),
 		.buttons([
@@ -30,37 +33,61 @@ class MenuInfoViewModel: InfoViewModel {
 }
 
 class SortingInfoViewModel: InfoViewModel {
-	var hero: Info = .hero(#imageLiteral(resourceName: "hr_bubble_sort"), "Intro to Sorting Algorithms") // TODO1 change image
+	var sections: [InfoSection] {
+		return [
+			InfoSection(title: "Intro to Sorting Algorithms", image: #imageLiteral(resourceName: "hr_bubble_sort"), rows: descriptionRows), // TODO1 change image
+			InfoSection(title: "Contributors", rows: personsRows) 
+		]
+	}
 
-	var rows: [Info] = [
+	private var descriptionRows: [Info] = [
 		.description("Description", "An \"algorithm\" a way to solve a problem, so the term \"sorting algorithms\" suggests there are different ways to sort things."),
+		.description("How are indices used?", "The students are displayed as if they are stored in an array. Arrays use zero-based indexing, meaning the first item of the array has index 0 and the last element has the index \"total number of items minus one\".")
+	]
+
+	private var personsRows: [Info] = [
 		.person(#imageLiteral(resourceName: "av_bianca_curutan"), "Writer & Developer", "Bianca is an Engineering Manager at Postmates, working on the Fleet Android and iOS apps. Although originally from Canada, she is currently an active speaker, writer, and member of the tech community in the SF Bay Area."),
 		.person(#imageLiteral(resourceName: "av_angelique_de_castro"), "Illustrator", "Angelique is a Full Stack Engineer at Nyansa and creative technologist. She loves consuming stories as much as producing them in fun illustrations or technology - or both!")
 	]
 }
 
 class BubbleSortInfoViewModel: InfoViewModel {
-	var hero: Info = .hero(#imageLiteral(resourceName: "hr_bubble_sort"), "Bubble Sort")
+	var sections: [InfoSection] {
+		return [
+			InfoSection(title: "Bubble Sort", image: #imageLiteral(resourceName: "hr_bubble_sort")),
+			InfoSection(rows: descriptionRows)
+		]
+	}
 
-	var rows: [Info] = [
+	private var descriptionRows: [Info] = [
 		.description("Description", "Bubble Sort is a sorting algorithm that compares pairs of elements. If elements are out of order, swap them. Repeat the algorithm (from the beginning to the end) until all the elements are sorted."),
-		.description("How are indices used?", "The students are displayed as if they are stored in an array. Arrays use zero-based indexing, meaning the first item of the array has index 0 and the last element has the index \"total number of items minus one\".")
 	]
 }
 
 class InsertionSortInfoViewModel: InfoViewModel {
-	var hero: Info = .hero(#imageLiteral(resourceName: "hr_insertion_sort"), "Insertion Sort")
+	var sections: [InfoSection] {
+		return [
+			InfoSection(title: "Insertion Sort", image: #imageLiteral(resourceName: "hr_insertion_sort")),
+			InfoSection(rows: descriptionRows)
+		]
+	}
 
-	var rows: [Info] = [
+	private var descriptionRows: [Info] = [
 		.description("Description", "Insertion Sort is a sorting algorithm that creates a list one element at a time by inserting the element into the proper sorted position.")
 	]
 }
+
+struct InfoSection {
+	var title: String? = nil
+	var image: UIImage? = nil
+	var rows: [Info] = []
+}
+
 enum Info {
-	case hero(UIImage, String?) // image, title
 	case description(String?, String?) // title, description
 	case person(UIImage?, String?, String?) // image, role, details
 	case textLink(String, String?) // text, link
-	case buttons([ButtonData]) 
+	case buttons([ButtonData])
 }
 
 struct ButtonData {

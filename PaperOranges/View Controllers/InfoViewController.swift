@@ -49,12 +49,12 @@ class InfoViewController: UIViewController {
 
 extension InfoViewController: UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return viewModel.rows.count
+		return viewModel.sections[section].rows.count
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let info = viewModel.rows[indexPath.row]
-		switch info {
+		let row = viewModel.sections[indexPath.section].rows[indexPath.row]
+		switch row {
 		case let .description(title, description):
 			let cell = tableView.dequeueReusableCell(withIdentifier: "DescriptionCell") as! DescriptionTableViewCell
 			cell.title = title
@@ -77,30 +77,29 @@ extension InfoViewController: UITableViewDataSource {
 			cell.displayText = text
 			cell.link = link
 			return cell
-		default:
-			return UITableViewCell()
 		}
 	}
 }
 
 extension InfoViewController: UITableViewDelegate {
+	func numberOfSections(in tableView: UITableView) -> Int {
+		return viewModel.sections.count 
+	}
+
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		switch viewModel.hero {
-		case let .hero(image, title):
-			let view = HeroView(image: image, title: title)
-			return view
-		default:
+		let infoSection = viewModel.sections[section]
+		if let image = infoSection.image {
+			return HeroView(image: image, title: infoSection.title ?? "")
+		} else if let title = infoSection.title {
+			return SectionHeaderView(title: title)
+		} else {
 			return UIView()
 		}
 	}
 
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		switch viewModel.hero {
-		case .hero(_, _):
-			return UITableView.automaticDimension
-		default:
-			return .leastNonzeroMagnitude
-		}
+		let infoSection = viewModel.sections[section]
+		return infoSection.image != nil || infoSection.title != nil ? UITableView.automaticDimension : .leastNonzeroMagnitude
 	}
 }
 

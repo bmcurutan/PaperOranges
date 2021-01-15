@@ -29,9 +29,10 @@ class ButtonsTableViewCell: UITableViewCell {
 		return stackView
 	}()
 
-	private var lineView: UIView = {
+	var lineView: UIView = {
 		let view = UIView()
 		view.backgroundColor = UIColor.desertBlue.withAlphaComponent(0.4)
+		view.isHidden = true
 		view.translatesAutoresizingMaskIntoConstraints = false
 		return view
 	}()

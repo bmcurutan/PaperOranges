@@ -20,7 +20,7 @@ class HomeViewModel {
 }
 
 struct TopicSection {
-	var title: String?
+	var title: String? = nil
 	var topics: [Topic]
 }
 

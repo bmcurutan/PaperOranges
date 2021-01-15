@@ -110,11 +110,10 @@ extension SortingViewController: UITableViewDataSource {
 			let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonsCell", for: indexPath) as! ButtonsTableViewCell
 			cell.delegate = self
 			cell.addButtons(viewModel.sortingButtons)
-			// Special case - change background color for insertion sort
 			if viewModel is InsertionSortViewModel {
-//				cell.contentView.backgroundColor = UIColor.desertBlue.withAlphaComponent(0.4)
+				cell.lineView.isHidden = false
 			}
-			// Disable all sort buttons on last step
+			// Disable all sort buttons on the last step
 			if currentStepIndex != 0 && currentStepIndex == viewModel.steps.count - 1 {
 				cell.disableAllButtons()
 			}

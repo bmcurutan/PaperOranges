@@ -130,6 +130,7 @@ protocol TopicTableViewCellDelegate {
 	func buttonTapped(topic: Topic)
 }
 
+// TODO show checkmark once sorting was completed - shared preferences
 private class TopicTableViewCell: UITableViewCell {
 	var delegate: TopicTableViewCellDelegate?
 

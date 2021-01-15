@@ -44,6 +44,7 @@ class HeroView: UIView {
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
+		backgroundColor = .backgroundColor
 
 		addSubview(handleBar)
 		handleBar.topAnchor.constraint(equalTo: topAnchor).isActive = true
