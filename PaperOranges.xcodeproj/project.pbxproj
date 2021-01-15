@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		67129BBA25AEDBCE003B4DCA /* SAConfettiView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BB925AEDBCE003B4DCA /* SAConfettiView+Ext.swift */; };
 		67129BC125AF88CB003B4DCA /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BC025AF88CB003B4DCA /* UIImage+Ext.swift */; };
-		67129BC525AF8DDE003B4DCA /* RoundedImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BC425AF8DDE003B4DCA /* RoundedImageButton.swift */; };
+		67129BC525AF8DDE003B4DCA /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BC425AF8DDE003B4DCA /* RoundedButton.swift */; };
 		67129BC825AF9532003B4DCA /* ButtonsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BC725AF9532003B4DCA /* ButtonsTableViewCell.swift */; };
 		67129BCE25AFAA33003B4DCA /* PersonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BCD25AFAA33003B4DCA /* PersonTableViewCell.swift */; };
 		67129BD125AFAA4B003B4DCA /* DescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BD025AFAA4B003B4DCA /* DescriptionTableViewCell.swift */; };
@@ -37,7 +37,7 @@
 /* Begin PBXFileReference section */
 		67129BB925AEDBCE003B4DCA /* SAConfettiView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SAConfettiView+Ext.swift"; sourceTree = "<group>"; };
 		67129BC025AF88CB003B4DCA /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
-		67129BC425AF8DDE003B4DCA /* RoundedImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageButton.swift; sourceTree = "<group>"; };
+		67129BC425AF8DDE003B4DCA /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		67129BC725AF9532003B4DCA /* ButtonsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsTableViewCell.swift; sourceTree = "<group>"; };
 		67129BCD25AFAA33003B4DCA /* PersonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonTableViewCell.swift; sourceTree = "<group>"; };
 		67129BD025AFAA4B003B4DCA /* DescriptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionTableViewCell.swift; sourceTree = "<group>"; };
@@ -148,7 +148,7 @@
 				67129BD025AFAA4B003B4DCA /* DescriptionTableViewCell.swift */,
 				67129BCD25AFAA33003B4DCA /* PersonTableViewCell.swift */,
 				67E105B425AC1C7000684D1B /* ImageLabelButton.swift */,
-				67129BC425AF8DDE003B4DCA /* RoundedImageButton.swift */,
+				67129BC425AF8DDE003B4DCA /* RoundedButton.swift */,
 				67E105BF25AD1F7000684D1B /* HeroView.swift */,
 				6794C0D025AC0C3F000399FB /* RoundImageView.swift */,
 				67E105AE25AC1C2D00684D1B /* SectionHeaderView.swift */,
@@ -242,7 +242,7 @@
 				67129BCE25AFAA33003B4DCA /* PersonTableViewCell.swift in Sources */,
 				67E105AF25AC1C2D00684D1B /* SectionHeaderView.swift in Sources */,
 				67E105B525AC1C7000684D1B /* ImageLabelButton.swift in Sources */,
-				67129BC525AF8DDE003B4DCA /* RoundedImageButton.swift in Sources */,
+				67129BC525AF8DDE003B4DCA /* RoundedButton.swift in Sources */,
 				67E105B925AC1F3200684D1B /* InfoViewController.swift in Sources */,
 				67129BC825AF9532003B4DCA /* ButtonsTableViewCell.swift in Sources */,
 				67E105C025AD1F7000684D1B /* HeroView.swift in Sources */,

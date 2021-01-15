@@ -12,13 +12,17 @@ class SortingViewController: UIViewController {
 
 	private var speechTitle: SpeechTitle = .start
 	private var speechEnding: String? {
-		// Don't show ending message for first or lats steps
+		// Don't show ending message for first or last steps
 		return currentStepIndex == 0 || currentStepIndex == viewModel.steps.count - 1 ? nil : viewModel.endingMessage
 	}
 
 	private var currentStepIndex: Int = 0 
 	private var currentStep: Step {
 		return viewModel.steps[currentStepIndex]
+	}
+	private var isLastStep: Bool {
+		// Only detect the last step if not also the first step
+		return currentStepIndex != 0 && currentStepIndex == viewModel.steps.count - 1
 	}
 
 	private var tableView: UITableView = {
@@ -113,8 +117,7 @@ extension SortingViewController: UITableViewDataSource {
 			if viewModel is InsertionSortViewModel {
 				cell.lineView.isHidden = false
 			}
-			// Disable all sort buttons on the last step
-			if currentStepIndex != 0 && currentStepIndex == viewModel.steps.count - 1 {
+			if isLastStep {
 				cell.disableAllButtons()
 			}
 			return cell
@@ -207,14 +210,15 @@ extension SortingViewController: ButtonsTableViewCellDelegate {
 			}
 			tableView.reloadDataAfterDelay { [weak self] in
 				guard let `self` = self else { return }
-				// Last successful step - show confetti!
-				if self.currentStepIndex == self.viewModel.steps.count - 1 {
+				if self.isLastStep {
+					// Show confetti
 					self.confettiView.frame = self.view.bounds
 					self.view.addSubview(self.confettiView)
 					self.confettiView.startConfetti()
 					self.perform(#selector(self.stopConfetti), with: nil, afterDelay: 1.0)
 				}
 			}
+			saveCompletedProgress()
 
 		} else {
 			// Don't need to error out for the last step - nothing else to do
@@ -238,6 +242,18 @@ extension SortingViewController: ButtonsTableViewCellDelegate {
 	@objc private func stopConfetti(_ view: SAConfettiView) {
 		confettiView.stopConfetti()
 		confettiView.perform(#selector(UIView.removeFromSuperview), with: nil, afterDelay: 2.0)
+	}
+
+	private func saveCompletedProgress() {
+		guard isLastStep else { return }
+		switch viewModel {
+		case is BubbleSortViewModel:
+			UserDefaults.standard.setValue(true, forKey: "BubbleSort")
+		case is InsertionSortViewModel:
+			UserDefaults.standard.setValue(true, forKey: "InsertionSort")
+		default:
+			break
+		}
 	}
 }
 

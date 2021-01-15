@@ -25,6 +25,11 @@ class HomeViewController: UIViewController {
 		return tableView
 	}()
 
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		tableView.reloadData()
+	}
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		view.backgroundColor = .backgroundColor
@@ -149,11 +154,12 @@ private class TopicTableViewCell: UITableViewCell {
 				button.setTitleColor(.secondaryTextColor, for: .normal)
 				button.isEnabled = false
 			}
+			checkmarkView.isHidden = !topic.isCompleted
 		}
 	}
 
-	var button: RoundedImageButton = {
-		let button = RoundedImageButton()
+	var button: RoundedButton = {
+		let button = RoundedButton()
 		button.backgroundColor = .white
 		button.translatesAutoresizingMaskIntoConstraints = false
 		return button
@@ -161,6 +167,14 @@ private class TopicTableViewCell: UITableViewCell {
 
 	private var buttonImageView: RoundImageView = {
 		let imageView = RoundImageView()
+		imageView.translatesAutoresizingMaskIntoConstraints = false
+		return imageView
+	}()
+
+	private var checkmarkView: UIImageView = {
+		let imageView = UIImageView(image: #imageLiteral(resourceName: "ic_checkmark").withRenderingMode(.alwaysTemplate))
+		imageView.isHidden = true
+		imageView.tintColor = .primaryButtonColor
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		return imageView
 	}()
@@ -182,6 +196,12 @@ private class TopicTableViewCell: UITableViewCell {
 		button.bottomAnchor.constraint(greaterThanOrEqualTo: buttonImageView.bottomAnchor, constant: 8).isActive = true
 		buttonImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
 		buttonImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
+
+		button.addSubview(checkmarkView)
+		button.rightAnchor.constraint(equalTo: checkmarkView.rightAnchor, constant: 16).isActive = true
+		checkmarkView.centerYAnchor.constraint(equalTo: buttonImageView.centerYAnchor).isActive = true
+		checkmarkView.widthAnchor.constraint(equalToConstant: 20).isActive = true
+		checkmarkView.heightAnchor.constraint(equalToConstant: 20).isActive = true
 
 		button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 	}

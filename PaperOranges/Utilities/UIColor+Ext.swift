@@ -33,7 +33,7 @@ extension UIColor {
 	}
 
 	static var primaryButtonColor: UIColor {
-		return UIColor(red: 42/255, green: 157/255, blue: 143/255, alpha: 1.0) // #2A9D8F Light teal
+		return UIColor(red: 42/255, green: 157/255, blue: 143/255, alpha: 1.0) // #2A9D8F Teal
 	}
 
 	static var highlightColor: UIColor {

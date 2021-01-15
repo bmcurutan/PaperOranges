@@ -1,5 +1,5 @@
 //
-//  RoundedImageButton.swift
+//  RoundedButton.swift
 //  PaperOranges
 //
 //  Created by Bianca Curutan on 1/13/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RoundedImageButton: UIButton {
+class RoundedButton: UIButton {
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 
@@ -16,7 +16,9 @@ class RoundedImageButton: UIButton {
 		layer.cornerRadius = 16
 		layer.masksToBounds = true
 		contentHorizontalAlignment = .left
-		titleEdgeInsets = UIEdgeInsets(top: 0, left: 76, bottom: 0, right: 16) // 76 = padding + image + padding
+		// 76 = padding + image + padding
+		// 56 = padding + icon + padding
+		titleEdgeInsets = UIEdgeInsets(top: 0, left: 76, bottom: 0, right: 52)
 		titleLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
 		titleLabel?.lineBreakMode = .byWordWrapping
 		titleLabel?.numberOfLines = 0

@@ -12,11 +12,13 @@ class HomeViewModel {
 		return [TopicSection(title: "Intro to Sorting Algorithms", topics: sortingTopics)]
 	}
 
-	private var sortingTopics: [Topic] = [
-		Topic(type: .bubbleSort, title: "Intro to Bubble Sort", image: #imageLiteral(resourceName: "av_sorting_bb"), isActive: true),
-		Topic(type: .insertionSort, title: "Intro to Insertion Sort", image: #imageLiteral(resourceName: "av_sorting_mandy"), isActive: true),
-		Topic(type: .mergeSort, title: "Intro to Merge Sort", text: "(Coming Soon)", image: #imageLiteral(resourceName: "av_sorting_liam"), isActive: false)
-   ]
+	private var sortingTopics: [Topic] {
+		return [
+			Topic(type: .bubbleSort, title: "Intro to Bubble Sort", image: #imageLiteral(resourceName: "av_sorting_bb"), isActive: true, isCompleted: UserDefaults.standard.bool(forKey: "BubbleSort")),
+			Topic(type: .insertionSort, title: "Intro to Insertion Sort", image: #imageLiteral(resourceName: "av_sorting_mandy"), isActive: true, isCompleted: UserDefaults.standard.bool(forKey: "InsertionSort")),
+			Topic(type: .mergeSort, title: "Intro to Merge Sort", text: "(Coming Soon)", image: #imageLiteral(resourceName: "av_sorting_liam"), isActive: false, isCompleted: UserDefaults.standard.bool(forKey: "MergeSort")),
+		]
+	}
 }
 
 struct TopicSection {
@@ -30,6 +32,7 @@ struct Topic {
 	var text: String? = nil
 	var image: UIImage
 	var isActive: Bool
+	var isCompleted: Bool
 }
 
 enum TopicType {
