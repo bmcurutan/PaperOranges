@@ -57,6 +57,7 @@ class ImageLabelButton: UIButton {
 		super.init(frame: frame)
 		layer.cornerRadius = 16
 		layer.masksToBounds = true
+        backgroundColor = .backgroundColor
 		setBackgroundImage(UIImage.withColor(UIColor.highlightColor.withAlphaComponent(0.4)), for: .highlighted)
 
 		addSubview(roundImageView)

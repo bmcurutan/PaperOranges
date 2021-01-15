@@ -43,4 +43,8 @@ extension UIColor {
 	static var desertBlue: UIColor {
 		return UIColor(red: 17/255, green: 138/255, blue: 178/255, alpha: 1.0) // #118AB2 Blue
 	}
+
+    static var desertRed: UIColor {
+        return UIColor(red: 188/255, green: 33/255, blue: 45/255, alpha: 1.0) // #BC212D Red
+    }
 }

@@ -11,7 +11,7 @@ import UIKit
 
 protocol InsertionSortButtonsTableViewCellDelegate {
 	func showButtonsError(with completion: (() -> Void)?)
-	func showSlotsError()
+	func showSlotsError(with completion: (() -> Void)?)
 //	func evaluate(sortId: Int, slotId: Int, with completion: ((Bool) -> Void)?) // TODO
 }
 
@@ -37,7 +37,7 @@ class InsertionSortButtonsTableViewCell: UITableViewCell {
 		return stackView
 	}()
 
-	var lineView: UIView = {
+	private var blueLineView: UIView = {
 		let view = UIView()
 		view.backgroundColor = UIColor.desertBlue.withAlphaComponent(0.4)
 		view.isHidden = true
@@ -45,20 +45,34 @@ class InsertionSortButtonsTableViewCell: UITableViewCell {
 		return view
 	}()
 
+    private var redLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.desertRed.withAlphaComponent(0.4)
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		contentView.backgroundColor = .backgroundColor
 
-		contentView.addSubview(lineView)
-		lineView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 32).isActive = true
-		lineView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-		contentView.rightAnchor.constraint(equalTo: lineView.rightAnchor).isActive = true
-		lineView.heightAnchor.constraint(equalToConstant: 8).isActive = true
+		contentView.addSubview(blueLineView)
+        blueLineView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 36).isActive = true
+        blueLineView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+		contentView.rightAnchor.constraint(equalTo: blueLineView.rightAnchor).isActive = true
+        blueLineView.heightAnchor.constraint(equalToConstant: 8).isActive = true
 
 		contentView.addSubview(topStackView)
 		topStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8).isActive = true
 		topStackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
 		contentView.rightAnchor.constraint(equalTo: topStackView.rightAnchor, constant: 16).isActive = true
+
+        contentView.addSubview(redLineView)
+        redLineView.topAnchor.constraint(equalTo: topStackView.bottomAnchor, constant: 36).isActive = true
+        redLineView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        contentView.rightAnchor.constraint(equalTo: redLineView.rightAnchor).isActive = true
+        redLineView.heightAnchor.constraint(equalToConstant: 8).isActive = true
 
 		contentView.addSubview(bottomStackView)
 		bottomStackView.topAnchor.constraint(equalTo: topStackView.bottomAnchor, constant: 8).isActive = true
@@ -70,6 +84,11 @@ class InsertionSortButtonsTableViewCell: UITableViewCell {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
+
+    func showLines() {
+        blueLineView.isHidden = false
+        redLineView.isHidden = false
+    }
 
 	func addButtons(_ buttons: [ButtonData]) {
 		self.buttons = buttons
@@ -102,7 +121,8 @@ class InsertionSortButtonsTableViewCell: UITableViewCell {
 //			imageLabelButton1.image = button.image
 //			imageLabelButton1.isSelected = button.isSelected
 			imageLabelButton1.name = "\n" // Placeholder to make button1s the same height as button0s
-			imageLabelButton1.tag = buttons.count + slotID // e.g., buttonIDs = [0, 1, 2], slotIDs = [3, 4, 5]
+			// e.g., buttonIDs = [1, 2, 3], slotIDs = [4, 5, 6] - differentiate between buttons and slots
+			imageLabelButton1.tag = 1 + buttons.count + slotID // Insertion sort uses a 1-indexed array for height
 			bottomStackView.addArrangedSubview(imageLabelButton1)
 			slots.append(ButtonData())
 		}
@@ -124,43 +144,51 @@ class InsertionSortButtonsTableViewCell: UITableViewCell {
 
 extension InsertionSortButtonsTableViewCell: ImageLabelButtonDelegate {
 	func imageLabelButtonTapped(_ sender: ImageLabelButton) {
+        var senderButtonIndex = -1
+        var senderSlotIndex = -1
+
 		// Set selected state
-		var buttonIndex = -1
 		if let index = buttons.firstIndex(where: { $0.sortID == sender.tag }) {
 			buttons[index].isSelected = sender.isSelected
-			buttonIndex = index
+            senderButtonIndex = index
 		}
-//		if let index = slots.firstIndex(where: { $0.sortID == sender.tag }) {
-//			slots[index].isSelected = sender.isSelected
-//		}
+		if sender.tag > buttons.count {
+            senderSlotIndex = sender.tag - buttons.count
+			slots[senderSlotIndex].isSelected = sender.isSelected
+		}
+        let selectedButtonsCount = buttons.filter({ $0.isSelected }).count
+        let selectedSlotsCount = slots.filter({ $0.isSelected }).count
+        guard (senderButtonIndex > -1 || senderSlotIndex > -1) &&
+            (selectedButtonsCount > 0 || selectedSlotsCount > 0) else { return }
 
-		let selectedButtonsCount = buttons.filter({ $0.isSelected }).count
-		let selectedSlotsCount = slots.filter({ $0.isSelected }).count
-
-		if selectedButtonsCount > 1 {
+		if selectedButtonsCount > 1, senderButtonIndex > -1 {
 			// Only one button may be selected at a time
 			delegate?.showButtonsError(with: { [weak self] in
 				guard let `self` = self else { return }
-				if self.buttons.indices.contains(buttonIndex) {
+				if self.buttons.indices.contains(senderButtonIndex) {
 					// Undo button selection data and UI
-					self.buttons[buttonIndex].isSelected = false
+					self.buttons[senderButtonIndex].isSelected = false
 					sender.isSelected = false
 				}
 			})
 
-		} else if selectedSlotsCount > 1 {
+		} else if selectedSlotsCount > 1, senderSlotIndex > -1 {
 			// Only one slot may be selected at a time
-			delegate?.showSlotsError()
+			delegate?.showSlotsError(with: { [weak self] in
+				guard let `self` = self else { return }
+				// Undo slot selection data and UI
+				self.slots[senderSlotIndex].isSelected = false
+				sender.isSelected = false
+			})
 
-		} else if selectedButtonsCount == 1, selectedSlotsCount == 1 {
-			// If one buttons from each stack view is selected, determine the associated indices
-			print("TESTTEST")
-//			let index0 = buttons.firstIndex(where: { $0.isSelected }),
-//			index0 < buttons.count - 1,
-//			let index1 = buttons[index0 + 1...buttons.count - 1].firstIndex(where: { $0.isSelected }),
-//			let button0 = stackView.arrangedSubviews[index0] as? ImageLabelButton,
-//			let button1 = stackView.arrangedSubviews[index1] as? ImageLabelButton {
-//
+		} else if selectedButtonsCount == 1, selectedSlotsCount == 1,
+            let buttonIndex = buttons.firstIndex(where: { $0.isSelected }),
+            let slotIndex = slots.firstIndex(where: { $0.isSelected }),
+            let button = topStackView.arrangedSubviews[buttonIndex] as? ImageLabelButton,
+            let slot = topStackView.arrangedSubviews[slotIndex] as? ImageLabelButton {
+            // One button and one slot selected
+            // Re-calculated indices because don't know if button or slot was selected first/second
+
 //			delegate?.evaluate(sortId0: button0.tag, sortId1: button1.tag) { [weak self] result in
 //				guard let `self` = self else { return }
 //
