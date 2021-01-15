@@ -9,12 +9,15 @@ import UIKit
 
 // TODO2 add ability to navigate between completed steps
 protocol SortingViewModel {
+	var id: SortingID { get }
 	var sections: [SortingSection] { get set }
 	var stepsSection: SortingSection { get }
 	var sortingButtons: [ButtonData] { get set }
-	var steps: [Step] { get }
 	var successMessage: String { get }
 	var errorMessage: String { get }
+	var steps: [Step] { get }
+	var completedMessage: String { get }
+	var completedSpeech: String { get }
 }
 
 extension SortingViewModel {
@@ -33,9 +36,19 @@ extension SortingViewModel {
 	var errorMessage: String {
 		return "Oops, try again." 
 	}
+
+	var completedMessage: String {
+		return "Congratulations!"
+	}
+
+	var completedSpeech: String {
+		return "You have already completed the game for this sorting algorithm.\n\nTap here to reset your progress and play the game again."
+	}
 }
 
 class BubbleSortViewModel: SortingViewModel {
+	var id: SortingID = .bubbleSort
+
 	var sections: [SortingSection] = [.speaker, .buttons]
 
 	var stepsSection: SortingSection = .steps("Steps")
@@ -61,11 +74,13 @@ class BubbleSortViewModel: SortingViewModel {
 		Step(speech: "A is before F, so Alex and Felicia didn't swap places.", solution: (2, 1), completedText: "Compare Felicia and BB (indices 1 and 2)"),
 		Step(speech: "B is before F, so Felicia and BB swapped places.", solution: (2, 3), completedText: "Compare Felicia and Liam (indices 2 and 3)"),
 		Step(speech: "F is before L, so Felicia and Liam didn't swap places.", solution: (3, 4), completedText: "Compare Liam and Mandy (indices 3 and 4)"),
-		Step(speech: "L is before M, so Liam and Mandy didn't swap places.\n\nAll the students are sorted - well done! Tap Back to play another sorting game.", solution: (-1, -1))
+		Step(speech: "L is before M, so Liam and Mandy didn't swap places.\n\nAll the students are sorted - well done! Tap Back to play another sorting game.")
 	]
 }
 
 class InsertionSortViewModel: SortingViewModel {
+	var id: SortingID = .insertionSort
+	
 	var sections: [SortingSection] = [.speaker, .buttons]
 
 	var stepsSection: SortingSection = .steps("Steps")
@@ -93,25 +108,32 @@ class InsertionSortViewModel: SortingViewModel {
 //		Step(speech: "A is before F, so Alex and Felicia didn't swap places.", solution: (2, 1), completedText: "Compare Felicia and BB (indices 1 and 2)"),
 //		Step(speech: "B is before F, so Felicia and BB swapped places.", solution: (2, 3), completedText: "Compare Felicia and Liam (indices 2 and 3)"),
 //		Step(speech: "F is before L, so Felicia and Liam didn't swap places.", solution: (3, 4), completedText: "Compare Liam and Mandy (indices 3 and 4)"),
-//		Step(speech: "L is before M, so Liam and Mandy didn't swap places.\n\nAll the students are sorted - well done! Tap Back to play another sorting game.", solution: (-1, -1))
+//		Step(speech: "L is before M, so Liam and Mandy didn't swap places.\n\nAll the students are sorted - well done! Tap Back to play another sorting game.")
 	]
 }
 
-enum SortingSection {
+enum SortingSection: Equatable {
 	case speaker
 	case buttons
 	case steps(String) // title
 }
 
+enum SortingID: String {
+	case bubbleSort
+	case insertionSort
+	case mergeSort
+}
+
 struct Step {
 	var speech: String // Text to show in speech bubble
-	var solution: (Int, Int) // Buttons to tap (based on id) to progress to next step
-	var completedText: String = "" // Step text to show once solution is reached
+	var solution: (Int, Int) = (-1, -1) // Buttons to tap (based on id) to progress to next step
+	var completedText: String? = nil // Step text to show once solution is reached
 }
 
 enum SpeechTitle {
 	case start
 	case success
 	case error
+	case completed
 	case none
 }

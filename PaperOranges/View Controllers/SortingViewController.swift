@@ -73,13 +73,26 @@ class SortingViewController: UIViewController {
 		tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
 		view.rightAnchor.constraint(equalTo: tableView.rightAnchor).isActive = true
 		view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor).isActive = true
+
+		// If sorting game was completed, show steps
+		if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) {
+			speechTitle = .completed
+			currentStepIndex = viewModel.steps.count - 1
+			viewModel.sections.append(viewModel.stepsSection)
+		}
+	}
+
+	// TODO2 allow user to play again without going Back first
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		saveCompletedProgress()
 	}
 
 	@objc private func infoButtonTapped() {
-		switch viewModel {
-		case is BubbleSortViewModel:
+		switch viewModel.id {
+		case .bubbleSort:
 			present(InfoViewController(viewModel: BubbleSortInfoViewModel()), animated: true, completion: nil)
-		case is InsertionSortViewModel:
+		case .insertionSort:
 			present(InfoViewController(viewModel: InsertionSortInfoViewModel()), animated: true, completion: nil)
 		default:
 			break
@@ -96,7 +109,14 @@ extension SortingViewController: UITableViewDataSource {
 		let section = viewModel.sections[indexPath.section]
 		switch section {
 		case .speaker:
+			// Overwrite current step speech if sorting game was completed
+			var speech = currentStep.speech
+			if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) {
+				speech = viewModel.completedSpeech
+			}
+
 			let cell = tableView.dequeueReusableCell(withIdentifier: "SpeakerCell", for: indexPath) as! SpeakerTableViewCell
+			cell.delegate = self
 			var title: String?
 			switch speechTitle {
 			case .start:
@@ -105,11 +125,14 @@ extension SortingViewController: UITableViewDataSource {
 				title = viewModel.successMessage
 			case .error:
 				title = viewModel.errorMessage
+			case .completed:
+				title = viewModel.completedMessage
 			case .none:
 				title = nil
 			}
-			cell.setText(title: title, text: currentStep.speech, ending: speechEnding)
+			cell.setText(title: title, text: speech, ending: speechEnding)
 			return cell
+
 		case .buttons:
 			let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonsCell", for: indexPath) as! ButtonsTableViewCell
 			cell.delegate = self
@@ -117,10 +140,12 @@ extension SortingViewController: UITableViewDataSource {
 			if viewModel is InsertionSortViewModel {
 				cell.lineView.isHidden = false
 			}
-			if isLastStep {
+			// Disable all sorting buttons if sorting game was completed or user is on the last step
+			if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) || isLastStep {
 				cell.disableAllButtons()
 			}
 			return cell
+
 		case .steps:
 			let cell = tableView.dequeueReusableCell(withIdentifier: "StepsCell", for: indexPath) as! StepsTableViewCell
 			// Completed steps are steps up to (but not including) current step
@@ -158,6 +183,21 @@ extension SortingViewController: UITableViewDelegate {
 		default:
 			return .leastNonzeroMagnitude
 		}
+	}
+}
+
+extension SortingViewController: SpeakerTableViewCellDelegate {
+	func speechBubbleTapped() {
+		if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) {
+			// Reset to uncompleted state
+			UserDefaults.standard.setValue(false, forKey: viewModel.id.rawValue)
+			let stepsSection = viewModel.stepsSection
+			viewModel.sections.removeAll(where: { $0 == stepsSection })
+			speechTitle = .start
+			currentStepIndex = 0
+			tableView.reloadData()
+		}
+		// Otherwise do nothing
 	}
 }
 
@@ -218,7 +258,6 @@ extension SortingViewController: ButtonsTableViewCellDelegate {
 					self.perform(#selector(self.stopConfetti), with: nil, afterDelay: 1.0)
 				}
 			}
-			saveCompletedProgress()
 
 		} else {
 			// Don't need to error out for the last step - nothing else to do
@@ -246,26 +285,32 @@ extension SortingViewController: ButtonsTableViewCellDelegate {
 
 	private func saveCompletedProgress() {
 		guard isLastStep else { return }
-		switch viewModel {
-		case is BubbleSortViewModel:
-			UserDefaults.standard.setValue(true, forKey: "BubbleSort")
-		case is InsertionSortViewModel:
-			UserDefaults.standard.setValue(true, forKey: "InsertionSort")
+		switch viewModel.id {
+		case .bubbleSort:
+			UserDefaults.standard.setValue(true, forKey: SortingID.bubbleSort.rawValue)
+		case .insertionSort:
+			UserDefaults.standard.setValue(true, forKey: SortingID.insertionSort.rawValue)
 		default:
 			break
 		}
 	}
 }
 
+protocol SpeakerTableViewCellDelegate {
+	func speechBubbleTapped()
+}
+
 private class SpeakerTableViewCell: UITableViewCell {
-	private var speechBubbleView: UIView = {
-		let imageView = UIImageView()
-		imageView.layer.borderColor = UIColor.lightGray.cgColor
-		imageView.layer.borderWidth = 1
-		imageView.layer.cornerRadius = 16
-		imageView.backgroundColor = .white
-		imageView.translatesAutoresizingMaskIntoConstraints = false
-		return imageView
+	var delegate: SpeakerTableViewCellDelegate?
+
+	private var speechBubbleView: UIButton = {
+		let button = UIButton()
+		button.layer.borderColor = UIColor.lightGray.cgColor
+		button.layer.borderWidth = 1
+		button.layer.cornerRadius = 16
+		button.backgroundColor = .white
+		button.translatesAutoresizingMaskIntoConstraints = false
+		return button
 	}()
 
 	private var speechBubbleLabel: UILabel = {
@@ -299,6 +344,7 @@ private class SpeakerTableViewCell: UITableViewCell {
 		speechBubbleView.leftAnchor.constraint(equalTo: speakerImageView.rightAnchor, constant: 8).isActive = true
 		contentView.rightAnchor.constraint(equalTo: speechBubbleView.rightAnchor, constant: 16).isActive = true
 		contentView.bottomAnchor.constraint(equalTo: speechBubbleView.bottomAnchor, constant: 16).isActive = true
+		speechBubbleView.addTarget(self, action: #selector(speechBubbleTapped), for: .touchUpInside)
 
 		speechBubbleView.addSubview(speechBubbleLabel)
 		speechBubbleLabel.topAnchor.constraint(equalTo: speechBubbleView.topAnchor, constant: 8).isActive = true
@@ -322,10 +368,14 @@ private class SpeakerTableViewCell: UITableViewCell {
 		}
 		speechBubbleLabel.attributedText = attributedText
 	}
+
+	@objc private func speechBubbleTapped() {
+		delegate?.speechBubbleTapped()
+	}
 }
 
 private class StepsTableViewCell: UITableViewCell {
-	var stepsText: [String] = [] {
+	var stepsText: [String?] = [] {
 		didSet {
 			addSteps()
 		}
@@ -361,8 +411,10 @@ private class StepsTableViewCell: UITableViewCell {
 			$0.removeFromSuperview()
 		}
 
-		stepsText.forEach { stepText in
-			stackView.addArrangedSubview(StepView(stepText, count: stackView.arrangedSubviews.count))
+		stepsText.forEach {
+			if let stepText = $0 {
+				stackView.addArrangedSubview(StepView(stepText, count: stackView.arrangedSubviews.count))
+			}
 		}
 	}
 }

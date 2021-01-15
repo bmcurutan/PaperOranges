@@ -14,9 +14,9 @@ class HomeViewModel {
 
 	private var sortingTopics: [Topic] {
 		return [
-			Topic(type: .bubbleSort, title: "Intro to Bubble Sort", image: #imageLiteral(resourceName: "av_sorting_bb"), isActive: true, isCompleted: UserDefaults.standard.bool(forKey: "BubbleSort")),
-			Topic(type: .insertionSort, title: "Intro to Insertion Sort", image: #imageLiteral(resourceName: "av_sorting_mandy"), isActive: true, isCompleted: UserDefaults.standard.bool(forKey: "InsertionSort")),
-			Topic(type: .mergeSort, title: "Intro to Merge Sort", text: "(Coming Soon)", image: #imageLiteral(resourceName: "av_sorting_liam"), isActive: false, isCompleted: UserDefaults.standard.bool(forKey: "MergeSort")),
+			Topic(type: .bubbleSort, title: "Intro to Bubble Sort", image: #imageLiteral(resourceName: "av_sorting_bb"), isActive: true, isCompleted: UserDefaults.standard.bool(forKey: SortingID.bubbleSort.rawValue)),
+			Topic(type: .insertionSort, title: "Intro to Insertion Sort", image: #imageLiteral(resourceName: "av_sorting_mandy"), isActive: true, isCompleted: UserDefaults.standard.bool(forKey: SortingID.insertionSort.rawValue)),
+			Topic(type: .mergeSort, title: "Intro to Merge Sort", text: "(Coming Soon)", image: #imageLiteral(resourceName: "av_sorting_liam"), isActive: false, isCompleted: UserDefaults.standard.bool(forKey: SortingID.mergeSort.rawValue)),
 		]
 	}
 }
