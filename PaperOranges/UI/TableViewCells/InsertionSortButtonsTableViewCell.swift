@@ -10,7 +10,9 @@ import Foundation
 import UIKit
 
 protocol InsertionSortButtonsTableViewCellDelegate {
-	func evaluate(sortId: Int, slotId: Int, with completion: ((Bool) -> Void)?) // TODO
+	func showButtonsError(with completion: (() -> Void)?)
+	func showSlotsError()
+//	func evaluate(sortId: Int, slotId: Int, with completion: ((Bool) -> Void)?) // TODO
 }
 
 class InsertionSortButtonsTableViewCell: UITableViewCell {
@@ -123,28 +125,35 @@ class InsertionSortButtonsTableViewCell: UITableViewCell {
 extension InsertionSortButtonsTableViewCell: ImageLabelButtonDelegate {
 	func imageLabelButtonTapped(_ sender: ImageLabelButton) {
 		// Set selected state
+		var buttonIndex = -1
 		if let index = buttons.firstIndex(where: { $0.sortID == sender.tag }) {
 			buttons[index].isSelected = sender.isSelected
+			buttonIndex = index
 		}
-		if let index = slots.firstIndex(where: { $0.sortID == sender.tag }) {
-			slots[index].isSelected = sender.isSelected
-		}
+//		if let index = slots.firstIndex(where: { $0.sortID == sender.tag }) {
+//			slots[index].isSelected = sender.isSelected
+//		}
 
 		let selectedButtonsCount = buttons.filter({ $0.isSelected }).count
 		let selectedSlotsCount = slots.filter({ $0.isSelected }).count
 
-		// Show alert if more than one button is selected
 		if selectedButtonsCount > 1 {
-//			let alert = UIAlertController(title: "Did you bring your towel?", message: "It's recommended you bring your towel before continuing.", preferredStyle: .alert)
-//
-//			alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: nil))
-//			alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+			// Only one button may be selected at a time
+			delegate?.showButtonsError(with: { [weak self] in
+				guard let `self` = self else { return }
+				if self.buttons.indices.contains(buttonIndex) {
+					// Undo button selection data and UI
+					self.buttons[buttonIndex].isSelected = false
+					sender.isSelected = false
+				}
+			})
 
-//			self.present(alert, animated: true)
-		}
+		} else if selectedSlotsCount > 1 {
+			// Only one slot may be selected at a time
+			delegate?.showSlotsError()
 
-		// If one buttons from each stack view is selected, determine the associated indices
-		if selectedButtonsCount == 1, selectedSlotsCount == 1 {
+		} else if selectedButtonsCount == 1, selectedSlotsCount == 1 {
+			// If one buttons from each stack view is selected, determine the associated indices
 			print("TESTTEST")
 //			let index0 = buttons.firstIndex(where: { $0.isSelected }),
 //			index0 < buttons.count - 1,

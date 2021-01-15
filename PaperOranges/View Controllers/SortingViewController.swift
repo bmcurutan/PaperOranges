@@ -150,7 +150,7 @@ extension SortingViewController: UITableViewDataSource {
 			return cell
 		case .insertionSort:
 			let cell = tableView.dequeueReusableCell(withIdentifier: "InsertionSortButtonsCell", for: indexPath) as! InsertionSortButtonsTableViewCell
-//			cell.delegate = self // TODO
+			cell.delegate = self
 			cell.addButtons(viewModel.sortingButtons)
 			// Disable all sorting buttons if sorting game was completed or user is on the last step
 			if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) || isLastStep {
@@ -302,5 +302,21 @@ extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 			break
 		}
 		isCompletedCurrently = true
+	}
+}
+
+extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
+	func showButtonsError(with completion: (() -> Void)?) {
+		let alert = UIAlertController(title: "", message: viewModel.buttonsError, preferredStyle: .alert)
+		alert.view.tintColor = .accentColor
+		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+			completion?()
+		}))
+		present(alert, animated: true)
+	}
+
+	func showSlotsError() {
+		let alert = UIAlertController(title: nil, message: viewModel.slotsError, preferredStyle: .actionSheet)
+		present(alert, animated: true)
 	}
 }

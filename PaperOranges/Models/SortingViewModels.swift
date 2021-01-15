@@ -23,6 +23,9 @@ protocol SortingViewModel {
 	var errorMessage: String { get }
 	var completedMessage: String { get }
 	var completedSpeech: NSMutableAttributedString { get }
+	// Errors
+	var buttonsError: String { get }
+	var slotsError: String { get }
 }
 
 extension SortingViewModel {
@@ -52,6 +55,14 @@ extension SortingViewModel {
 		attributedText.append(NSMutableAttributedString(string: "to reset your progress and play the game again."))
 		return attributedText
 	}
+
+	var buttonsError: String {
+		return "Only one student may take a turn at a time."
+	}
+
+	var slotsError: String {
+		return "Select one slot at a time."
+	}
 }
 
 class BubbleSortViewModel: SortingViewModel {
@@ -68,7 +79,7 @@ class BubbleSortViewModel: SortingViewModel {
 	]
 
 	var steps: [Step] = [
-		Step(speech: NSMutableAttributedString(string: "Sort the students alphabetically using Bubble Sort.\n\nHint: Only two students can interact at a time."), solution: (0, 4), completedText: "Compare Alex and Mandy (indices 0 and 1)"),
+		Step(speech: NSMutableAttributedString(string: "Sort the students alphabetically using Bubble Sort.\n\nHint: Only two students may interact at a time."), solution: (0, 4), completedText: "Compare Alex and Mandy (indices 0 and 1)"),
 		Step(speech: NSMutableAttributedString(string: "A and M are already in order, so Alex and Mandy didn't swap places."), solution: (4, 2), completedText: "Compare Mandy and Felicia (indices 1 and 2)"),
 		Step(speech: NSMutableAttributedString(string: "F is before M, so Mandy and Felicia swapped places."), solution: (4, 3), completedText: "Compare Mandy and Liam (indices 2 and 3)"),
 		Step(speech: NSMutableAttributedString(string: "L is before M, so Mandy and Liam swapped places."), solution: (4, 1), completedText: "Compare Mandy and BB (indices 3 and 4)"),
@@ -124,7 +135,7 @@ class InsertionSortViewModel: SortingViewModel {
 
 	// TODO
 	var steps: [Step] = [
-//		.step(speech: NSMutableAttributedString(string: "The students' heights are represented using the numbers 1 through 5. Using Insertion Sort, sort them by moving them from the blue line to the red line. \n\nHint: Only one student can take a turn at a time."), solution: (0, 4), completedText: "TODO solution and completedText"),
+		Step(speech: NSMutableAttributedString(string: "The students' heights are represented using the numbers 1 through 5. Using Insertion Sort, sort them by moving them from the blue line to the red line. \n\nHint: Only one student may take a turn at a time."), solution: (0, 4), completedText: "TODO solution and completedText"),
 //		Step(speech: "A and M are already in order, so Alex and Mandy didn't swap places.", solution: (4, 2), completedText: "Compare Mandy and Felicia (indices 1 and 2)"),
 //		Step(speech: "F is before M, so Mandy and Felicia swapped places.", solution: (4, 3), completedText: "Compare Mandy and Liam (indices 2 and 3)"),
 //		Step(speech: "L is before M, so Mandy and Liam swapped places.", solution: (4, 1), completedText: "Compare Mandy and BB (indices 3 and 4)"),
