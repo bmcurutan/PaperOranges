@@ -106,7 +106,6 @@ class InsertionSortButtonsTableViewCell: UITableViewCell {
 			let imageLabelButton0 = ImageLabelButton()
 			imageLabelButton0.delegate = self
 			imageLabelButton0.image = button.image
-			imageLabelButton0.isSelected = button.isSelected
 			imageLabelButton0.name = button.name
 			if let sortID = button.sortID {
 				imageLabelButton0.tag = sortID
@@ -118,9 +117,8 @@ class InsertionSortButtonsTableViewCell: UITableViewCell {
 			imageLabelButton1.layer.borderColor = UIColor.borderColor.cgColor
 			imageLabelButton1.layer.borderWidth = 1
 			imageLabelButton1.delegate = self
-//			imageLabelButton1.image = button.image
-//			imageLabelButton1.isSelected = button.isSelected
 			imageLabelButton1.name = "\n" // Placeholder to make button1s the same height as button0s
+
 			// e.g., buttonIDs = [1, 2, 3], slotIDs = [4, 5, 6] - differentiate between buttons and slots
 			imageLabelButton1.tag = 1 + buttons.count + slotID // Insertion sort uses a 1-indexed array for height
 			bottomStackView.addArrangedSubview(imageLabelButton1)

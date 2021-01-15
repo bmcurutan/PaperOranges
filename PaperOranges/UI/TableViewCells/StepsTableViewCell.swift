@@ -55,7 +55,7 @@ class StepsTableViewCell: UITableViewCell {
 private class StepView: UIView {
 	private var stepLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.systemFont(ofSize: 14.0)
+		label.font = UIFont.systemFont(ofSize: 14)
 		label.lineBreakMode = .byWordWrapping
 		label.numberOfLines = 0
 		label.textColor = .primaryTextColor

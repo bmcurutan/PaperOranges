@@ -308,8 +308,9 @@ extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 
 extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
 	func showButtonsError(with completion: (() -> Void)?) {
-		let alert = UIAlertController(title: "", message: viewModel.buttonsError, preferredStyle: .alert)
-		alert.view.tintColor = .accentColor
+        let alert = UIAlertController(title: viewModel.buttonsError, message: nil, preferredStyle: .alert)
+        alert.setAttributedTitle()
+        alert.view.tintColor = .accentColor
 		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
 			completion?()
 		}))
@@ -317,7 +318,8 @@ extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
 	}
 
 	func showSlotsError(with completion: (() -> Void)?) {
-		let alert = UIAlertController(title: "", message: viewModel.slotsError, preferredStyle: .alert)
+        let alert = UIAlertController(title: viewModel.slotsError, message: nil, preferredStyle: .alert)
+        alert.setAttributedTitle()
 		alert.view.tintColor = .accentColor
 		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
 			completion?()

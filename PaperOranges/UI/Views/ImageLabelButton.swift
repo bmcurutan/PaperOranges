@@ -44,7 +44,7 @@ class ImageLabelButton: UIButton {
 
 	private var nameLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.boldSystemFont(ofSize: 14.0)
+		label.font = UIFont.boldSystemFont(ofSize: 14)
 		label.lineBreakMode = .byWordWrapping
 		label.numberOfLines = 0
 		label.textAlignment = .center
@@ -58,7 +58,7 @@ class ImageLabelButton: UIButton {
 		layer.cornerRadius = 16
 		layer.masksToBounds = true
         backgroundColor = UIColor.backgroundColor.withAlphaComponent(0.4)
-		setBackgroundImage(UIImage.withColor(UIColor.highlightColor), for: .highlighted)
+		setBackgroundImage(UIImage.withColor(UIColor.highlightColor.withAlphaComponent(0.4)), for: .highlighted)
 
 		addSubview(roundImageView)
 		roundImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true

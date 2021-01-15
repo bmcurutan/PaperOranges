@@ -51,7 +51,6 @@ class BubbleSortButtonsTableViewCell: UITableViewCell {
 			let imageLabelButton = ImageLabelButton()
 			imageLabelButton.delegate = self
 			imageLabelButton.image = button.image
-			imageLabelButton.isSelected = button.isSelected
 			imageLabelButton.name = button.name
 			if let sortID = button.sortID {
 				imageLabelButton.tag = sortID

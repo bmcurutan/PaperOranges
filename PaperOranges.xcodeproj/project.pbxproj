@@ -17,6 +17,7 @@
 		67129BEA25B14BE7003B4DCA /* SpeakerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BE925B14BE7003B4DCA /* SpeakerTableViewCell.swift */; };
 		67129BED25B14F83003B4DCA /* LinkButtonsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BEC25B14F83003B4DCA /* LinkButtonsTableViewCell.swift */; };
 		67129BF125B15114003B4DCA /* InsertionSortButtonsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BF025B15114003B4DCA /* InsertionSortButtonsTableViewCell.swift */; };
+		6744E56125B2217300E0B1DA /* UIAlertController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6744E56025B2217300E0B1DA /* UIAlertController+Ext.swift */; };
 		6794C08B25AADC8B000399FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6794C08A25AADC8B000399FB /* AppDelegate.swift */; };
 		6794C08D25AADC8B000399FB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6794C08C25AADC8B000399FB /* SceneDelegate.swift */; };
 		6794C08F25AADC8B000399FB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6794C08E25AADC8B000399FB /* HomeViewController.swift */; };
@@ -49,6 +50,7 @@
 		67129BE925B14BE7003B4DCA /* SpeakerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakerTableViewCell.swift; sourceTree = "<group>"; };
 		67129BEC25B14F83003B4DCA /* LinkButtonsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkButtonsTableViewCell.swift; sourceTree = "<group>"; };
 		67129BF025B15114003B4DCA /* InsertionSortButtonsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertionSortButtonsTableViewCell.swift; sourceTree = "<group>"; };
+		6744E56025B2217300E0B1DA /* UIAlertController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Ext.swift"; sourceTree = "<group>"; };
 		6794C08725AADC8B000399FB /* PaperOranges.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaperOranges.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6794C08A25AADC8B000399FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6794C08C25AADC8B000399FB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 			children = (
 				67E105A925AC125C00684D1B /* NSMutableAttributedString+Ext.swift */,
 				67129BB925AEDBCE003B4DCA /* SAConfettiView+Ext.swift */,
+				6744E56025B2217300E0B1DA /* UIAlertController+Ext.swift */,
 				6794C0B525AAE65A000399FB /* UIColor+Ext.swift */,
 				67129BC025AF88CB003B4DCA /* UIImage+Ext.swift */,
 				67E105CE25AE88B600684D1B /* UITableView+Ext.swift */,
@@ -259,6 +262,7 @@
 				67129BD125AFAA4B003B4DCA /* DescriptionTableViewCell.swift in Sources */,
 				67E105C525AD2E3000684D1B /* UIView+Ext.swift in Sources */,
 				6794C08F25AADC8B000399FB /* HomeViewController.swift in Sources */,
+				6744E56125B2217300E0B1DA /* UIAlertController+Ext.swift in Sources */,
 				67E105CF25AE88B600684D1B /* UITableView+Ext.swift in Sources */,
 				6794C0B625AAE65A000399FB /* UIColor+Ext.swift in Sources */,
 				6794C0CD25AC09C2000399FB /* SortingViewModels.swift in Sources */,

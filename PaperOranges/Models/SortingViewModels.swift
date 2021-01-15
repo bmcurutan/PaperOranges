@@ -24,8 +24,8 @@ protocol SortingViewModel {
 	var completedMessage: String { get }
 	var completedSpeech: NSMutableAttributedString { get }
 	// Errors
-	var buttonsError: String { get }
-	var slotsError: String { get }
+	var buttonsError: String? { get }
+	var slotsError: String? { get }
 }
 
 extension SortingViewModel {
@@ -56,13 +56,13 @@ extension SortingViewModel {
 		return attributedText
 	}
 
-	var buttonsError: String {
-		return "Only one student may take a turn at a time."
-	}
+    var buttonsError: String? {
+        return nil
+    }
 
-	var slotsError: String {
-		return "Select one slot at a time."
-	}
+    var slotsError: String? {
+        return nil
+    }
 }
 
 class BubbleSortViewModel: SortingViewModel {
@@ -78,6 +78,7 @@ class BubbleSortViewModel: SortingViewModel {
 		ButtonData(image: #imageLiteral(resourceName: "av_sorting_bb"), name: "BB", sortID: 1)
 	]
 
+    // Solution determines which two buttons to swap
 	var steps: [Step] = [
 		Step(speech: NSMutableAttributedString(string: "Sort the students alphabetically using Bubble Sort.\n\nHint: Only two students may interact at a time."), solution: (0, 4), completedText: "Compare Alex and Mandy (indices 0 and 1)"),
 		Step(speech: NSMutableAttributedString(string: "A and M are already in order, so Alex and Mandy didn't swap places."), solution: (4, 2), completedText: "Compare Mandy and Felicia (indices 1 and 2)"),
@@ -134,8 +135,9 @@ class InsertionSortViewModel: SortingViewModel {
 	]
 
 	// TODO
+    // Solution determines which button and slot to select
 	var steps: [Step] = [
-		Step(speech: NSMutableAttributedString(string: "Sort the students by height (represented using the numbers 1 through 5) using Insertion Sort.\n\nHint: Move each student from the blue line to the red line."), solution: (0, 4), completedText: "TODO solution and completedText"),
+		Step(speech: NSMutableAttributedString(string: "Sort the students by height (represented by 1-5) using Insertion Sort. \n\nHint: Move each student from the blue line to the red line, filling the slots from left to right."), solution: (3, 0), completedText: "TODO solution and completedText"),
 //		Step(speech: "A and M are already in order, so Alex and Mandy didn't swap places.", solution: (4, 2), completedText: "Compare Mandy and Felicia (indices 1 and 2)"),
 //		Step(speech: "F is before M, so Mandy and Felicia swapped places.", solution: (4, 3), completedText: "Compare Mandy and Liam (indices 2 and 3)"),
 //		Step(speech: "L is before M, so Mandy and Liam swapped places.", solution: (4, 1), completedText: "Compare Mandy and BB (indices 3 and 4)"),
@@ -173,6 +175,14 @@ class InsertionSortViewModel: SortingViewModel {
 			}
 		})
 	}
+
+    var buttonsError: String? {
+        return "Only one student may take a turn at a time"
+    }
+
+    var slotsError: String? {
+        return "Select one slot at a time"
+    }
 }
 
 enum SortingSection {

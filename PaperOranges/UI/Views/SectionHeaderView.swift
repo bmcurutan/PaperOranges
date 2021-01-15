@@ -37,7 +37,7 @@ class SectionHeaderView: UIView {
 	private var infoButton: UIButton = {
 		let button = UIButton()
 		button.isHidden = true
-		button.titleLabel?.font = UIFont.systemFont(ofSize: 18.0)
+		button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
 		button.setTitle("ⓘ", for: .normal)
 		button.setTitleColor(.accentColor, for: .normal)
 		button.setTitleColor(.secondaryAccentColor, for: .highlighted)

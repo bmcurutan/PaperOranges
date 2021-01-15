@@ -19,7 +19,7 @@ class RoundedButton: UIButton {
 		// 76 = padding + image + padding
 		// 56 = padding + icon + padding
 		titleEdgeInsets = UIEdgeInsets(top: 0, left: 76, bottom: 0, right: 52)
-		titleLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
+		titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
 		titleLabel?.lineBreakMode = .byWordWrapping
 		titleLabel?.numberOfLines = 0
 		setBackgroundImage(UIImage.withColor(UIColor.primaryButtonColor), for: .highlighted)
