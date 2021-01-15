@@ -18,6 +18,7 @@ class ButtonsTableViewCell: UITableViewCell {
 	private var buttons: [ButtonData] = []
 
 	private var shouldSort: Bool {
+		// Only implements sorting functionality if all buttons have sort IDs
 		return buttons.filter({ $0.sortId != nil }).count == buttons.count
 	}
 
@@ -68,7 +69,6 @@ class ButtonsTableViewCell: UITableViewCell {
 
 		buttons.forEach { button in
 			if shouldSort {
-				// Only implements sorting buttons if all buttons have sort IDs
 				let imageLabelButton = ImageLabelButton()
 				imageLabelButton.delegate = self
 				imageLabelButton.image = button.image
@@ -79,7 +79,6 @@ class ButtonsTableViewCell: UITableViewCell {
 				}
 				stackView.addArrangedSubview(imageLabelButton)
 			} else {
-				// Otherwise default to buttons without sort/swap functionality
 				let linkButton = LinkButton()
 				linkButton.translatesAutoresizingMaskIntoConstraints = false
 				if let urlString = button.url,
