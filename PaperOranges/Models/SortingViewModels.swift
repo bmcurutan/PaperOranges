@@ -17,7 +17,7 @@ protocol SortingViewModel {
 	var errorMessage: String { get }
 	var steps: [Step] { get }
 	var completedMessage: String { get }
-	var completedSpeech: String { get }
+	var completedSpeech: NSMutableAttributedString { get }
 }
 
 extension SortingViewModel {
@@ -41,8 +41,11 @@ extension SortingViewModel {
 		return "Congratulations!"
 	}
 
-	var completedSpeech: String {
-		return "You have already completed the game for this sorting algorithm.\n\nTap here to reset your progress and play the game again."
+	var completedSpeech: NSMutableAttributedString {
+		let attributedText = NSMutableAttributedString(string: "You have already completed the game for this sorting algorithm.\n\nTap ")
+		attributedText.append(NSMutableAttributedString(string: "here ").setTextColor(.accentColor))
+		attributedText.append(NSMutableAttributedString(string: "to reset your progress and play the game again."))
+		return attributedText
 	}
 }
 
@@ -62,19 +65,19 @@ class BubbleSortViewModel: SortingViewModel {
 	]
 
 	var steps: [Step] = [
-		Step(speech: "Sort the students alphabetically using Bubble Sort.\n\nHint: Only two students can interact at a time.", solution: (0, 4), completedText: "Compare Alex and Mandy (indices 0 and 1)"),
-		Step(speech: "A and M are already in order, so Alex and Mandy didn't swap places.", solution: (4, 2), completedText: "Compare Mandy and Felicia (indices 1 and 2)"),
-		Step(speech: "F is before M, so Mandy and Felicia swapped places.", solution: (4, 3), completedText: "Compare Mandy and Liam (indices 2 and 3)"),
-		Step(speech: "L is before M, so Mandy and Liam swapped places.", solution: (4, 1), completedText: "Compare Mandy and BB (indices 3 and 4)"),
-		Step(speech: "B is before M, so Mandy and BB swapped places.", solution: (0, 2), completedText: "Compare Alex and Felicia (indices 0 and 1)"),
-		Step(speech: "A is before F, so Alex and Felicia didn't swap places.", solution: (2, 3), completedText: "Compare Felicia and Liam (indices 1 and 2)"),
-		Step(speech: "F is before L, so Felicia and Liam didn't swap places.", solution: (3, 1), completedText: "Compare Liam and BB (indices 2 and 3)"),
-		Step(speech: "B is before L, so Liam and BB swapped places.", solution: (3, 4), completedText: "Compare Liam and Mandy (indices 3 and 4)"),
-		Step(speech: "L is before M, so Liam and Mandy didn't swap places.", solution: (0, 2), completedText: "Compare Alex and Felicia (indices 0 and 1)"),
-		Step(speech: "A is before F, so Alex and Felicia didn't swap places.", solution: (2, 1), completedText: "Compare Felicia and BB (indices 1 and 2)"),
-		Step(speech: "B is before F, so Felicia and BB swapped places.", solution: (2, 3), completedText: "Compare Felicia and Liam (indices 2 and 3)"),
-		Step(speech: "F is before L, so Felicia and Liam didn't swap places.", solution: (3, 4), completedText: "Compare Liam and Mandy (indices 3 and 4)"),
-		Step(speech: "L is before M, so Liam and Mandy didn't swap places.\n\nAll the students are sorted - well done! Tap Back to play another sorting game.")
+		Step(speech: NSMutableAttributedString(string: "Sort the students alphabetically using Bubble Sort.\n\nHint: Only two students can interact at a time."), solution: (0, 4), completedText: "Compare Alex and Mandy (indices 0 and 1)"),
+		Step(speech: NSMutableAttributedString(string: "A and M are already in order, so Alex and Mandy didn't swap places."), solution: (4, 2), completedText: "Compare Mandy and Felicia (indices 1 and 2)"),
+		Step(speech: NSMutableAttributedString(string: "F is before M, so Mandy and Felicia swapped places."), solution: (4, 3), completedText: "Compare Mandy and Liam (indices 2 and 3)"),
+		Step(speech: NSMutableAttributedString(string: "L is before M, so Mandy and Liam swapped places."), solution: (4, 1), completedText: "Compare Mandy and BB (indices 3 and 4)"),
+		Step(speech: NSMutableAttributedString(string: "B is before M, so Mandy and BB swapped places."), solution: (0, 2), completedText: "Compare Alex and Felicia (indices 0 and 1)"),
+		Step(speech: NSMutableAttributedString(string: "A is before F, so Alex and Felicia didn't swap places."), solution: (2, 3), completedText: "Compare Felicia and Liam (indices 1 and 2)"),
+		Step(speech: NSMutableAttributedString(string: "F is before L, so Felicia and Liam didn't swap places."), solution: (3, 1), completedText: "Compare Liam and BB (indices 2 and 3)"),
+		Step(speech: NSMutableAttributedString(string: "B is before L, so Liam and BB swapped places."), solution: (3, 4), completedText: "Compare Liam and Mandy (indices 3 and 4)"),
+		Step(speech: NSMutableAttributedString(string: "L is before M, so Liam and Mandy didn't swap places."), solution: (0, 2), completedText: "Compare Alex and Felicia (indices 0 and 1)"),
+		Step(speech: NSMutableAttributedString(string: "A is before F, so Alex and Felicia didn't swap places."), solution: (2, 1), completedText: "Compare Felicia and BB (indices 1 and 2)"),
+		Step(speech: NSMutableAttributedString(string: "B is before F, so Felicia and BB swapped places."), solution: (2, 3), completedText: "Compare Felicia and Liam (indices 2 and 3)"),
+		Step(speech: NSMutableAttributedString(string: "F is before L, so Felicia and Liam didn't swap places."), solution: (3, 4), completedText: "Compare Liam and Mandy (indices 3 and 4)"),
+		Step(speech: NSMutableAttributedString(string: "L is before M, so Liam and Mandy didn't swap places.\n\nAll the students are sorted - well done! Tap Back to play another sorting game."))
 	]
 }
 
@@ -96,7 +99,7 @@ class InsertionSortViewModel: SortingViewModel {
 
 	// TODO
 	var steps: [Step] = [
-		Step(speech: "Sort the students by height using Insertion Sort - their heights are represented using the numbers 1 through 5.\n\nHint: Only one student can take a turn at a time.", solution: (0, 4), completedText: "TODO solution and completedText"),
+		Step(speech: NSMutableAttributedString(string: "Sort the students by height using Insertion Sort - their heights are represented using the numbers 1 through 5.\n\nHint: Only one student can take a turn at a time."), solution: (0, 4), completedText: "TODO solution and completedText"),
 //		Step(speech: "A and M are already in order, so Alex and Mandy didn't swap places.", solution: (4, 2), completedText: "Compare Mandy and Felicia (indices 1 and 2)"),
 //		Step(speech: "F is before M, so Mandy and Felicia swapped places.", solution: (4, 3), completedText: "Compare Mandy and Liam (indices 2 and 3)"),
 //		Step(speech: "L is before M, so Mandy and Liam swapped places.", solution: (4, 1), completedText: "Compare Mandy and BB (indices 3 and 4)"),
@@ -125,7 +128,7 @@ enum SortingID: String {
 }
 
 struct Step {
-	var speech: String // Text to show in speech bubble
+	var speech: NSMutableAttributedString // Text to show in speech bubble
 	var solution: (Int, Int) = (-1, -1) // Buttons to tap (based on id) to progress to next step
 	var completedText: String? = nil // Step text to show once solution is reached
 }
