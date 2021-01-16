@@ -22,11 +22,12 @@ class MenuInfoViewModel: InfoViewModel {
 		.description("What is Paper Oranges?", "Paper Oranges is a community and storytelling platform to elevate the voices of people in tech.\n\nWe partner with creators of color to develop educational materials related to STEAM featuring a diverse cast of characters."),
 		.person(#imageLiteral(resourceName: "av_christine_pham"), "Founder", "Christine is a Software Engineer at VMware, Inc. She is passionate about increasing diversity in STEAM fields by creating stories and sharing perspectives from the field."),
 		.buttons([
-			ButtonData(image: #imageLiteral(resourceName: "ic_gmail"), url: "mailto: @gmail.com"), // TODO1 fix
-			ButtonData(image: #imageLiteral(resourceName: "ic_cart"), url: "https://www.paperoranges.com/shop/"),
-			ButtonData(image: #imageLiteral(resourceName: "ic_instagram"), url: "https://www.instagram.com/paper_oranges/"),
+            ButtonData(id: 0, image: #imageLiteral(resourceName: "ic_gmail"), url: "mailto: @gmail.com"), // TODO1 fix
+            ButtonData(id: 1, image: #imageLiteral(resourceName: "ic_cart"), url: "https://www.paperoranges.com/shop/"),
+            ButtonData(id: 2, image: #imageLiteral(resourceName: "ic_instagram"), url: "https://www.instagram.com/paper_oranges/"),
 //			ButtonData(image: #imageLiteral(resourceName: "ic_facebook"), url: "https://www.facebook.com/paperoranges/"), // TODO1 facebook link is broken
-			ButtonData(image: #imageLiteral(resourceName: "ic_medium"), url: "https://medium.com/paper-oranges")]),
+            ButtonData(id: 3, image: #imageLiteral(resourceName: "ic_medium"), url: "https://medium.com/paper-oranges")
+        ]),
 		.textLink("Version \(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String) • ©\(Calendar.current.component(.year, from: Date())) Paper Oranges"),
 		.textLink("www.paperoranges.com", "https://www.paperoranges.com/")
 	]
@@ -42,7 +43,8 @@ class SortingInfoViewModel: InfoViewModel {
 
 	private var descriptionRows: [Info] = [
 		.description("Description", "An \"algorithm\" a way to solve a problem, so the term \"sorting algorithms\" suggests there are different ways to sort things."),
-		.description("How are indices used?", "The students are displayed as if they are stored in an array. Arrays use zero-based indexing, meaning the first item of the array has index 0 and the last element has the index \"total number of items minus one\".")
+        .description("Arrays", "The students are displayed as if they're stored in an array, a collection of items. Loops through an array typically go from left to right."),
+		.description("Indices", "Arrays use zero-based indexing, meaning the first item of the array has index 0 and the last item has the index \"total number of items minus one\".")
 	]
 
 	private var personsRows: [Info] = [
@@ -91,9 +93,10 @@ enum Info {
 }
 
 struct ButtonData {
+    var id: Int
 	var image: UIImage = UIImage()
+    var isHidden: Bool = false
 	var isSelected: Bool = false
 	var name: String? = nil
-	var sortID: Int? = nil // Determines final sort order
 	var url: String? = nil
 }

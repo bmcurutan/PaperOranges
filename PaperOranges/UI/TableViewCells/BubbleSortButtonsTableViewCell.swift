@@ -52,9 +52,7 @@ class BubbleSortButtonsTableViewCell: UITableViewCell {
 			imageLabelButton.delegate = self
 			imageLabelButton.image = button.image
 			imageLabelButton.name = button.name
-			if let sortID = button.sortID {
-				imageLabelButton.tag = sortID
-			}
+            imageLabelButton.tag = button.id
 			stackView.addArrangedSubview(imageLabelButton)
 		}
 	}
@@ -71,7 +69,7 @@ class BubbleSortButtonsTableViewCell: UITableViewCell {
 extension BubbleSortButtonsTableViewCell: ImageLabelButtonDelegate {
 	func imageLabelButtonTapped(_ sender: ImageLabelButton) {
 		// Set selected state
-		if let index = buttons.firstIndex(where: { $0.sortID == sender.tag }) {
+		if let index = buttons.firstIndex(where: { $0.id == sender.tag }) {
 			buttons[index].isSelected = sender.isSelected
 		}
 
@@ -83,10 +81,10 @@ extension BubbleSortButtonsTableViewCell: ImageLabelButtonDelegate {
 			let button0 = stackView.arrangedSubviews[index0] as? ImageLabelButton,
             let button1 = stackView.arrangedSubviews[index1] as? ImageLabelButton else { return }
 
-        delegate?.evaluate(sortID0: button0.tag, sortID1: button1.tag) { [weak self] result in
+        delegate?.evaluate(sortID0: button0.tag, sortID1: button1.tag) { [weak self] isSuccess in
             guard let `self` = self else { return }
 
-            guard result else {
+            guard isSuccess else {
                 // Error - reset selection UI without swapping buttons
                 self.resetButtonSelection(button0: button0, button1: button1)
                 return
@@ -101,8 +99,7 @@ extension BubbleSortButtonsTableViewCell: ImageLabelButtonDelegate {
             copy1.frame = self.stackView.convert(button1.frame, to: self.contentView)
             self.contentView.addSubview(copy1)
 
-            // Hide the original buttons temporarily
-            // Use alpha instead of removing to maintain arranged subviews positions
+            // Hide the original buttons temporarily - use alpha instead of removing to maintain arranged subviews positions
             button0.alpha = 0
             button1.alpha = 0
 
