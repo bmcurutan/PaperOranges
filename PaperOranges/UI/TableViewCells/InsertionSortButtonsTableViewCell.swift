@@ -193,7 +193,7 @@ extension InsertionSortButtonsTableViewCell: ImageLabelButtonDelegate {
 
 				guard isSuccess else {
 					// Error - reset selection UI
-					self.resetButtonSelection(button: button, slot: slot)
+					self.resetSelection(button: button, slot: slot)
 					return
 				}
 
@@ -215,12 +215,12 @@ extension InsertionSortButtonsTableViewCell: ImageLabelButtonDelegate {
 				}
 
 				// Reset selection UI
-                self.resetButtonSelection(button: button, slot: slot)
+                self.resetSelection(button: button, slot: slot)
 			}
 		}
 	}
 
-	private func resetButtonSelection(button: ImageLabelButton, slot: ImageLabelButton) {
+	private func resetSelection(button: ImageLabelButton, slot: ImageLabelButton) {
 		// Update button UI
 		UIView.animate(withDuration: 0.3, animations: {
 			button.isSelected = false
@@ -232,7 +232,7 @@ extension InsertionSortButtonsTableViewCell: ImageLabelButtonDelegate {
 			buttons[index].isSelected = false
 		}
 		slots.indices.forEach { index in
-			buttons[index].isSelected = false
+			slots[index].isSelected = false
 		}
 	}
 }
