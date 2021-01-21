@@ -151,14 +151,15 @@ extension InsertionSortButtonsTableViewCell: ImageLabelButtonDelegate {
 		if let index = buttons.firstIndex(where: { $0.id == sender.tag }) {
 			buttons[index].isSelected = sender.isSelected
             senderButtonIndex = index
-		}
-		if sender.tag > buttons.count {
+		} else if sender.tag > buttons.count {
             senderSlotIndex = sender.tag - buttons.count - 1 // insertion sort uses a 1-indexed array for student height
 			slots[senderSlotIndex].isSelected = sender.isSelected
 		}
         let selectedButtonsCount = buttons.filter({ $0.isSelected }).count
         let selectedSlotsCount = slots.filter({ $0.isSelected }).count
-        guard (senderButtonIndex > -1 || senderSlotIndex > -1) && (selectedButtonsCount > 0 || selectedSlotsCount > 0) else { return }
+        guard (senderButtonIndex > -1 || senderSlotIndex > -1) && (selectedButtonsCount > 0 || selectedSlotsCount > 0) else {
+            return
+        }
 
 		if selectedButtonsCount > 1, senderButtonIndex > -1 {
 			// Only one button may be selected at a time

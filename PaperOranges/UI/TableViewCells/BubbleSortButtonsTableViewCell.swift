@@ -79,7 +79,9 @@ extension BubbleSortButtonsTableViewCell: ImageLabelButtonDelegate {
 			index0 < buttons.count - 1,
 			let index1 = buttons[index0 + 1...buttons.count - 1].firstIndex(where: { $0.isSelected }),
 			let button0 = stackView.arrangedSubviews[index0] as? ImageLabelButton,
-            let button1 = stackView.arrangedSubviews[index1] as? ImageLabelButton else { return }
+            let button1 = stackView.arrangedSubviews[index1] as? ImageLabelButton else {
+            return
+        }
 
         delegate?.evaluate(sortID0: button0.tag, sortID1: button1.tag) { [weak self] isSuccess in
             guard let `self` = self else { return }
