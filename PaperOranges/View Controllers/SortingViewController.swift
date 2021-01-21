@@ -344,6 +344,7 @@ extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
                 if let buttonIndex = viewModel.sortingButtons.firstIndex(where: { $0.id == buttonID }),
                     let slotIndex = viewModel.slotButtons.firstIndex(where: { $0.id == slotID }) {
                     viewModel.slotButtons[slotIndex] = viewModel.sortingButtons[buttonIndex]
+                    viewModel.slotButtons[slotIndex].id = slotID // Restore original slot ID
                     viewModel.sortingButtons[buttonIndex] = ButtonData(id: slotIndex, isHidden: true)
                 }
                 completion?(true)
