@@ -111,16 +111,9 @@ class SortingViewController: UIViewController {
         isCompletedCurrently = true
     }
 
-    private func reloadSpeakerSection() {
-        let indexSet = IndexSet(viewModel.sections.filter({
-            switch $0 {
-            case .speaker:
-                return true
-            default:
-                return false
-            }
-        }).indices)
-        tableView.reloadSections(indexSet, with: .automatic)
+    private func reloadSection(_ section: SortingSection) {
+        let indexSet = IndexSet(viewModel.sections.filter({ $0 == section }).indices)
+        tableView.reloadSections(indexSet, with: .fade)
     }
 
     private func showConfetti() {
@@ -284,7 +277,7 @@ extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 			currentStepIndex += 1
 
 			// Reload speaker section first so it appears less jumpy
-            reloadSpeakerSection()
+            reloadSection(.speaker)
 
 			// If current step index is > 0, there is at least one completed step so add steps section
 			if currentStepIndex > 0 {
@@ -301,7 +294,7 @@ extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 
 			// Incorrect solution
 			speechTitle = .error
-            reloadSpeakerSection()
+            reloadSection(.speaker)
 			completion?(false)
 		}
 	}
@@ -356,7 +349,7 @@ extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
             currentStepIndex += 1
 
             // Reload speaker section first so it appears less jumpy
-            reloadSpeakerSection()
+            reloadSection(.speaker)
 
             // If current step index is > 0, there is at least one completed step so add steps section
             if currentStepIndex > 0 {
@@ -373,7 +366,7 @@ extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
 
             // Incorrect solution
             speechTitle = .error
-            reloadSpeakerSection()
+            reloadSection(.speaker)
             completion?(false)
         }
     }

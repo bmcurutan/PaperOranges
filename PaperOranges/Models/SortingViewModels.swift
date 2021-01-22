@@ -190,10 +190,23 @@ class InsertionSortViewModel: SortingViewModel {
     }
 }
 
-enum SortingSection {
+enum SortingSection: Equatable {
 	case speaker
 	case buttons
 	case steps(String = "Steps", [Step]) // title, steps
+
+    static func == (lhs: SortingSection, rhs: SortingSection) -> Bool {
+        switch (lhs, rhs) {
+        case (.speaker, .speaker):
+            return true
+        case (.buttons, .buttons):
+            return true
+        case (let .steps(title0, steps0), let .steps(title1, steps1)):
+            return title0 == title1 && steps0 == steps1
+        default:
+            return false
+        }
+    }
 }
 
 enum SortingID: String {
@@ -202,10 +215,14 @@ enum SortingID: String {
 	case mergeSort
 }
 
-struct Step {
+struct Step: Equatable {
     var speech: NSMutableAttributedString = NSMutableAttributedString(string: "") // Text to show in speech bubble (usually explains the previou step)
 	var solution: (Int, Int) = (-1, -1) // (sortID, sortID) Buttons to swap to progress to next step
 	var stepText: String? = nil // Text to show once solution is completed
+
+    static func == (lhs: Step, rhs: Step) -> Bool {
+        return lhs.speech == rhs.speech && lhs.solution == rhs.solution && lhs.stepText == rhs.stepText
+    }
 }
 
 enum SpeechTitle {
