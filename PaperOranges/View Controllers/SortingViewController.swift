@@ -17,7 +17,11 @@ class SortingViewController: UIViewController {
 	}
 	private var currentStepIndex: Int = 0 
 	private var currentStep: Step {
-		return viewModel.steps[currentStepIndex]
+        if viewModel.steps.indices.contains(currentStepIndex) {
+            return viewModel.steps[currentStepIndex]
+        } else {
+            return Step() // Shouldn't happen
+        }
 	}
 	private var isLastStep: Bool {
 		// Only detect the last step if not also the first step
@@ -93,6 +97,37 @@ class SortingViewController: UIViewController {
 			break
 		}
 	}
+
+    private func saveCompletedProgress() {
+        guard isLastStep else { return }
+        switch viewModel.id {
+        case .bubbleSort:
+            UserDefaults.standard.setValue(true, forKey: SortingID.bubbleSort.rawValue)
+        case .insertionSort:
+            UserDefaults.standard.setValue(true, forKey: SortingID.insertionSort.rawValue)
+        default:
+            break
+        }
+        isCompletedCurrently = true
+    }
+
+    private func reloadSection(_ section: SortingSection) {
+        let indexSet = IndexSet(viewModel.sections.filter({ $0 == section }).indices)
+        tableView.reloadSections(indexSet, with: .fade)
+    }
+
+    private func showConfetti() {
+        guard isLastStep else { return }
+        confettiView.frame = self.view.bounds
+        view.addSubview(self.confettiView)
+        confettiView.startConfetti()
+        perform(#selector(self.stopConfetti), with: nil, afterDelay: 1.0)
+    }
+
+    @objc private func stopConfetti(_ view: SAConfettiView) {
+        confettiView.stopConfetti()
+        confettiView.perform(#selector(UIView.removeFromSuperview), with: nil, afterDelay: 2.0)
+    }
 }
 
 extension SortingViewController: UITableViewDataSource {
@@ -153,13 +188,14 @@ extension SortingViewController: UITableViewDataSource {
 			cell.delegate = self
             cell.showLines()
 			cell.addButtons(viewModel.sortingButtons)
+            cell.addSlots(viewModel.slotButtons)
 			// Disable all sorting buttons if sorting game was completed or user is on the last step
 			if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) || isLastStep {
 				cell.disableAllButtons()
 			}
 			return cell
 		default:
-			return UITableViewCell()
+			return UITableViewCell() // Shouldn't happen
 		}
 	}
 
@@ -168,7 +204,7 @@ extension SortingViewController: UITableViewDataSource {
 		// Completed steps are steps up to (but not including) current step
 		let endIndex = currentStepIndex - 1
 		if viewModel.steps.indices.contains(endIndex) {
-			cell.stepsText = viewModel.steps[0...endIndex].map { $0.completedText }
+			cell.stepsText = viewModel.steps[0...endIndex].map { $0.stepText }
 		}
 		return cell
 	}
@@ -226,45 +262,29 @@ extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 		if (sortID0 == solution.0 && sortID1 == solution.1) || (sortID1 == solution.0 && sortID0 == solution.1) {
 			// Successful solution
 			speechTitle = .success
-			// If the buttons are already in order, do nothing
+			// If buttons are already in order, do nothing
 			// i.e., treat like an incorrect solution
 			if sortID0 < sortID1 {
 				completion?(false)
 			} else {
-				// Update data (swap buttons)
-				if let index0 = viewModel.sortingButtons.firstIndex(where: { $0.sortID == sortID0 }),
-					let index1 = viewModel.sortingButtons.firstIndex(where: { $0.sortID == sortID1 }) {
+				// Update button data (swap buttons)
+				if let index0 = viewModel.sortingButtons.firstIndex(where: { $0.id == sortID0 }),
+					let index1 = viewModel.sortingButtons.firstIndex(where: { $0.id == sortID1 }) {
 					viewModel.sortingButtons.swapAt(index0, index1)
 				}
 				completion?(true)
 			}
-
 			currentStepIndex += 1
 
 			// Reload speaker section first so it appears less jumpy
-			let indexSet = IndexSet(viewModel.sections.filter({
-				switch $0 {
-				case .speaker:
-					return true
-				default:
-					return false
-				}
-			}).indices)
-			tableView.reloadSections(indexSet, with: .automatic)
+            reloadSection(.speaker)
 
 			// If current step index is > 0, there is at least one completed step so add steps section
 			if currentStepIndex > 0 {
 				viewModel.addStepsSection()
 			}
 			tableView.reloadDataAfterDelay { [weak self] in
-				guard let `self` = self else { return }
-				if self.isLastStep {
-					// Show confetti
-					self.confettiView.frame = self.view.bounds
-					self.view.addSubview(self.confettiView)
-					self.confettiView.startConfetti()
-					self.perform(#selector(self.stopConfetti), with: nil, afterDelay: 1.0)
-				}
+                self?.showConfetti()
 			}
 			saveCompletedProgress()
 
@@ -274,35 +294,9 @@ extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 
 			// Incorrect solution
 			speechTitle = .error
-			let indexSet = IndexSet(viewModel.sections.filter({
-				switch $0 {
-				case .speaker:
-					return true
-				default:
-					return false
-				}
-			}).indices)
-			tableView.reloadSections(indexSet, with: .automatic)
+            reloadSection(.speaker)
 			completion?(false)
 		}
-	}
-
-	@objc private func stopConfetti(_ view: SAConfettiView) {
-		confettiView.stopConfetti()
-		confettiView.perform(#selector(UIView.removeFromSuperview), with: nil, afterDelay: 2.0)
-	}
-
-	private func saveCompletedProgress() {
-		guard isLastStep else { return }
-		switch viewModel.id {
-		case .bubbleSort:
-			UserDefaults.standard.setValue(true, forKey: SortingID.bubbleSort.rawValue)
-		case .insertionSort:
-			UserDefaults.standard.setValue(true, forKey: SortingID.insertionSort.rawValue)
-		default:
-			break
-		}
-		isCompletedCurrently = true
 	}
 }
 
@@ -326,4 +320,54 @@ extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
 		}))
 		present(alert, animated: true)
 	}
+
+    func evaluate(buttonID: Int, slotID: Int, with completion: ((Bool) -> Void)?) {
+        let solution = currentStep.solution
+        if buttonID == solution.0 && slotID == solution.1 {
+            // Successful solution
+            speechTitle = .success
+
+            // Update button data
+            if let buttonIndex = viewModel.sortingButtons.firstIndex(where: { $0.id == buttonID }),
+                let slotIndex = viewModel.slotButtons.firstIndex(where: { $0.id == slotID }) {
+                // If slot already has button data, shift everything to the right
+                // Only need to check for image and name to coincide with copyData
+                if viewModel.slotButtons[slotIndex].image != UIImage() && viewModel.slotButtons[slotIndex].name != nil {
+                    var loopIndex = viewModel.slotButtons.count - 1
+                    while loopIndex > slotIndex {
+                        let previousSlot = viewModel.slotButtons[loopIndex - 1]
+                        viewModel.slotButtons[loopIndex].image = previousSlot.image
+                        viewModel.slotButtons[loopIndex].name = previousSlot.name
+                        loopIndex -= 1
+                    }
+                }
+                viewModel.slotButtons[slotIndex] = viewModel.sortingButtons[buttonIndex]
+                viewModel.slotButtons[slotIndex].id = slotID // Restore original slot ID because it gets overwritten in addSlots
+                viewModel.sortingButtons[buttonIndex] = ButtonData(id: -1, isHidden: true)
+            }
+            completion?(true)
+            currentStepIndex += 1
+
+            // Reload speaker section first so it appears less jumpy
+            reloadSection(.speaker)
+
+            // If current step index is > 0, there is at least one completed step so add steps section
+            if currentStepIndex > 0 {
+                viewModel.addStepsSection()
+            }
+            tableView.reloadDataAfterDelay { [weak self] in
+                self?.showConfetti()
+            }
+            saveCompletedProgress()
+
+        } else {
+            // Don't need to error out for the last step - nothing else to do
+            guard !isLastStep else { return }
+
+            // Incorrect solution
+            speechTitle = .error
+            reloadSection(.speaker)
+            completion?(false)
+        }
+    }
 }
