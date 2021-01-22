@@ -12,9 +12,6 @@ Download [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) from t
     - Set "Tab Width" and "Indent Width" to 4
     - Checkmark "Indent when typing" and all sub-checkboxes.
 
-## Setup
-// TODO
-
 ## Github
 - `master` branch is what is released in the App Store
 - `develop` branch is what is in development
