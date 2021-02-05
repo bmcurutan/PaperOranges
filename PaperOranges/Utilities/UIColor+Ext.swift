@@ -17,15 +17,15 @@ extension UIColor {
 	}
 
 	static var accentColor: UIColor {
-		return UIColor(red: 231/255, green: 111/255, blue: 81/255, alpha: 1.0) // #E76F51 Dark orange
+		return UIColor(red: 242/255, green: 126/255, blue: 76/255, alpha: 1.0) // #F27E4C Dark orange
 	}
 
 	static var secondaryAccentColor: UIColor {
-		return UIColor(red: 244/255, green: 162/255, blue: 97/255, alpha: 1.0) // #F4A261 Light orange
+		return UIColor(red: 254/255, green: 164/255, blue: 96/255, alpha: 1.0) // #FEA460 Light orange
 	}
 
 	static var primaryTextColor: UIColor {
-		return UIColor(red: 38/255, green: 70/255, blue: 83/255, alpha: 1.0) // #264653 Dark teal
+		return UIColor(red: 21/255, green: 26/255, blue: 97/255, alpha: 1.0) // #151A61 Dark blue
 	}
 
 	static var secondaryTextColor: UIColor {
