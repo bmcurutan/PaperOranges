@@ -34,10 +34,6 @@ class HomeViewController: UIViewController {
 		super.viewDidLoad()
 		view.backgroundColor = .backgroundColor
 
-		navigationController?.navigationBar.barTintColor = .white
-		navigationController?.navigationBar.tintColor = .accentColor
-		navigationController?.navigationBar.shadowImage = UIImage()
-
 		let rightButton: UIButton = {
 			let button = UIButton(type: .custom)
 			button.tintColor = .accentColor
@@ -141,7 +137,7 @@ private class TopicTableViewCell: UITableViewCell {
 	var topic: Topic? = nil {
 		didSet {
 			guard let topic = topic else { return }
-			buttonImageView.image = topic.image
+			roundImageView.image = topic.image
 			button.setTitle(topic.title, for: .normal)
 			if let text = topic.text {
 				button.setTitle("\(topic.title)\n\(text)", for: .normal)
@@ -164,8 +160,9 @@ private class TopicTableViewCell: UITableViewCell {
 		return button
 	}()
 
-	private var buttonImageView: RoundImageView = {
+	private var roundImageView: RoundImageView = {
 		let imageView = RoundImageView()
+        imageView.backgroundColor = .backgroundColor
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		return imageView
 	}()
@@ -189,16 +186,16 @@ private class TopicTableViewCell: UITableViewCell {
 		contentView.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: 8).isActive = true
 		contentView.rightAnchor.constraint(equalTo: button.rightAnchor, constant: 16).isActive = true
 
-		button.addSubview(buttonImageView)
-		buttonImageView.topAnchor.constraint(equalTo: button.topAnchor, constant: 8).isActive = true
-		buttonImageView.leftAnchor.constraint(equalTo: button.leftAnchor, constant: 16).isActive = true
-		button.bottomAnchor.constraint(greaterThanOrEqualTo: buttonImageView.bottomAnchor, constant: 8).isActive = true
-		buttonImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
-		buttonImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
+		button.addSubview(roundImageView)
+		roundImageView.topAnchor.constraint(equalTo: button.topAnchor, constant: 8).isActive = true
+		roundImageView.leftAnchor.constraint(equalTo: button.leftAnchor, constant: 16).isActive = true
+		button.bottomAnchor.constraint(greaterThanOrEqualTo: roundImageView.bottomAnchor, constant: 8).isActive = true
+		roundImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
+		roundImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
 
 		button.addSubview(checkmarkView)
 		button.rightAnchor.constraint(equalTo: checkmarkView.rightAnchor, constant: 16).isActive = true
-		checkmarkView.centerYAnchor.constraint(equalTo: buttonImageView.centerYAnchor).isActive = true
+		checkmarkView.centerYAnchor.constraint(equalTo: roundImageView.centerYAnchor).isActive = true
 		checkmarkView.widthAnchor.constraint(equalToConstant: 20).isActive = true
 		checkmarkView.heightAnchor.constraint(equalToConstant: 20).isActive = true
 

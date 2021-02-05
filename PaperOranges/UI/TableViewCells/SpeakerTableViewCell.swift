@@ -26,7 +26,7 @@ class SpeakerTableViewCell: UITableViewCell {
 
 	private var speechBubbleLabel: UILabel = {
 		let label = UILabel()
-		label.font = label.font.withSize(14.0)
+		label.font = label.font.withSize(16)
 		label.lineBreakMode = .byWordWrapping
 		label.numberOfLines = 0
 		label.textColor = .primaryTextColor

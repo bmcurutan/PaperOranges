@@ -26,6 +26,7 @@ class StepsTableViewCell: UITableViewCell {
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		selectionStyle = .none
+        contentView.backgroundColor = .white
 
 		contentView.addSubview(stackView)
 		stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16).isActive = true
@@ -55,7 +56,7 @@ class StepsTableViewCell: UITableViewCell {
 private class StepView: UIView {
 	private var stepLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.systemFont(ofSize: 14)
+		label.font = UIFont.systemFont(ofSize: 16)
 		label.lineBreakMode = .byWordWrapping
 		label.numberOfLines = 0
 		label.textColor = .primaryTextColor

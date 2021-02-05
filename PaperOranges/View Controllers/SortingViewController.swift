@@ -55,6 +55,7 @@ class SortingViewController: UIViewController {
 		let rightButton: UIButton = {
 			let button = UIButton(type: .custom)
 			button.tintColor = .accentColor
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
 			button.setTitle("ⓘ", for: .normal)
 			button.setTitleColor(.accentColor, for: .normal)
 			button.setTitleColor(.secondaryAccentColor, for: .highlighted)

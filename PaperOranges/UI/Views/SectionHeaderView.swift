@@ -28,7 +28,7 @@ class SectionHeaderView: UIView {
 
 	private var textLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.boldSystemFont(ofSize: 12)
+		label.font = UIFont.boldSystemFont(ofSize: 14)
 		label.textColor = .primaryTextColor
 		label.translatesAutoresizingMaskIntoConstraints = false
 		return label
@@ -37,7 +37,7 @@ class SectionHeaderView: UIView {
 	private var infoButton: UIButton = {
 		let button = UIButton()
 		button.isHidden = true
-		button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+		button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
 		button.setTitle("ⓘ", for: .normal)
 		button.setTitleColor(.accentColor, for: .normal)
 		button.setTitleColor(.secondaryAccentColor, for: .highlighted)

@@ -33,7 +33,7 @@ class DescriptionTableViewCell: UITableViewCell {
 
 	private var titleLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.boldSystemFont(ofSize: 12)
+		label.font = UIFont.boldSystemFont(ofSize: 14)
 		label.textColor = .accentColor
 		label.translatesAutoresizingMaskIntoConstraints = false
 		return label
@@ -41,7 +41,7 @@ class DescriptionTableViewCell: UITableViewCell {
 
 	private var descriptionLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.systemFont(ofSize: 14)
+		label.font = UIFont.systemFont(ofSize: 16)
 		label.lineBreakMode = .byWordWrapping
 		label.numberOfLines = 0
         label.textColor = .primaryTextColor

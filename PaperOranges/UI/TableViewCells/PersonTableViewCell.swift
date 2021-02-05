@@ -45,7 +45,7 @@ class PersonTableViewCell: UITableViewCell {
 
 	private var roleLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.boldSystemFont(ofSize: 12)
+		label.font = UIFont.boldSystemFont(ofSize: 14)
 		label.textColor = .accentColor
 		label.translatesAutoresizingMaskIntoConstraints = false
 		return label
@@ -53,7 +53,7 @@ class PersonTableViewCell: UITableViewCell {
 
 	private var detailsLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.systemFont(ofSize: 14)
+		label.font = UIFont.systemFont(ofSize: 16)
 		label.lineBreakMode = .byWordWrapping
 		label.numberOfLines = 0
         label.textColor = .primaryTextColor
