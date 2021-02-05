@@ -27,7 +27,7 @@ class HeroView: UIView {
 
 	private var titleLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.boldSystemFont(ofSize: 14)
+		label.font = UIFont.boldSystemFont(ofSize: 16)
 		label.textAlignment = .right
 		label.textColor = .white
 		label.translatesAutoresizingMaskIntoConstraints = false

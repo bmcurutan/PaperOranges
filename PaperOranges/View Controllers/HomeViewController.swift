@@ -34,10 +34,6 @@ class HomeViewController: UIViewController {
 		super.viewDidLoad()
 		view.backgroundColor = .backgroundColor
 
-		navigationController?.navigationBar.barTintColor = .white
-		navigationController?.navigationBar.tintColor = .accentColor
-		navigationController?.navigationBar.shadowImage = UIImage()
-
 		let rightButton: UIButton = {
 			let button = UIButton(type: .custom)
 			button.tintColor = .accentColor
