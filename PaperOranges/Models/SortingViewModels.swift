@@ -43,7 +43,7 @@ extension SortingViewModel {
 	}
 
 	var errorMessage: String {
-		return "Oops, try again." 
+		return "Oops, try again.\n(Check your zine for a hint!)"
 	}
 
 	var completedMessage: String {
