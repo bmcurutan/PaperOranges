@@ -22,7 +22,7 @@ class MenuInfoViewModel: InfoViewModel {
 		.description("What is Paper Oranges?", "Paper Oranges is a community and storytelling platform to elevate the voices of people in tech. We partner with creators of color to develop educational materials related to STEAM and featuring a diverse cast of characters."),
 		.person(#imageLiteral(resourceName: "av_christine_pham"), "Founder", "Christine is a Software Engineer at VMware, Inc. She is passionate about increasing diversity in STEAM fields by creating stories and sharing perspectives from the field."),
 		.buttons([
-            ButtonData(id: 0, image: #imageLiteral(resourceName: "ic_gmail"), url: "mailto: @gmail.com"), // TODO1 fix
+            ButtonData(id: 0, image: #imageLiteral(resourceName: "ic_gmail"), url: "mailto: info@paperoranges.com"),
             ButtonData(id: 1, image: #imageLiteral(resourceName: "ic_cart"), url: "https://www.paperoranges.com/shop/"),
             ButtonData(id: 2, image: #imageLiteral(resourceName: "ic_instagram"), url: "https://www.instagram.com/paper_oranges/"),
 //			ButtonData(image: #imageLiteral(resourceName: "ic_facebook"), url: "https://www.facebook.com/paperoranges/"), // TODO1 facebook link is broken
