@@ -55,10 +55,12 @@ extension InfoViewController: UITableViewDataSource {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let row = viewModel.sections[indexPath.section].rows[indexPath.row]
 		switch row {
-		case let .description(title, description):
+		case let .description(title, description, linkText, url):
 			let cell = tableView.dequeueReusableCell(withIdentifier: "DescriptionCell") as! DescriptionTableViewCell
+            cell.delegate = self
 			cell.title = title
-			cell.descriptionText = description
+			cell.descriptionText = (description, linkText)
+            cell.url = url
 			return cell
 		case let .person(image, role, details):
 			let cell = tableView.dequeueReusableCell(withIdentifier: "PersonCell") as! PersonTableViewCell
@@ -115,6 +117,12 @@ extension InfoViewController: LinkButtonsTableViewCellDelegate {
 			openURL(url)
 		}
 	}
+}
+
+extension InfoViewController: DescriptionTableViewCellDelegate {
+    func descriptionLabelTapped(url: URL) {
+        openURL(url)
+    }
 }
 
 protocol TextLinkTableViewCellDelegate {

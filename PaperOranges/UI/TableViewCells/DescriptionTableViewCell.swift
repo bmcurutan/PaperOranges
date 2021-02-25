@@ -7,18 +7,39 @@
 
 import UIKit
 
+protocol DescriptionTableViewCellDelegate {
+    func descriptionLabelTapped(url: URL)
+}
+
 class DescriptionTableViewCell: UITableViewCell {
-	var title: String? {
+    var delegate: DescriptionTableViewCellDelegate?
+
+    var title: String? {
 		didSet {
 			titleLabel.text = title?.uppercased()
 		}
 	}
 
-	var descriptionText: String? {
+    // Link text should be a substring of description
+	var descriptionText: (String?, String?) { // (description, link text)
 		didSet {
-			descriptionLabel.text = descriptionText
-		}
+            if let description = descriptionText.0, descriptionText.1 == nil {
+                descriptionLabel.text = description
+            } else if let description = descriptionText.0, let link = descriptionText.1 {
+                let range = (description as NSString).range(of: link)
+                let attributedString = NSMutableAttributedString.init(string: description)
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.accentColor, range: range)
+                descriptionLabel.attributedText = attributedString
+            }
+        }
 	}
+
+    var url: URL? {
+        didSet {
+            let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(descriptionLabelTapped))
+            descriptionLabel.addGestureRecognizer(gestureRecognizer)
+        }
+    }
 
 	private var borderedView: UIView = {
 		let view = UIView()
@@ -42,6 +63,7 @@ class DescriptionTableViewCell: UITableViewCell {
 	private var descriptionLabel: UILabel = {
 		let label = UILabel()
 		label.font = UIFont.systemFont(ofSize: 16)
+        label.isUserInteractionEnabled = true
 		label.lineBreakMode = .byWordWrapping
 		label.numberOfLines = 0
         label.textColor = .primaryTextColor
@@ -74,5 +96,12 @@ class DescriptionTableViewCell: UITableViewCell {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
+
+    @objc
+    private func descriptionLabelTapped() {
+        if let url = url {
+            delegate?.descriptionLabelTapped(url: url)
+        }
+    }
 }
 

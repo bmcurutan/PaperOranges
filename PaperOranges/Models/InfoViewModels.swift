@@ -19,7 +19,7 @@ class MenuInfoViewModel: InfoViewModel {
 	}
 
 	private var menuRows: [Info] = [
-		.description("What is Paper Oranges?", "Paper Oranges is a community and storytelling platform to elevate the voices of people in tech. We partner with creators of color to develop educational materials related to STEAM and featuring a diverse cast of characters."),
+		.description("What is Paper Oranges?", "Paper Oranges is a community and storytelling platform to elevate the voices of people in tech. We partner with creators of color to develop educational materials related to science, technology, engineering, art and math (STEAM) and featuring a diverse cast of characters."),
 		.person(#imageLiteral(resourceName: "av_christine_pham"), "Founder", "Christine is a Software Engineer at VMware, Inc. She is passionate about increasing diversity in STEAM fields by creating stories and sharing perspectives from the field."),
 		.buttons([
             ButtonData(id: 0, image: #imageLiteral(resourceName: "ic_gmail"), url: "mailto:info@paperoranges.com"),
@@ -63,6 +63,7 @@ class BubbleSortInfoViewModel: InfoViewModel {
 
 	private var descriptionRows: [Info] = [
 		.description("Description", "Bubble Sort is a sorting algorithm that compares pairs of elements. If elements are out of order, swap them. Repeat the algorithm (from the beginning to the end) until all the elements are sorted."),
+        .description("Need help?", "Check your Bubble Sort zine for guidance. Sorting zines may be purchased from the Paper Oranges shop.", "Paper Oranges shop", URL(string: "https://www.paperoranges.com/shop/"))
 	]
 }
 
@@ -75,7 +76,8 @@ class InsertionSortInfoViewModel: InfoViewModel {
 	}
 
 	private var descriptionRows: [Info] = [
-		.description("Description", "Insertion Sort is a sorting algorithm that creates a list one element at a time by inserting the element into the proper sorted position.")
+		.description("Description", "Insertion Sort is a sorting algorithm that creates a list one element at a time by inserting the element into the proper sorted position."),
+        .description("Need help?", "Check your Insertion Sort zine for guidance. Sorting zines may be purchased from the Paper Oranges shop.", "Paper Oranges shop", URL(string: "https://www.paperoranges.com/shop/"))
 	]
 }
 
@@ -86,7 +88,7 @@ struct InfoSection {
 }
 
 enum Info {
-	case description(String, String) // title, description
+	case description(String, String, String? = nil, URL? = nil) // title, description, link text, link url; link text should be a substring of description
 	case person(UIImage, String, String) // image, role, details
 	case textLink(String, String? = nil) // text, link
 	case buttons([ButtonData])
