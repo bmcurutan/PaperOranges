@@ -97,6 +97,8 @@ extension HomeViewController: UITableViewDelegate {
 		if let title = viewModel.sections[section].title {
 			let header = SectionHeaderView(title: title)
 			header.delegate = self
+            // TODO shared prefs to determine if should show
+            header.addTooltip(with: header.infoButton, text: viewModel.educationText)
 			return header
 		} else {
 			return UIView()
