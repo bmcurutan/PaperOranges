@@ -19,6 +19,9 @@ class HomeViewModel {
 			Topic(type: .mergeSort, title: "Intro to Merge Sort", text: "(Coming Soon)", image: #imageLiteral(resourceName: "av_sorting_liam"), isActive: false, isCompleted: UserDefaults.standard.bool(forKey: SortingID.mergeSort.rawValue)),
 		]
 	}
+
+    var educationID: String = "homeEducation"
+    var educationText: String = "Tap here for help with getting started."
 }
 
 struct TopicSection {

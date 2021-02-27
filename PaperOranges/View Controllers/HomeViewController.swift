@@ -7,9 +7,10 @@
 
 import UIKit
 
-// TODO2 support dark mode
 class HomeViewController: UIViewController {
 	private var viewModel = HomeViewModel()
+
+    private var tooltip: Tooltip?
 
 	private var heroImageView: UIImageView = {
 		let imageView = UIImageView(image: #imageLiteral(resourceName: "hr_home"))
@@ -28,7 +29,12 @@ class HomeViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		tableView.reloadData()
-	}
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tooltip?.animate()
+    }
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -44,8 +50,8 @@ class HomeViewController: UIViewController {
 			return button
 		}()
 		navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightButton)
-		navigationItem.rightBarButtonItem?.customView?.widthAnchor.constraint(equalToConstant: 24).isActive = true
-		navigationItem.rightBarButtonItem?.customView?.heightAnchor.constraint(equalToConstant: 24).isActive = true
+		navigationItem.rightBarButtonItem?.customView?.widthAnchor.constraint(equalToConstant: 20).isActive = true
+		navigationItem.rightBarButtonItem?.customView?.heightAnchor.constraint(equalToConstant: 20).isActive = true
 
 		tableView.dataSource = self
 		tableView.delegate = self
@@ -97,6 +103,10 @@ extension HomeViewController: UITableViewDelegate {
 		if let title = viewModel.sections[section].title {
 			let header = SectionHeaderView(title: title)
 			header.delegate = self
+            if !UserDefaults.standard.bool(forKey: viewModel.educationID) {
+                tooltip = header.infoButton.addTooltip(to: header, with: viewModel.educationText)
+                UserDefaults.standard.setValue(true, forKey: viewModel.educationID)
+            }
 			return header
 		} else {
 			return UIView()

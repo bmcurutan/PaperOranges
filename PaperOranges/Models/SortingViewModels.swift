@@ -13,6 +13,9 @@ protocol SortingViewModel {
 	var sections: [SortingSection] { get set }
 	var sortingButtons: [ButtonData] { get set }
     var slotButtons: [ButtonData] { get set }
+    // Education
+    var educationID: String { get }
+    var educationText: String { get }
 	// Steps
 	var steps: [Step] { get } // Should be have at least two steps
 	func addStepsSection()
@@ -30,6 +33,14 @@ protocol SortingViewModel {
 }
 
 extension SortingViewModel {
+    var educationID: String {
+        return "\(id.rawValue)Education"
+    }
+
+    var educationText: String {
+        return "Tap here for help with getting started."
+    }
+
 	var startMessage: String {
 		return "Let's play!"
 	}
@@ -216,7 +227,7 @@ enum SortingID: String {
 }
 
 struct Step: Equatable {
-    var speech: NSMutableAttributedString = NSMutableAttributedString(string: "") // Text to show in speech bubble (usually explains the previou step)
+    var speech: NSMutableAttributedString = NSMutableAttributedString(string: "") // Text to show in speech bubble (usually explains the previous step)
 	var solution: (Int, Int) = (-1, -1) // (sortID, sortID) Buttons to swap to progress to next step
 	var stepText: String? = nil // Text to show once solution is completed
 

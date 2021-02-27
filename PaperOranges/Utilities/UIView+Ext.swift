@@ -17,4 +17,16 @@ extension UIView {
 		gradient.endPoint = CGPoint(x: 0.0, y: 1.0)
 		layer.insertSublayer(gradient, at: 0)
 	  }
+
+    // Currently only adds tooltip below self
+    func addTooltip(to parent: UIView, with text: String) -> Tooltip? {
+        let tooltip = Tooltip()
+        tooltip.alpha = 0
+        tooltip.textView.text = text
+        tooltip.translatesAutoresizingMaskIntoConstraints = false
+        parent.addSubview(tooltip)
+        tooltip.topAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        tooltip.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        return tooltip
+    }
 }
