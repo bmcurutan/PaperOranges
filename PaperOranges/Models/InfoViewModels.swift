@@ -44,7 +44,8 @@ class SortingInfoViewModel: InfoViewModel {
 	private var descriptionRows: [Info] = [
 		.description("Description", "An \"algorithm\" a way to solve a problem, so the term \"sorting algorithms\" suggests there are different ways to sort things."),
         .description("Arrays", "The students are displayed as if they're stored in an array, a collection of items. Loops through an array typically go from left to right."),
-		.description("Indices", "Arrays use zero-based indexing, meaning the first item of the array has index 0 and the last item has the index \"total number of items minus one\".")
+		.description("Indices", "Arrays use zero-based indexing, meaning the first item of the array has index 0 and the last item has the index \"total number of items minus one\"."),
+        .description("Need help?", "Check the Sorting series zines for guidance. They may be purchased from the Paper Oranges shop.", "Paper Oranges shop", URL(string: "https://www.paperoranges.com/shop/"))
 	]
 
 	private var personsRows: [Info] = [
@@ -63,7 +64,7 @@ class BubbleSortInfoViewModel: InfoViewModel {
 
 	private var descriptionRows: [Info] = [
 		.description("Description", "Bubble Sort is a sorting algorithm that compares pairs of elements. If elements are out of order, swap them. Repeat the algorithm (from the beginning to the end) until all the elements are sorted."),
-        .description("Need help?", "Check your Bubble Sort zine for guidance. Sorting zines may be purchased from the Paper Oranges shop.", "Paper Oranges shop", URL(string: "https://www.paperoranges.com/shop/"))
+        .description("Need help?", "Check your Bubble Sort zine for guidance. Don't have one yet? Sorting zines may be purchased from the Paper Oranges shop.", "Paper Oranges shop", URL(string: "https://www.paperoranges.com/shop/"))
 	]
 }
 
@@ -77,7 +78,7 @@ class InsertionSortInfoViewModel: InfoViewModel {
 
 	private var descriptionRows: [Info] = [
 		.description("Description", "Insertion Sort is a sorting algorithm that creates a list one element at a time by inserting the element into the proper sorted position."),
-        .description("Need help?", "Check your Insertion Sort zine for guidance. Sorting zines may be purchased from the Paper Oranges shop.", "Paper Oranges shop", URL(string: "https://www.paperoranges.com/shop/"))
+        .description("Need help?", "Check your Insertion Sort zine for guidance. Don't have one yet? Sorting zines may be purchased from the Paper Oranges shop.", "Paper Oranges shop", URL(string: "https://www.paperoranges.com/shop/"))
 	]
 }
 

@@ -20,7 +20,7 @@ class DescriptionTableViewCell: UITableViewCell {
 		}
 	}
 
-    // Link text should be a substring of description
+    // Link text should be a substring of description and only occur once
 	var descriptionText: (String?, String?) { // (description, link text)
 		didSet {
             if let description = descriptionText.0, descriptionText.1 == nil {
