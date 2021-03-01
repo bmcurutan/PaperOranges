@@ -53,12 +53,10 @@ class SortingViewController: UIViewController {
 		view.backgroundColor = .backgroundColor
 
 		let rightButton: UIButton = {
-			let button = UIButton(type: .custom)
-			button.tintColor = .accentColor
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-			button.setTitle("ⓘ", for: .normal)
-			button.setTitleColor(.accentColor, for: .normal)
-			button.setTitleColor(.secondaryAccentColor, for: .highlighted)
+            let image = #imageLiteral(resourceName: "ic_help")
+            let button = UIButton(type: .custom)
+            button.setImage(image.withTintColor(.accentColor, renderingMode: .alwaysTemplate), for: .normal)
+            button.setImage(image.withTintColor(.secondaryAccentColor, renderingMode: .alwaysOriginal), for: .highlighted)
 			button.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
 			return button
 		}()
@@ -304,7 +302,11 @@ extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
 	func showButtonsError(with completion: (() -> Void)?) {
         let alert = UIAlertController(title: viewModel.buttonsError, message: nil, preferredStyle: .alert)
-        alert.setAttributedTitle()
+        var textColor: UIColor = .primaryTextColor
+        if traitCollection.userInterfaceStyle == .dark {
+            textColor = .white
+        }
+        alert.setAttributedTitle(color: textColor)
         alert.view.tintColor = .accentColor
 		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
 			completion?()

@@ -14,13 +14,12 @@ protocol InfoViewModel {
 class MenuInfoViewModel: InfoViewModel {
 	var sections: [InfoSection] {
 		return [
-			InfoSection(image: #imageLiteral(resourceName: "hr_home"), rows: menuRows) // TODO1 change image
+			InfoSection(image: #imageLiteral(resourceName: "hr_collaborate"), rows: menuRows) // TODO1 change image
 		]
 	}
 
 	private var menuRows: [Info] = [
 		.description("What is Paper Oranges?", "Paper Oranges is a community and storytelling platform to elevate the voices of people in tech. We partner with creators of color to develop educational materials related to science, technology, engineering, art and math (STEAM) and featuring a diverse cast of characters."),
-		.person(#imageLiteral(resourceName: "av_christine_pham"), "Founder", "Christine is a Software Engineer at VMware, Inc. She is passionate about increasing diversity in STEAM fields by creating stories and sharing perspectives from the field."),
 		.buttons([
             ButtonData(id: 0, image: #imageLiteral(resourceName: "ic_gmail"), url: "mailto:info@paperoranges.com"),
             ButtonData(id: 1, image: #imageLiteral(resourceName: "ic_cart"), url: "https://www.paperoranges.com/shop/"),
@@ -36,8 +35,7 @@ class MenuInfoViewModel: InfoViewModel {
 class SortingInfoViewModel: InfoViewModel {
 	var sections: [InfoSection] {
 		return [
-			InfoSection(title: "Intro to Sorting Algorithms", image: #imageLiteral(resourceName: "hr_bubble_sort"), rows: descriptionRows), // TODO1 change image
-			InfoSection(title: "Contributors", rows: personsRows) 
+			InfoSection(title: "Intro to Sorting Algorithms", image: #imageLiteral(resourceName: "hr_bubble_sort"), rows: descriptionRows) // TODO1 change image
 		]
 	}
 
@@ -46,11 +44,6 @@ class SortingInfoViewModel: InfoViewModel {
         .description("Arrays", "The students are displayed as if they're stored in an array, a collection of items. Loops through an array typically go from left to right."),
 		.description("Indices", "Arrays use zero-based indexing, meaning the first item of the array has index 0 and the last item has the index \"total number of items minus one\"."),
         .description("Need help?", "Check the Sorting series zines for guidance. They may be purchased from the Paper Oranges shop.", "Paper Oranges shop", URL(string: "https://www.paperoranges.com/shop/"))
-	]
-
-	private var personsRows: [Info] = [
-		.person(#imageLiteral(resourceName: "av_bianca_curutan"), "Writer & Developer", "Bianca is an Engineering Manager at Uber. Although originally from Canada, she is currently an active speaker, writer, and member of the tech community in the SF Bay Area."),
-		.person(#imageLiteral(resourceName: "av_angelique_de_castro"), "Illustrator", "Angelique is a Full Stack Engineer at Nyansa and creative technologist. She loves consuming stories as much as producing them in fun illustrations or technology - or both!")
 	]
 }
 
