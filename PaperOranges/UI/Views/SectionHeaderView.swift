@@ -35,12 +35,11 @@ class SectionHeaderView: UIView {
 	}()
 
 	private var infoButton: UIButton = {
-		let button = UIButton()
-		button.isHidden = true
-		button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-		button.setTitle("ⓘ", for: .normal)
-		button.setTitleColor(.accentColor, for: .normal)
-		button.setTitleColor(.secondaryAccentColor, for: .highlighted)
+        let image = #imageLiteral(resourceName: "ic_help")
+        let button = UIButton(type: .custom)
+        button.isHidden = true
+        button.setImage(image.withTintColor(.accentColor, renderingMode: .alwaysOriginal), for: .normal)
+        button.setImage(image.withTintColor(.secondaryAccentColor, renderingMode: .alwaysOriginal), for: .highlighted)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		return button
 	}()
@@ -68,6 +67,8 @@ class SectionHeaderView: UIView {
 		infoButton.leftAnchor.constraint(equalTo: textLabel.rightAnchor, constant: 8).isActive = true
 		rightAnchor.constraint(equalTo: infoButton.rightAnchor, constant: 16).isActive = true
 		infoButton.centerYAnchor.constraint(equalTo: textLabel.centerYAnchor).isActive = true
+        infoButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        infoButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
 		infoButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
 	}
 

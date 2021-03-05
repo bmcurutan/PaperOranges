@@ -21,7 +21,7 @@ class HeroView: UIView {
 		imageView.clipsToBounds = true
 		imageView.contentMode = .scaleAspectFill
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-		imageView.heightAnchor.constraint(equalToConstant: 136).isActive = true
+		imageView.heightAnchor.constraint(equalToConstant: 160).isActive = true
 		return imageView
 	}()
 

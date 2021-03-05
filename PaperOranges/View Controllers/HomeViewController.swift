@@ -35,10 +35,11 @@ class HomeViewController: UIViewController {
 		view.backgroundColor = .backgroundColor
 
 		let rightButton: UIButton = {
+            let image = #imageLiteral(resourceName: "ic_info")
 			let button = UIButton(type: .custom)
 			button.tintColor = .accentColor
-			button.setImage(#imageLiteral(resourceName: "ic_menu").withRenderingMode(.alwaysTemplate), for: .normal)
-			button.setImage(#imageLiteral(resourceName: "ic_menu").withTintColor(.secondaryAccentColor, renderingMode: .alwaysOriginal), for: .highlighted)
+            button.setImage(image.withTintColor(.accentColor, renderingMode: .alwaysTemplate), for: .normal)
+			button.setImage(image.withTintColor(.secondaryAccentColor, renderingMode: .alwaysTemplate), for: .highlighted)
 			button.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
 			return button
 		}()
@@ -55,7 +56,7 @@ class HomeViewController: UIViewController {
 		view.addSubview(heroImageView)
 		heroImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
 		heroImageView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-		heroImageView.heightAnchor.constraint(equalToConstant: 136).isActive = true
+		heroImageView.heightAnchor.constraint(equalToConstant: 160).isActive = true
 		view.rightAnchor.constraint(equalTo: heroImageView.rightAnchor).isActive = true
 
 		view.addSubview(tableView)
