@@ -119,34 +119,35 @@ extension BubbleSortButtonsTableViewCell: ImageLabelButtonDelegate {
             }
             case .error:
                 // Vibrate buttons for visual feedback
-                // TODO1 add haptic feedback
-                self.shakeButton(button0)
-                self.shakeButton(button1)
+                self.shakeButtons([button0, button1])
             default:
                 break
             }
         // Reset selection UI
-        self.resetButtonSelection(button0)
-        self.resetButtonSelection(button1)
+        self.resetButtonSelection([button0, button1])
 		}
 	}
 
-    private func shakeButton(_ button: ImageLabelButton) {
-        let animation = CABasicAnimation(keyPath: "position")
-        animation.duration = 0.1
-        animation.fromValue = NSValue(cgPoint: CGPoint(x: button.center.x - 2, y: button.center.y))
-        animation.toValue = NSValue(cgPoint: CGPoint(x: button.center.x + 2, y: button.center.y))
-        button.layer.add(animation, forKey: "position")
+    private func shakeButtons(_ shakeButtons: [ImageLabelButton]) {
+        shakeButtons.forEach { button in
+            let animation = CABasicAnimation(keyPath: "position")
+            animation.duration = 0.1
+            animation.fromValue = NSValue(cgPoint: CGPoint(x: button.center.x - 2, y: button.center.y))
+            animation.toValue = NSValue(cgPoint: CGPoint(x: button.center.x + 2, y: button.center.y))
+            button.layer.add(animation, forKey: "position")
+        }
+        UIDevice.vibrate()
     }
 
-	private func resetButtonSelection(_ button: ImageLabelButton) {
+	private func resetButtonSelection(_ resetButtons: [ImageLabelButton]) {
 		// Update button UI
-		UIView.animate(withDuration: 0.3, animations: {
-			button.isSelected = false
-		})
+        resetButtons.forEach { button in
+            UIView.animate(withDuration: 0.3, animations: {
+                button.isSelected = false
+            })
+        }
 
 		// Update button data
-        // TODO1 just need to reset the index of this button
 		buttons.indices.forEach { index in
 			buttons[index].isSelected = false
 		}
