@@ -35,11 +35,18 @@ class HomeViewController: UIViewController {
         super.viewDidAppear(animated)
         guard let educationTooltip = educationTooltip else { return }
 
-        UIView.animate(withDuration: 0.3, delay: 0.5, options: [], animations: {
-            educationTooltip.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-        }, completion: { _ in
-            UIView.animate(withDuration: 0.3, animations: {
+        UIView.animateKeyframes(withDuration: 3, delay: 0, options: [], animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.3/3, animations: {
+                educationTooltip.alpha = 1
+            })
+            UIView.addKeyframe(withRelativeStartTime: 0.3/3, relativeDuration: 0.3/3, animations: {
+                educationTooltip.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+            })
+            UIView.addKeyframe(withRelativeStartTime: 0.6/3, relativeDuration: 0.3/3, animations: {
                 educationTooltip.transform = .identity
+            })
+            UIView.addKeyframe(withRelativeStartTime: 2.7/3, relativeDuration: 0.3/3, animations: {
+                educationTooltip.alpha = 0
             })
         })
     }
@@ -111,11 +118,10 @@ extension HomeViewController: UITableViewDelegate {
 		if let title = viewModel.sections[section].title {
 			let header = SectionHeaderView(title: title)
 			header.delegate = self
-            // TODO shared prefs to determine if should show
-//            if !UserDefaults.standard.bool(forKey: viewModel.educationID) {
+            if !UserDefaults.standard.bool(forKey: viewModel.educationID) {
                 educationTooltip = header.infoButton.addTooltip(with: viewModel.educationText)
                 UserDefaults.standard.setValue(true, forKey: viewModel.educationID)
-//            }
+            }
 			return header
 		} else {
 			return UIView()

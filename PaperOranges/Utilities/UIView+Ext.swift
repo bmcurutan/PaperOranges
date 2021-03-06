@@ -18,27 +18,17 @@ extension UIView {
 		layer.insertSublayer(gradient, at: 0)
 	  }
 
-    // TODO add bounce animation
     // Currently only adds tooltip below self
     func addTooltip(with text: String) -> Tooltip? {
         guard let superview = superview else { return nil }
 
         let tooltip = Tooltip()
-        tooltip.text = text
+        tooltip.alpha = 0
+        tooltip.textView.text = text
         tooltip.translatesAutoresizingMaskIntoConstraints = false
         superview.addSubview(tooltip)
-        tooltip.topAnchor.constraint(equalTo: bottomAnchor, constant: 6).isActive = true
-        tooltip.rightAnchor.constraint(equalTo: rightAnchor, constant: 8).isActive = true
-
-        let line = UIView()
-        line.backgroundColor = .tooltipBackgroundColor
-        line.translatesAutoresizingMaskIntoConstraints = false
-        superview.addSubview(line)
-
-        tooltip.topAnchor.constraint(equalTo: line.bottomAnchor).isActive = true
-        rightAnchor.constraint(equalTo: line.rightAnchor, constant: 8).isActive = true
-        line.widthAnchor.constraint(equalToConstant: 2).isActive = true
-        line.heightAnchor.constraint(equalToConstant: 6).isActive = true
+        tooltip.topAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        tooltip.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         return tooltip
     }
 }
