@@ -13,6 +13,7 @@ protocol SortingViewModel {
 	var sections: [SortingSection] { get set }
 	var sortingButtons: [ButtonData] { get set }
     var slotButtons: [ButtonData] { get set }
+    var educationText: String { get }
 	// Steps
 	var steps: [Step] { get } // Should be have at least two steps
 	func addStepsSection()
@@ -30,6 +31,10 @@ protocol SortingViewModel {
 }
 
 extension SortingViewModel {
+    var educationText: String {
+        return "Tap here for help with getting started."
+    }
+
 	var startMessage: String {
 		return "Let's play!"
 	}

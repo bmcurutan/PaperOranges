@@ -20,6 +20,7 @@ class HomeViewModel {
 		]
 	}
 
+    var educationID: String = "Home"
     var educationText: String = "Tap here for help with getting started."
 }
 

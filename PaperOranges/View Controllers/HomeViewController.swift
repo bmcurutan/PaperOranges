@@ -7,9 +7,10 @@
 
 import UIKit
 
-// TODO2 support dark mode
 class HomeViewController: UIViewController {
 	private var viewModel = HomeViewModel()
+
+    private var educationTooltip: Tooltip?
 
 	private var heroImageView: UIImageView = {
 		let imageView = UIImageView(image: #imageLiteral(resourceName: "hr_home"))
@@ -28,7 +29,20 @@ class HomeViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		tableView.reloadData()
-	}
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard let educationTooltip = educationTooltip else { return }
+
+        UIView.animate(withDuration: 0.3, delay: 0.5, options: [], animations: {
+            educationTooltip.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        }, completion: { _ in
+            UIView.animate(withDuration: 0.3, animations: {
+                educationTooltip.transform = .identity
+            })
+        })
+    }
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -44,8 +58,8 @@ class HomeViewController: UIViewController {
 			return button
 		}()
 		navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightButton)
-		navigationItem.rightBarButtonItem?.customView?.widthAnchor.constraint(equalToConstant: 24).isActive = true
-		navigationItem.rightBarButtonItem?.customView?.heightAnchor.constraint(equalToConstant: 24).isActive = true
+		navigationItem.rightBarButtonItem?.customView?.widthAnchor.constraint(equalToConstant: 20).isActive = true
+		navigationItem.rightBarButtonItem?.customView?.heightAnchor.constraint(equalToConstant: 20).isActive = true
 
 		tableView.dataSource = self
 		tableView.delegate = self
@@ -98,7 +112,10 @@ extension HomeViewController: UITableViewDelegate {
 			let header = SectionHeaderView(title: title)
 			header.delegate = self
             // TODO shared prefs to determine if should show
-            header.addTooltip(with: header.infoButton, text: viewModel.educationText)
+//            if !UserDefaults.standard.bool(forKey: viewModel.educationID) {
+                educationTooltip = header.infoButton.addTooltip(with: viewModel.educationText)
+                UserDefaults.standard.setValue(true, forKey: viewModel.educationID)
+//            }
 			return header
 		} else {
 			return UIView()

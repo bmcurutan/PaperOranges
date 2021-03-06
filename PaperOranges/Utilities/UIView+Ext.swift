@@ -19,22 +19,26 @@ extension UIView {
 	  }
 
     // TODO add bounce animation
-    // Currently only adds tooltip below `view`
-    func addTooltip(with view: UIView, text: String) {
+    // Currently only adds tooltip below self
+    func addTooltip(with text: String) -> Tooltip? {
+        guard let superview = superview else { return nil }
+
         let tooltip = Tooltip()
         tooltip.text = text
         tooltip.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(tooltip)
-        tooltip.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-        rightAnchor.constraint(equalTo: tooltip.rightAnchor, constant: 8).isActive = true
+        superview.addSubview(tooltip)
+        tooltip.topAnchor.constraint(equalTo: bottomAnchor, constant: 6).isActive = true
+        tooltip.rightAnchor.constraint(equalTo: rightAnchor, constant: 8).isActive = true
 
         let line = UIView()
         line.backgroundColor = .tooltipBackgroundColor
         line.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(line)
+        superview.addSubview(line)
+
         tooltip.topAnchor.constraint(equalTo: line.bottomAnchor).isActive = true
-        view.rightAnchor.constraint(equalTo: line.rightAnchor, constant: 14).isActive = true
+        rightAnchor.constraint(equalTo: line.rightAnchor, constant: 8).isActive = true
         line.widthAnchor.constraint(equalToConstant: 2).isActive = true
-        line.heightAnchor.constraint(equalToConstant: 8).isActive = true
+        line.heightAnchor.constraint(equalToConstant: 6).isActive = true
+        return tooltip
     }
 }

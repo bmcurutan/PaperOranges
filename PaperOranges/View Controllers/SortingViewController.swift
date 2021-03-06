@@ -61,8 +61,8 @@ class SortingViewController: UIViewController {
 			return button
 		}()
 		navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightButton)
-		navigationItem.rightBarButtonItem?.customView?.widthAnchor.constraint(equalToConstant: 24).isActive = true
-		navigationItem.rightBarButtonItem?.customView?.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        navigationItem.rightBarButtonItem?.customView?.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        navigationItem.rightBarButtonItem?.customView?.heightAnchor.constraint(equalToConstant: 20).isActive = true
 
 		tableView.dataSource = self
 		tableView.delegate = self
@@ -85,6 +85,14 @@ class SortingViewController: UIViewController {
 			viewModel.addStepsSection()
 		}
 	}
+
+    // TODO fix this
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let rightButton = navigationItem.rightBarButtonItem?.value(forKey: "view") as? UIView {
+            rightButton.addTooltip(with: viewModel.educationText)
+        }
+    }
 
 	@objc private func infoButtonTapped() {
 		switch viewModel.id {

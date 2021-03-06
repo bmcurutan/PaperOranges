@@ -34,7 +34,7 @@ class SectionHeaderView: UIView {
 		return label
 	}()
 
-	private var infoButton: UIButton = {
+	var infoButton: UIButton = {
         let image = #imageLiteral(resourceName: "ic_help")
         let button = UIButton(type: .custom)
         button.isHidden = true
@@ -67,8 +67,8 @@ class SectionHeaderView: UIView {
 		infoButton.leftAnchor.constraint(equalTo: textLabel.rightAnchor, constant: 8).isActive = true
 		rightAnchor.constraint(equalTo: infoButton.rightAnchor, constant: 16).isActive = true
 		infoButton.centerYAnchor.constraint(equalTo: textLabel.centerYAnchor).isActive = true
-        infoButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        infoButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        infoButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        infoButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
 		infoButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
 	}
 
