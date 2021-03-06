@@ -86,7 +86,6 @@ class SortingViewController: UIViewController {
 		}
 	}
 
-    // TODO User defaults
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if !UserDefaults.standard.bool(forKey: viewModel.educationID),
