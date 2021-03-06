@@ -267,22 +267,21 @@ extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 		// Do nothing
 	}
 
-	func evaluate(sortID0: Int, sortID1: Int, with completion: ((Bool) -> Void)?) {
+	func evaluate(sortID0: Int, sortID1: Int, with completion: ((BubbleSortState) -> Void)?) {
 		let solution = currentStep.solution
 		if (sortID0 == solution.0 && sortID1 == solution.1) || (sortID1 == solution.0 && sortID0 == solution.1) {
 			// Successful solution
 			speechTitle = .success
-			// If buttons are already in order, do nothing
-			// i.e., treat like an incorrect solution
+			// Buttons are already in order
 			if sortID0 < sortID1 {
-				completion?(false)
+                completion?(.successNoSwap)
 			} else {
 				// Update button data (swap buttons)
 				if let index0 = viewModel.sortingButtons.firstIndex(where: { $0.id == sortID0 }),
 					let index1 = viewModel.sortingButtons.firstIndex(where: { $0.id == sortID1 }) {
 					viewModel.sortingButtons.swapAt(index0, index1)
 				}
-				completion?(true)
+                completion?(.successSwap)
 			}
 			currentStepIndex += 1
 
@@ -305,7 +304,7 @@ extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 			// Incorrect solution
 			speechTitle = .error
             reloadSection(.speaker)
-			completion?(false)
+            completion?(.error)
 		}
 	}
 }

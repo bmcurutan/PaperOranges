@@ -8,7 +8,7 @@
 import UIKit
 
 protocol BubbleSortButtonsTableViewCellDelegate {
-	func evaluate(sortID0: Int, sortID1: Int, with completion: ((Bool) -> Void)?)
+	func evaluate(sortID0: Int, sortID1: Int, with completion: ((BubbleSortState) -> Void)?)
 }
 
 class BubbleSortButtonsTableViewCell: UITableViewCell {
@@ -83,20 +83,11 @@ extension BubbleSortButtonsTableViewCell: ImageLabelButtonDelegate {
             return
         }
 
-        delegate?.evaluate(sortID0: button0.tag, sortID1: button1.tag) { [weak self] isSuccess in
+        delegate?.evaluate(sortID0: button0.tag, sortID1: button1.tag) { [weak self] sortState in
             guard let `self` = self else { return }
 
-            guard isSuccess else { // Error
-                // Vibrate buttons for visual feedback
-                // TODO1 add haptic feedback
-                self.shakeButton(button0)
-                self.shakeButton(button1)
-                // Reset selection UI without swapping buttons
-                self.resetButtonSelection(button0)
-                self.resetButtonSelection(button1)
-                return
-            }
-
+            switch sortState {
+            case .successSwap:
             // If evaluation is successful, make copies of the two buttons
             let copy0 = button0.createCopy()
             copy0.frame = self.stackView.convert(button0.frame, to: self.contentView)
@@ -126,10 +117,17 @@ extension BubbleSortButtonsTableViewCell: ImageLabelButtonDelegate {
                 copy0.removeFromSuperview()
                 copy1.removeFromSuperview()
             }
-
-            // Reset selection UI
-            self.resetButtonSelection(button0)
-            self.resetButtonSelection(button1)
+            case .error:
+                // Vibrate buttons for visual feedback
+                // TODO1 add haptic feedback
+                self.shakeButton(button0)
+                self.shakeButton(button1)
+            default:
+                break
+            }
+        // Reset selection UI
+        self.resetButtonSelection(button0)
+        self.resetButtonSelection(button1)
 		}
 	}
 

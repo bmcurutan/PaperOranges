@@ -226,6 +226,12 @@ enum SortingID: String {
 	case mergeSort
 }
 
+enum BubbleSortState: String {
+    case successSwap
+    case successNoSwap
+    case error
+}
+
 struct Step: Equatable {
     var speech: NSMutableAttributedString = NSMutableAttributedString(string: "") // Text to show in speech bubble (usually explains the previous step)
 	var solution: (Int, Int) = (-1, -1) // (sortID, sortID) Buttons to swap to progress to next step
