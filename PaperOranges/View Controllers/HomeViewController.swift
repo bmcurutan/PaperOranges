@@ -156,7 +156,8 @@ private class TopicTableViewCell: UITableViewCell {
 				button.setTitle(topic.title, for: .normal)
 			}
 			if !topic.isActive {
-				button.layer.borderColor = UIColor.borderColor.cgColor
+                roundImageView.alpha = 0.5 // TODO get new asset, alpha is just temp
+                button.layer.borderColor = UIColor.borderColor.cgColor
 				button.setTitleColor(.secondaryTextColor, for: .normal)
 				button.isEnabled = false
 			}
