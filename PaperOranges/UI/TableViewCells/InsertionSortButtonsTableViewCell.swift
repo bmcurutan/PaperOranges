@@ -10,12 +10,11 @@ import Foundation
 import UIKit
 
 protocol InsertionSortButtonsTableViewCellDelegate {
-	func showButtonsError(with completion: (() -> Void)?)
-	func showSlotsError(with completion: (() -> Void)?)
+	func showError() // TODO2 merge this logic with `evaluate`
     func evaluate(buttonID: Int, slotID: Int, with completion: ((Bool) -> Void)?)
 }
 
-class InsertionSortButtonsTableViewCell: UITableViewCell {
+class InsertionSortButtonsTableViewCell: SortingTableViewCell {
 	var delegate: InsertionSortButtonsTableViewCellDelegate?
 
 	private var buttons: [ButtonData] = []
@@ -163,23 +162,39 @@ extension InsertionSortButtonsTableViewCell: ImageLabelButtonDelegate {
 
 		if selectedButtonsCount > 1, senderButtonIndex > -1 {
 			// Only one button may be selected at a time
-			delegate?.showButtonsError(with: { [weak self] in
-				guard let `self` = self else { return }
-				if self.buttons.indices.contains(senderButtonIndex) {
-					// Undo button selection data and UI
-					self.buttons[senderButtonIndex].isSelected = false
-					sender.isSelected = false
-				}
-			})
+            guard buttons.filter({ $0.isSelected }).count == 2,
+                let index0 = buttons.firstIndex(where: { $0.isSelected }),
+                index0 < buttons.count - 1,
+                let index1 = buttons[index0 + 1...buttons.count - 1].firstIndex(where: { $0.isSelected }),
+                let button0 = buttonsStackView.arrangedSubviews[index0] as? ImageLabelButton,
+                let button1 = buttonsStackView.arrangedSubviews[index1] as? ImageLabelButton else {
+                return
+            }
+            resetButtonsUI([button0, button1])
+            // Update button data
+            buttons.indices.forEach { index in
+                buttons[index].isSelected = false
+            }
+            shakeButtons([button0, button1])
+            delegate?.showError()
 
 		} else if selectedSlotsCount > 1, senderSlotIndex > -1 {
 			// Only one slot may be selected at a time
-			delegate?.showSlotsError(with: { [weak self] in
-				guard let `self` = self else { return }
-				// Undo slot selection data and UI
-				self.slots[senderSlotIndex].isSelected = false
-				sender.isSelected = false
-			})
+            guard slots.filter({ $0.isSelected }).count == 2,
+                let index0 = slots.firstIndex(where: { $0.isSelected }),
+                index0 < slots.count - 1,
+                let index1 = slots[index0 + 1...slots.count - 1].firstIndex(where: { $0.isSelected }),
+                let slot0 = slotsStackView.arrangedSubviews[index0] as? ImageLabelButton,
+                let slot1 = slotsStackView.arrangedSubviews[index1] as? ImageLabelButton else {
+                return
+            }
+            resetButtonsUI([slot0, slot1])
+            // Update slot data
+            slots.indices.forEach { index in
+                slots[index].isSelected = false
+            }
+            shakeButtons([slot0, slot1])
+            delegate?.showError()
 
 		} else if selectedButtonsCount == 1, selectedSlotsCount == 1,
             let buttonIndex = buttons.firstIndex(where: { $0.isSelected }),
@@ -195,6 +210,7 @@ extension InsertionSortButtonsTableViewCell: ImageLabelButtonDelegate {
 				guard isSuccess else {
 					// Error - reset selection UI
 					self.resetSelection(button: button, slot: slot)
+                    self.shakeButtons([button, slot])
 					return
 				}
 

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		670DEF3625F4317A00EE27CF /* UIDevice+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670DEF3525F4317A00EE27CF /* UIDevice+Ext.swift */; };
+		670DEF3E25F4594C00EE27CF /* SortingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670DEF3D25F4594C00EE27CF /* SortingTableViewCell.swift */; };
 		67129BBA25AEDBCE003B4DCA /* SAConfettiView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BB925AEDBCE003B4DCA /* SAConfettiView+Ext.swift */; };
 		67129BC125AF88CB003B4DCA /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BC025AF88CB003B4DCA /* UIImage+Ext.swift */; };
 		67129BC525AF8DDE003B4DCA /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BC425AF8DDE003B4DCA /* RoundedButton.swift */; };
@@ -43,6 +44,7 @@
 
 /* Begin PBXFileReference section */
 		670DEF3525F4317A00EE27CF /* UIDevice+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Ext.swift"; sourceTree = "<group>"; };
+		670DEF3D25F4594C00EE27CF /* SortingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingTableViewCell.swift; sourceTree = "<group>"; };
 		67129BB925AEDBCE003B4DCA /* SAConfettiView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SAConfettiView+Ext.swift"; sourceTree = "<group>"; };
 		67129BC025AF88CB003B4DCA /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		67129BC425AF8DDE003B4DCA /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 				67129BF025B15114003B4DCA /* InsertionSortButtonsTableViewCell.swift */,
 				67129BEC25B14F83003B4DCA /* LinkButtonsTableViewCell.swift */,
 				67129BCD25AFAA33003B4DCA /* PersonTableViewCell.swift */,
+				670DEF3D25F4594C00EE27CF /* SortingTableViewCell.swift */,
 				67129BE925B14BE7003B4DCA /* SpeakerTableViewCell.swift */,
 				67129BE625B14BC7003B4DCA /* StepsTableViewCell.swift */,
 			);
@@ -267,6 +270,7 @@
 				6794C0D125AC0C3F000399FB /* RoundImageView.swift in Sources */,
 				67129BD125AFAA4B003B4DCA /* DescriptionTableViewCell.swift in Sources */,
 				67E105C525AD2E3000684D1B /* UIView+Ext.swift in Sources */,
+				670DEF3E25F4594C00EE27CF /* SortingTableViewCell.swift in Sources */,
 				6794C08F25AADC8B000399FB /* HomeViewController.swift in Sources */,
 				6744E56125B2217300E0B1DA /* UIAlertController+Ext.swift in Sources */,
 				67E105CF25AE88B600684D1B /* UITableView+Ext.swift in Sources */,

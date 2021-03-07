@@ -127,7 +127,6 @@ class SortingViewController: UIViewController {
     }
 
     private func showConfetti() {
-        guard isLastStep else { return }
         confettiView.frame = self.view.bounds
         view.addSubview(self.confettiView)
         confettiView.startConfetti()
@@ -137,6 +136,11 @@ class SortingViewController: UIViewController {
     @objc private func stopConfetti(_ view: SAConfettiView) {
         confettiView.stopConfetti()
         confettiView.perform(#selector(UIView.removeFromSuperview), with: nil, afterDelay: 2.0)
+    }
+
+    private func showAlert(with title: String?, completion: (() -> Void)?) {
+        let alert = UIAlertController(with: traitCollection.userInterfaceStyle, title: title, completion: completion)
+        present(alert, animated: true)
     }
 }
 
@@ -293,7 +297,11 @@ extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 				viewModel.addStepsSection()
 			}
 			tableView.reloadDataAfterDelay { [weak self] in
-                self?.showConfetti()
+                guard let `self` = self, self.isLastStep else { return }
+                self.showConfetti()
+                self.showAlert(with: self.viewModel.completedAlert, completion: { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
+                })
 			}
 			saveCompletedProgress()
 
@@ -310,29 +318,10 @@ extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 }
 
 extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
-	func showButtonsError(with completion: (() -> Void)?) {
-        let alert = UIAlertController(title: viewModel.buttonsError, message: nil, preferredStyle: .alert)
-        var textColor: UIColor = .primaryTextColor
-        if traitCollection.userInterfaceStyle == .dark {
-            textColor = .white
-        }
-        alert.setAttributedTitle(color: textColor)
-        alert.view.tintColor = .accentColor
-		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-			completion?()
-		}))
-		present(alert, animated: true)
-	}
-
-	func showSlotsError(with completion: (() -> Void)?) {
-        let alert = UIAlertController(title: viewModel.slotsError, message: nil, preferredStyle: .alert)
-        alert.setAttributedTitle()
-		alert.view.tintColor = .accentColor
-		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-			completion?()
-		}))
-		present(alert, animated: true)
-	}
+    func showError() {
+        speechTitle = .error
+        reloadSection(.speaker)
+    }
 
     func evaluate(buttonID: Int, slotID: Int, with completion: ((Bool) -> Void)?) {
         let solution = currentStep.solution
@@ -369,7 +358,8 @@ extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
                 viewModel.addStepsSection()
             }
             tableView.reloadDataAfterDelay { [weak self] in
-                self?.showConfetti()
+                guard let `self` = self, self.isLastStep else { return }
+                self.showConfetti()
             }
             saveCompletedProgress()
 
@@ -378,8 +368,7 @@ extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
             guard !isLastStep else { return }
 
             // Incorrect solution
-            speechTitle = .error
-            reloadSection(.speaker)
+            showError()
             completion?(false)
         }
     }

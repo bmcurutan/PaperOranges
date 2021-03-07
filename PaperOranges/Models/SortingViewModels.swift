@@ -27,9 +27,7 @@ protocol SortingViewModel {
 	var errorMessage: String { get }
 	var completedMessage: String { get }
 	var completedSpeech: NSMutableAttributedString { get }
-	// Errors
-	var buttonsError: String? { get }
-	var slotsError: String? { get }
+    var completedAlert: String { get }
 }
 
 extension SortingViewModel {
@@ -53,10 +51,6 @@ extension SortingViewModel {
 		return "That's correct!"
 	}
 
-	var errorMessage: String {
-		return "Oops, try again."
-	}
-
 	var completedMessage: String {
 		return "Congratulations!"
 	}
@@ -67,14 +61,6 @@ extension SortingViewModel {
 		attributedText.append(NSMutableAttributedString(string: "to reset your progress and play the game again."))
 		return attributedText
 	}
-
-    var buttonsError: String? {
-        return nil
-    }
-
-    var slotsError: String? {
-        return nil
-    }
 }
 
 class BubbleSortViewModel: SortingViewModel {
@@ -94,7 +80,7 @@ class BubbleSortViewModel: SortingViewModel {
 
     // Solution determines which two buttons to swap
 	var steps: [Step] = [
-		Step(speech: NSMutableAttributedString(string: "Sort the students alphabetically using Bubble Sort.\n\nHint: Only two students may interact at a time."), solution: (0, 4), stepText: "Compare Alex and Mandy (indices 0 and 1)"),
+		Step(speech: NSMutableAttributedString(string: "Sort the students alphabetically using Bubble Sort. Only two students may interact at a time."), solution: (0, 4), stepText: "Compare Alex and Mandy (indices 0 and 1)"),
 		Step(speech: NSMutableAttributedString(string: "A and M are already in order, so Alex and Mandy didn't swap places."), solution: (4, 2), stepText: "Compare Mandy and Felicia (indices 1 and 2)"),
 		Step(speech: NSMutableAttributedString(string: "F is before M, so Mandy and Felicia swapped places."), solution: (4, 3), stepText: "Compare Mandy and Liam (indices 2 and 3)"),
 		Step(speech: NSMutableAttributedString(string: "L is before M, so Mandy and Liam swapped places."), solution: (4, 1), stepText: "Compare Mandy and BB (indices 3 and 4)"),
@@ -106,7 +92,7 @@ class BubbleSortViewModel: SortingViewModel {
 		Step(speech: NSMutableAttributedString(string: "A is before F, so Alex and Felicia didn't swap places."), solution: (2, 1), stepText: "Compare Felicia and BB (indices 1 and 2)"),
 		Step(speech: NSMutableAttributedString(string: "B is before F, so Felicia and BB swapped places."), solution: (2, 3), stepText: "Compare Felicia and Liam (indices 2 and 3)"),
 		Step(speech: NSMutableAttributedString(string: "F is before L, so Felicia and Liam didn't swap places."), solution: (3, 4), stepText: "Compare Liam and Mandy (indices 3 and 4)"),
-		  Step(speech: NSMutableAttributedString(string: "L is before M, so Liam and Mandy didn't swap places.\n\nAll the students are sorted alphabetically - well done! Tap Back to play another sorting game."))
+		  Step(speech: NSMutableAttributedString(string: "L is before M, so Liam and Mandy didn't swap places."))
 	]
 
 	func addStepsSection() {
@@ -132,6 +118,14 @@ class BubbleSortViewModel: SortingViewModel {
 			}
 		})
 	}
+
+    var errorMessage: String {
+        return "Oops, try again.\nHint: Compare adjacent students"
+    }
+
+    var completedAlert: String {
+        return "All the students are sorted alphabetically - well done! Tap OK to select your next game."
+    }
 }
 
 class InsertionSortViewModel: SortingViewModel {
@@ -160,12 +154,12 @@ class InsertionSortViewModel: SortingViewModel {
 
     // Solution determines which button and slot to select
 	var steps: [Step] = [
-		Step(speech: NSMutableAttributedString(string: "Sort the students by height (represented by 1-5) using Insertion Sort. \n\nHint: Move each student from the blue line to the red line, filling the slots from left to right."), solution: (3, 6), stepText: "`3` goes to index 0"),
+		Step(speech: NSMutableAttributedString(string: "Sort the students by height 1-5 using Insertion Sort. Move each student from the blue line to the red line, filling the slots from left to right."), solution: (3, 6), stepText: "`3` goes to index 0"),
         Step(speech: NSMutableAttributedString(string: "There's no one on the red line yet, so `3` Liam goes to the first slot."), solution: (5, 7), stepText: "`5` goes to index 1"),
         Step(speech: NSMutableAttributedString(string: "`5` is higher than `3`, so `5` Felicia goes to the second slot after `3` Liam."), solution: (2, 6), stepText: "`2` goes to index 0"),
         Step(speech: NSMutableAttributedString(string: "`2` is lower than `3`, so `2` Mandy goes to the first slot and the others shift right."), solution: (4, 8), stepText: "`4` goes to index 3"),
         Step(speech: NSMutableAttributedString(string: "`4` is higher than `3` and lower than `5`, so `4` Alex goes to the third slot and `5` Felicia shifts right."), solution: (1, 6), stepText: "`1` goes to index 0"),
-        Step(speech: NSMutableAttributedString(string: "`1` is lower than `2`, so `1` BB goes to the first slot and the others shift right.\n\nAll the students are sorted by height - well done! Tap Back to play another sorting game."))
+        Step(speech: NSMutableAttributedString(string: "`1` is lower than `2`, so `1` BB goes to the first slot and the others shift right."))
 	]
 
 	func addStepsSection() {
@@ -192,12 +186,12 @@ class InsertionSortViewModel: SortingViewModel {
 		})
 	}
 
-    var buttonsError: String? {
-        return "Only one student may take a turn at a time"
+    var errorMessage: String {
+        return "Oops, try again.\nHint: Select one student and one slot"
     }
 
-    var slotsError: String? {
-        return "Select one slot at a time"
+    var completedAlert: String {
+        return "All the students are sorted by height - well done! Tap OK to select your next game."
     }
 }
 

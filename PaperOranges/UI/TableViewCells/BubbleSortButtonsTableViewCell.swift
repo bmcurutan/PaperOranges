@@ -11,7 +11,7 @@ protocol BubbleSortButtonsTableViewCellDelegate {
 	func evaluate(sortID0: Int, sortID1: Int, with completion: ((BubbleSortState) -> Void)?)
 }
 
-class BubbleSortButtonsTableViewCell: UITableViewCell {
+class BubbleSortButtonsTableViewCell: SortingTableViewCell {
 	var delegate: BubbleSortButtonsTableViewCellDelegate?
 
 	private var buttons: [ButtonData] = []
@@ -88,68 +88,45 @@ extension BubbleSortButtonsTableViewCell: ImageLabelButtonDelegate {
 
             switch sortState {
             case .successSwap:
-            // If evaluation is successful, make copies of the two buttons
-            let copy0 = button0.createCopy()
-            copy0.frame = self.stackView.convert(button0.frame, to: self.contentView)
-            self.contentView.addSubview(copy0)
+                // If evaluation is successful, make copies of the two buttons
+                let copy0 = button0.createCopy()
+                copy0.frame = self.stackView.convert(button0.frame, to: self.contentView)
+                self.contentView.addSubview(copy0)
 
-            let copy1 = button1.createCopy()
-            copy1.frame = self.stackView.convert(button1.frame, to: self.contentView)
-            self.contentView.addSubview(copy1)
+                let copy1 = button1.createCopy()
+                copy1.frame = self.stackView.convert(button1.frame, to: self.contentView)
+                self.contentView.addSubview(copy1)
 
-            // Hide the original buttons temporarily - use alpha instead of removing to maintain arranged subviews positions
-            button0.alpha = 0
-            button1.alpha = 0
+                // Hide the original buttons temporarily - use alpha instead of removing to maintain arranged subviews positions
+                button0.alpha = 0
+                button1.alpha = 0
 
-            // Animate the buttons swapping positions
-            UIView.animate(withDuration: 0.3, animations: {
-                let tmp = copy0.frame.origin.x
-                copy0.frame.origin.x = copy1.frame.origin.x
-                copy1.frame.origin.x = tmp
-            }) { _ in
-                // Update buttons with new (swapped) data, then show
-                button0.copyData(from: copy1)
-                button1.copyData(from: copy0)
-                button0.alpha = 1
-                button1.alpha = 1
+                // Animate the buttons swapping positions
+                UIView.animate(withDuration: 0.3, animations: {
+                    let tmp = copy0.frame.origin.x
+                    copy0.frame.origin.x = copy1.frame.origin.x
+                    copy1.frame.origin.x = tmp
+                }) { _ in
+                    // Update buttons with new (swapped) data, then show
+                    button0.copyData(from: copy1)
+                    button1.copyData(from: copy0)
+                    button0.alpha = 1
+                    button1.alpha = 1
 
-                // Remove copies
-                copy0.removeFromSuperview()
-                copy1.removeFromSuperview()
-            }
+                    // Remove copies
+                    copy0.removeFromSuperview()
+                    copy1.removeFromSuperview()
+                }
             case .error:
-                // Vibrate buttons for visual feedback
                 self.shakeButtons([button0, button1])
             default:
                 break
             }
-        // Reset selection UI
-        self.resetButtonSelection([button0, button1])
-		}
-	}
-
-    private func shakeButtons(_ shakeButtons: [ImageLabelButton]) {
-        shakeButtons.forEach { button in
-            let animation = CABasicAnimation(keyPath: "position")
-            animation.duration = 0.1
-            animation.fromValue = NSValue(cgPoint: CGPoint(x: button.center.x - 2, y: button.center.y))
-            animation.toValue = NSValue(cgPoint: CGPoint(x: button.center.x + 2, y: button.center.y))
-            button.layer.add(animation, forKey: "position")
-        }
-        UIDevice.vibrate()
-    }
-
-	private func resetButtonSelection(_ resetButtons: [ImageLabelButton]) {
-		// Update button UI
-        resetButtons.forEach { button in
-            UIView.animate(withDuration: 0.3, animations: {
-                button.isSelected = false
-            })
-        }
-
-		// Update button data
-		buttons.indices.forEach { index in
-			buttons[index].isSelected = false
+            self.resetButtonsUI([button0, button1])
+            // Update button data
+            self.buttons.indices.forEach { index in
+                self.buttons[index].isSelected = false
+            }
 		}
 	}
 }
