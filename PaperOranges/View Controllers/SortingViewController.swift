@@ -368,6 +368,9 @@ extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
             tableView.reloadDataAfterDelay { [weak self] in
                 guard let `self` = self, self.isLastStep else { return }
                 self.showConfetti()
+                self.showAlert(with: self.viewModel.completedAlert, completion: { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
+                })
             }
             saveCompletedProgress()
 
