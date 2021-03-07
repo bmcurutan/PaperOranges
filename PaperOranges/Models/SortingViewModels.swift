@@ -12,6 +12,7 @@ protocol SortingViewModel {
 	var id: SortingID { get }
 	var sections: [SortingSection] { get set }
 	var sortingButtons: [ButtonData] { get set }
+    var solution: [ButtonData] { get }
     var slotButtons: [ButtonData] { get set }
     // Education
     var educationID: String { get }
@@ -75,6 +76,14 @@ class BubbleSortViewModel: SortingViewModel {
         ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "Liam"),
         ButtonData(id: 1, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "BB")
 	]
+
+    var solution: [ButtonData] = [
+        ButtonData(id: 0, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "Alex"),
+        ButtonData(id: 1, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "BB"),
+        ButtonData(id: 2, image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "Felicia"),
+        ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "Liam"),
+        ButtonData(id: 4, image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "Mandy"),
+    ]
 
     var slotButtons: [ButtonData] = []
 
@@ -140,6 +149,14 @@ class InsertionSortViewModel: SortingViewModel {
         ButtonData(id: 4, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "`4`\nAlex"),
         ButtonData(id: 1, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "`1`\nBB")
 	]
+
+    var solution: [ButtonData] = [
+        ButtonData(id: 1, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "`1`\nBB"),
+        ButtonData(id: 2, image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "`2`\nMandy"),
+        ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "`3`\nLiam"),
+        ButtonData(id: 4, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "`4`\nAlex"),
+        ButtonData(id: 5, image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "`5`\nFelicia")
+    ]
 
     // e.g., buttonIDs = [1, 2, 3], slotIDs = [4, 5, 6] - differentiate between buttons and slots
     // id = index + buttons.count + 1 - insertion sort uses a 1-indexed array for student height

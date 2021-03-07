@@ -191,7 +191,11 @@ extension SortingViewController: UITableViewDataSource {
 		case .bubbleSort:
 			let cell = tableView.dequeueReusableCell(withIdentifier: "BubbleSortButtonsCell", for: indexPath) as! BubbleSortButtonsTableViewCell
 			cell.delegate = self
-			cell.addButtons(viewModel.sortingButtons)
+            if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) {
+                cell.addButtons(viewModel.solution)
+            } else {
+                cell.addButtons(viewModel.sortingButtons)
+            }
 			// Disable all sorting buttons if sorting game was completed or user is on the last step
 			if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) || isLastStep {
 				cell.disableAllButtons()
@@ -201,7 +205,11 @@ extension SortingViewController: UITableViewDataSource {
 			let cell = tableView.dequeueReusableCell(withIdentifier: "InsertionSortButtonsCell", for: indexPath) as! InsertionSortButtonsTableViewCell
 			cell.delegate = self
             cell.showLines()
-			cell.addButtons(viewModel.sortingButtons)
+            if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) {
+                cell.addButtons(viewModel.solution)
+            } else {
+                cell.addButtons(viewModel.sortingButtons)
+            }
             cell.addSlots(viewModel.slotButtons)
 			// Disable all sorting buttons if sorting game was completed or user is on the last step
 			if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) || isLastStep {
