@@ -107,6 +107,17 @@ extension HomeViewController: UITableViewDelegate {
                 tooltip = header.infoButton.addTooltip(to: header, with: viewModel.educationText)
                 UserDefaults.standard.setValue(true, forKey: viewModel.educationID)
             }
+
+            // Calculate progress
+            var progress: Float = 0
+            var activeTopics: Float = 0
+            let topics = viewModel.sections[section].topics
+            topics.forEach { topic in
+                progress += topic.isCompleted ? 1 : 0
+                activeTopics += topic.isActive ? 1 : 0
+            }
+            header.progressView.setProgress(progress / activeTopics, animated: true)
+
 			return header
 		} else {
 			return UIView()

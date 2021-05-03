@@ -44,6 +44,14 @@ class SectionHeaderView: UIView {
 		return button
 	}()
 
+    var progressView: UIProgressView = {
+        let view = UIProgressView()
+        view.backgroundColor = .borderColor
+        view.tintColor = .accentColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
 	init(title: String) {
 		self.init()
 		textLabel.text = title.uppercased() 
@@ -61,7 +69,6 @@ class SectionHeaderView: UIView {
 		addSubview(textLabel)
 		textLabel.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8).isActive = true
 		textLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
-		bottomAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 8).isActive = true
 
 		addSubview(infoButton)
 		infoButton.leftAnchor.constraint(equalTo: textLabel.rightAnchor, constant: 8).isActive = true
@@ -70,6 +77,12 @@ class SectionHeaderView: UIView {
         infoButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         infoButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
 		infoButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
+
+        addSubview(progressView)
+        progressView.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 8).isActive = true
+        progressView.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
+        bottomAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 16).isActive = true
+        rightAnchor.constraint(equalTo: progressView.rightAnchor, constant: 16).isActive = true
 	}
 
 	required init?(coder: NSCoder) {

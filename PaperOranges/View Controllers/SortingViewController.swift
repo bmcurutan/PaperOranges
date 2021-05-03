@@ -244,7 +244,9 @@ extension SortingViewController: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		switch viewModel.sections[section] {
 		case let .steps(title, _):
-			return SectionHeaderView(title: title)
+			let header = SectionHeaderView(title: title)
+            header.progressView.setProgress(Float(currentStepIndex + 1) / Float(viewModel.steps.count), animated: true)
+            return header
 		default:
 			return UIView()
 		}
