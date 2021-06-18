@@ -47,7 +47,7 @@ class SectionHeaderView: UIView {
     var progressView: UIProgressView = {
         let view = UIProgressView()
         view.backgroundColor = .borderColor
-        view.tintColor = .accentColor
+        view.tintColor = .secondaryAccentColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
