@@ -68,11 +68,16 @@ class SpeakerTableViewCell: UITableViewCell {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	func setText(title: String? = nil, text: NSMutableAttributedString, ending: String? = nil) {
+    func setText(title: String? = nil, hint: String? = nil, text: NSMutableAttributedString, ending: String? = nil) {
 		let attributedText = NSMutableAttributedString(string: "")
 		if let title = title {
-			attributedText.append(NSMutableAttributedString(string: "\(title)\n\n").setTextColor(.accentColor))
+            attributedText.append("\(title)\n")
 		}
+        if let hint = hint {
+            attributedText.append(NSMutableAttributedString(string: "\(hint)\n\n").setTextColor(.accentColor))
+        } else {
+            attributedText.append("\n")
+        }
 		attributedText.append(text)
 		if let ending = ending {
 			attributedText.append("\n\n\(ending)")

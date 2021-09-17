@@ -26,6 +26,7 @@ protocol SortingViewModel {
 	var endingMessage: String { get }
 	var successMessage: String { get }
 	var errorMessage: String { get }
+    var hintMessage: String { get }
 	var completedMessage: String { get }
 	var completedSpeech: NSMutableAttributedString { get }
     var completedAlert: String { get }
@@ -129,7 +130,11 @@ class BubbleSortViewModel: SortingViewModel {
 	}
 
     var errorMessage: String {
-        return "Oops, try again.\nHint: Compare adjacent students"
+        return "Oops, try again."
+    }
+
+    var hintMessage: String {
+        return "Hint: Compare adjacent students. For additional help, check your zine."
     }
 
     var completedAlert: String {
@@ -204,7 +209,11 @@ class InsertionSortViewModel: SortingViewModel {
 	}
 
     var errorMessage: String {
-        return "Oops, try again.\nHint: Select one student and one slot"
+        return "Oops, try again."
+    }
+
+    var hintMessage: String {
+        return "Hint: Select one student and one slot. For additional help, check your zine."
     }
 
     var completedAlert: String {

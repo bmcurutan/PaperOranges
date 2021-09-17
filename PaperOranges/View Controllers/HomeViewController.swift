@@ -52,6 +52,7 @@ class HomeViewController: UIViewController {
 		navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightButton)
 		navigationItem.rightBarButtonItem?.customView?.widthAnchor.constraint(equalToConstant: 20).isActive = true
 		navigationItem.rightBarButtonItem?.customView?.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
 
 		tableView.dataSource = self
 		tableView.delegate = self
@@ -60,7 +61,7 @@ class HomeViewController: UIViewController {
 		tableView.separatorStyle = .none
 
 		view.addSubview(heroImageView)
-		heroImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: heroImageView.topAnchor, constant: 8).isActive = true
 		heroImageView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
 		view.rightAnchor.constraint(equalTo: heroImageView.rightAnchor).isActive = true
 

@@ -173,6 +173,7 @@ extension SortingViewController: UITableViewDataSource {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "SpeakerCell", for: indexPath) as! SpeakerTableViewCell
 		cell.delegate = self
 		var title: String?
+        var hint: String?
 		switch speechTitle {
 		case .start:
 			title = viewModel.startMessage
@@ -180,12 +181,13 @@ extension SortingViewController: UITableViewDataSource {
 			title = viewModel.successMessage
 		case .error:
 			title = viewModel.errorMessage
+            hint = viewModel.hintMessage
 		case .completed:
 			title = viewModel.completedMessage
 		case .none:
 			title = nil
 		}
-		cell.setText(title: title, text: speech, ending: speechEnding)
+        cell.setText(title: title, hint: hint, text: speech, ending: speechEnding)
 		return cell
 	}
 

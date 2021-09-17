@@ -28,7 +28,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="gUS-1D-3IN" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" shadowImage="UIImage()" id="HyL-C6-ga2">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HyL-C6-ga2">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.94901960784313721" green="0.49411764705882355" blue="0.29803921568627451" alpha="1" colorSpace="calibratedRGB"/>
@@ -44,7 +44,4 @@
             <point key="canvasLocation" x="-230.43478260869566" y="56.919642857142854"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="UIImage()" width="128" height="128"/>
-    </resources>
 </document>
