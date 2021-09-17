@@ -13,9 +13,7 @@ protocol InfoViewModel {
 
 class MenuInfoViewModel: InfoViewModel {
 	var sections: [InfoSection] {
-		return [
-			InfoSection(image: #imageLiteral(resourceName: "hr_collaborate"), rows: menuRows)
-		]
+		return [InfoSection(image: #imageLiteral(resourceName: "hr_collaborate"), rows: menuRows)]
 	}
 
 	private var menuRows: [Info] = [
@@ -33,9 +31,7 @@ class MenuInfoViewModel: InfoViewModel {
 
 class SortingInfoViewModel: InfoViewModel {
 	var sections: [InfoSection] {
-		return [
-			InfoSection(title: "Intro to Sorting Algorithms", image: #imageLiteral(resourceName: "hr_bubble_sort"), rows: descriptionRows) // TODO1 change image
-		]
+		return [InfoSection(title: "Intro to Sorting Algorithms", image: #imageLiteral(resourceName: "hr_sorting"), rows: descriptionRows)]
 	}
 
 	private var descriptionRows: [Info] = [
@@ -72,6 +68,20 @@ class InsertionSortInfoViewModel: InfoViewModel {
 		.description("Description", "Insertion Sort is a sorting algorithm that creates a list one element at a time by inserting the element into the proper sorted position."),
         .description("Need help?", "Check your Insertion Sort zine for guidance. Don't have one yet? Sorting zines may be purchased from the Paper Oranges shop.", "Paper Oranges shop", URL(string: "https://www.paperoranges.com/shop/"))
 	]
+}
+
+class MergeSortInfoViewModel: InfoViewModel {
+    var sections: [InfoSection] {
+        return [
+            InfoSection(title: "Merge Sort", image: #imageLiteral(resourceName: "hr_merge_sort")),
+            InfoSection(rows: descriptionRows)
+        ]
+    }
+
+    private var descriptionRows: [Info] = [
+        .description("Description", "Merge Sort is a sorting algorithm that merges two pre-sorted lists; the resulting list is also sorted. Repeat until all lists are combined."),
+        .description("Need help?", "Check your Merge Sort zine for guidance. Don't have one yet? Sorting zines may be purchased from the Paper Oranges shop.", "Paper Oranges shop", URL(string: "https://www.paperoranges.com/shop/"))
+    ]
 }
 
 struct InfoSection {

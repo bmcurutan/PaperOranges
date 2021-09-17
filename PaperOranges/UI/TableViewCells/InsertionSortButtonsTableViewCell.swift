@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol InsertionSortButtonsTableViewCellDelegate {
-	func showError() // TODO2 merge this logic with `evaluate`
+	func showError() 
     func evaluate(buttonID: Int, slotID: Int, with completion: ((Bool) -> Void)?)
 }
 

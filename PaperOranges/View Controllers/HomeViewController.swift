@@ -15,7 +15,7 @@ class HomeViewController: UIViewController {
 	private var heroImageView: UIImageView = {
 		let imageView = UIImageView(image: #imageLiteral(resourceName: "hr_home"))
 		imageView.clipsToBounds = true
-		imageView.contentMode = .scaleAspectFit
+		imageView.contentMode = .scaleAspectFill
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		return imageView
 	}()
@@ -61,7 +61,7 @@ class HomeViewController: UIViewController {
 		tableView.separatorStyle = .none
 
 		view.addSubview(heroImageView)
-        view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: heroImageView.topAnchor, constant: 8).isActive = true
+        heroImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
 		heroImageView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
 		view.rightAnchor.constraint(equalTo: heroImageView.rightAnchor).isActive = true
 
@@ -137,9 +137,11 @@ extension HomeViewController: TopicTableViewCellDelegate {
 			navigationController?.pushViewController(SortingViewController(viewModel: BubbleSortViewModel(), title: topic.title), animated: true)
 		case .insertionSort:
 			navigationController?.pushViewController(SortingViewController(viewModel: InsertionSortViewModel(), title: topic.title), animated: true)
-		default:
-			break
-		}
+        case .mergeSort:
+            navigationController?.pushViewController(SortingViewController(viewModel: MergeSortViewModel(), title: topic.title), animated: true)
+        default:
+            break
+        }
 	}
 }
 

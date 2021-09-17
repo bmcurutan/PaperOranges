@@ -7,7 +7,6 @@
 
 import UIKit
 
-// TODO2 add ability to navigate between completed steps or to undo
 protocol SortingViewModel {
 	var id: SortingID { get }
 	var sections: [SortingSection] { get set }
@@ -19,8 +18,8 @@ protocol SortingViewModel {
     var educationText: String { get }
 	// Steps
 	var steps: [Step] { get } // Should be have at least two steps
-	func addStepsSection()
-	func removeStepsSection()
+	mutating func addStepsSection()
+	mutating func removeStepsSection()
 	// Messages
 	var startMessage: String { get }
 	var endingMessage: String { get }
@@ -53,6 +52,10 @@ extension SortingViewModel {
 		return "That's correct!"
 	}
 
+    var errorMessage: String {
+        return "Oops, try again."
+    }
+
 	var completedMessage: String {
 		return "Congratulations!"
 	}
@@ -63,6 +66,30 @@ extension SortingViewModel {
 		attributedText.append(NSMutableAttributedString(string: "to reset your progress and play the game again."))
 		return attributedText
 	}
+
+    mutating func addStepsSection() {
+        if sections.filter({
+            switch $0 {
+            case .steps:
+                return true
+            default:
+                return false
+            }
+        }).count == 0 {
+            sections.append(.steps("Steps", steps))
+        }
+    }
+
+    mutating func removeStepsSection() {
+        sections.removeAll(where: {
+            switch $0 {
+            case .steps:
+                return true
+            default:
+                return false
+            }
+        })
+    }
 }
 
 class BubbleSortViewModel: SortingViewModel {
@@ -104,34 +131,6 @@ class BubbleSortViewModel: SortingViewModel {
 		Step(speech: NSMutableAttributedString(string: "F is before L, so Felicia and Liam didn't swap places."), solution: (3, 4), stepText: "Compare Liam and Mandy (indices 3 and 4)"),
 		  Step(speech: NSMutableAttributedString(string: "L is before M, so Liam and Mandy didn't swap places."))
 	]
-
-	func addStepsSection() {
-		if sections.filter({
-			switch $0 {
-			case .steps:
-				return true
-			default:
-				return false
-			}
-		}).count == 0 {
-			sections.append(.steps("Steps", steps))
-		}
-	}
-
-	func removeStepsSection() {
-		sections.removeAll(where: {
-			switch $0 {
-			case .steps:
-				return true
-			default:
-				return false
-			}
-		})
-	}
-
-    var errorMessage: String {
-        return "Oops, try again."
-    }
 
     var hintMessage: String {
         return "Hint: Compare adjacent students. For additional help, check your zine."
@@ -184,30 +183,6 @@ class InsertionSortViewModel: SortingViewModel {
         Step(speech: NSMutableAttributedString(string: "`1` is lower than `2`, so `1` BB goes to the first slot and the others shift right."))
 	]
 
-	func addStepsSection() {
-		if sections.filter({
-			switch $0 {
-			case .steps:
-				return true
-			default:
-				return false
-			}
-		}).count == 0 {
-			sections.append(.steps("Steps", steps))
-		}
-	}
-
-	func removeStepsSection() {
-		sections.removeAll(where: {
-			switch $0 {
-			case .steps:
-				return true
-		    default:
-				return false
-			}
-		})
-	}
-
     var errorMessage: String {
         return "Oops, try again."
     }
@@ -240,10 +215,96 @@ enum SortingSection: Equatable {
     }
 }
 
+class MergeSortViewModel: SortingViewModel {
+    var id: SortingID = .mergeSort
+
+    var sections: [SortingSection] = [.speaker, .buttons]
+
+    var sortingButtons: [ButtonData] = [
+        ButtonData(id: 8, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "`8`\nDec 20"),
+        ButtonData(id: 2, image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "`2`\nMar 3"),
+        ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "`3`\nMay 12"),
+        ButtonData(id: 7, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "`7`\nNov 24"),
+        ButtonData(id: 4, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "`4`\nMay 17"),
+        ButtonData(id: 1, image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "`1`\nJan 3"),
+        ButtonData(id: 6, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "`6`\nSept 16"),
+        ButtonData(id: 5, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "`5`\nJuly 13")
+    ]
+
+    var solution: [ButtonData] = [ // TODO update images
+        ButtonData(id: 1, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "`1`\nJan 3"),
+        ButtonData(id: 2, image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "`2`\nMar 3"),
+        ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "`3`\nMay 12"),
+        ButtonData(id: 4, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "`4`\nMay 17"),
+        ButtonData(id: 5, image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "`5`\nJuly 13"),
+        ButtonData(id: 6, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "`6`\nSept 16"),
+        ButtonData(id: 7, image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "`7`\nNov 24"),
+        ButtonData(id: 8, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "`8`\nDec 20"),
+    ]
+
+    // e.g., buttonIDs = [1, 2, 3], slotIDs = [4, 5, 6] - differentiate between buttons and slots
+    // id = index + buttons.count + 1 - insertion sort uses a 1-indexed array for student height
+    // name uses placeholder to make button1s the same height as button0s)
+    var slotButtons: [ButtonData] = []
+//        ButtonData(id: 6, name: "\n"),
+//        ButtonData(id: 7, name: "\n"),
+//        ButtonData(id: 8, name: "\n"),
+//        ButtonData(id: 9, name: "\n"),
+//        ButtonData(id: 10, name: "\n")
+//    ]
+//
+//    // Solution determines which button and slot to select
+    var steps: [Step] = []
+//        Step(speech: NSMutableAttributedString(string: "Sort the students by height 1-5 using Insertion Sort. Move each student from the blue line to the red line, filling the slots from left to right."), solution: (3, 6), stepText: "`3` goes to index 0"),
+//        Step(speech: NSMutableAttributedString(string: "There's no one on the red line yet, so `3` Liam goes to the first slot."), solution: (5, 7), stepText: "`5` goes to index 1"),
+//        Step(speech: NSMutableAttributedString(string: "`5` is higher than `3`, so `5` Felicia goes to the second slot after `3` Liam."), solution: (2, 6), stepText: "`2` goes to index 0"),
+//        Step(speech: NSMutableAttributedString(string: "`2` is lower than `3`, so `2` Mandy goes to the first slot and the others shift right."), solution: (4, 8), stepText: "`4` goes to index 3"),
+//        Step(speech: NSMutableAttributedString(string: "`4` is higher than `3` and lower than `5`, so `4` Alex goes to the third slot and `5` Felicia shifts right."), solution: (1, 6), stepText: "`1` goes to index 0"),
+//        Step(speech: NSMutableAttributedString(string: "`1` is lower than `2`, so `1` BB goes to the first slot and the others shift right."))
+//    ]
+
+    func addStepsSection() {
+        if sections.filter({
+            switch $0 {
+            case .steps:
+                return true
+            default:
+                return false
+            }
+        }).count == 0 {
+            sections.append(.steps("Steps", steps))
+        }
+    }
+
+    func removeStepsSection() {
+        sections.removeAll(where: {
+            switch $0 {
+            case .steps:
+                return true
+            default:
+                return false
+            }
+        })
+    }
+
+    var errorMessage: String {
+        return "Oops, try again."
+    }
+
+    var hintMessage: String {
+        return "Hint: Select one student and one slot. For additional help, check your zine."
+    }
+
+    var completedAlert: String {
+        return "All the students are sorted by height - well done! Tap OK to select your next game."
+    }
+}
+
 enum SortingID: String {
 	case bubbleSort
 	case insertionSort
 	case mergeSort
+    case quickSort
 }
 
 enum BubbleSortState: String {

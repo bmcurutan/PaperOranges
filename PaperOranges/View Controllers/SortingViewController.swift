@@ -106,6 +106,8 @@ class SortingViewController: UIViewController {
 			present(InfoViewController(viewModel: BubbleSortInfoViewModel()), animated: true, completion: nil)
 		case .insertionSort:
 			present(InfoViewController(viewModel: InsertionSortInfoViewModel()), animated: true, completion: nil)
+        case .mergeSort:
+            present(InfoViewController(viewModel: MergeSortInfoViewModel()), animated: true, completion: nil)
 		default:
 			break
 		}
