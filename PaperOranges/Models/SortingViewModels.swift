@@ -111,7 +111,7 @@ class BubbleSortViewModel: SortingViewModel {
     }
 
     var completedAlert: String {
-        return "All the students are sorted alphabetically - well done! Tap OK to select your next game."
+        return "All the students are sorted alphabetically - well done! Go back to select your next game."
     }
 }
 
@@ -162,7 +162,7 @@ class InsertionSortViewModel: SortingViewModel {
     }
 
     var completedAlert: String {
-        return "All the students are sorted by height - well done! Tap OK to select your next game."
+        return "All the students are sorted by height - well done! Go back to select your next game."
     }
 }
 
@@ -172,36 +172,54 @@ class MergeSortViewModel: SortingViewModel {
     var sections: [SortingSection] = [.speaker, .buttons, .steps]
 
     var sortingButtons: [ButtonData] = [
-        ButtonData(id: 8, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "Dec 20\nBB"),
-        ButtonData(id: 2, image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "`2`\nMar 3"),
-        ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "`3`\nMay 12"),
-        ButtonData(id: 7, image: #imageLiteral(resourceName: "av_sorting_tanwi"), name: "`7`\nNov 17"),
-        ButtonData(id: 4, image: #imageLiteral(resourceName: "av_sorting_vincente"), name: "`4`\nMay 27"),
-        ButtonData(id: 1, image: #imageLiteral(resourceName: "av_sorting_rae"), name: "`1`\nJan 1"),
-        ButtonData(id: 6, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "`6`\nSept 28"),
-        ButtonData(id: 5, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "`5`\nJuly 30")
+        ButtonData(id: 8, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "Dec 20"),
+        ButtonData(id: 2, image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "Mar 3"),
+        ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "May 12"),
+        ButtonData(id: 7, image: #imageLiteral(resourceName: "av_sorting_tanwi"), name: "Nov 17"),
+        ButtonData(id: 4, image: #imageLiteral(resourceName: "av_sorting_vincente"), name: "May 27"),
+        ButtonData(id: 1, image: #imageLiteral(resourceName: "av_sorting_rae"), name: "Jan 1"),
+        ButtonData(id: 6, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "Sept 28"),
+        ButtonData(id: 5, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "July 30")
     ]
 
     var solution: [ButtonData] = [
-        ButtonData(id: 1, image: #imageLiteral(resourceName: "av_sorting_rae"), name: "`1`\nJan 1"),
-        ButtonData(id: 2, image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "`2`\nMar 3"),
-        ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "`3`\nMay 12"),
-        ButtonData(id: 4, image: #imageLiteral(resourceName: "av_sorting_vincente"), name: "`4`\nMay 27"),
-        ButtonData(id: 5, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "`5`\nJuly 30"),
-        ButtonData(id: 6, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "`6`\nSept 28"),
-        ButtonData(id: 7, image: #imageLiteral(resourceName: "av_sorting_tanwi"), name: "`7`\nNov 17"),
-        ButtonData(id: 8, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "`8`\nDec 20"),
+        ButtonData(id: 1, image: #imageLiteral(resourceName: "av_sorting_rae"), name: "Jan 1"),
+        ButtonData(id: 2, image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "Mar 3"),
+        ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "May 12"),
+        ButtonData(id: 4, image: #imageLiteral(resourceName: "av_sorting_vincente"), name: "May 27"),
+        ButtonData(id: 5, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "July 30"),
+        ButtonData(id: 6, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "Sept 28"),
+        ButtonData(id: 7, image: #imageLiteral(resourceName: "av_sorting_tanwi"), name: "Nov 17"),
+        ButtonData(id: 8, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "Dec 20"),
     ]
 
-    var slotButtons: [ButtonData] = []
+    var slotButtons: [ButtonData] = [
+        ButtonData(id: 9, name: "\n"),
+        ButtonData(id: 10, name: "\n"),
+        ButtonData(id: 11, name: "\n"),
+        ButtonData(id: 12, name: "\n"),
+        ButtonData(id: 13, name: "\n"),
+        ButtonData(id: 14, name: "\n"),
+        ButtonData(id: 15, name: "\n"),
+        ButtonData(id: 16, name: "\n"),
+    ]
 
     var steps: [Step] = [
-        Step(speech: NSMutableAttributedString(string: "Sort the students by birthday. The first step is to separate them out into groups of 1."), solution: (8, 1), stepText: "`` goes to index 0")
+        Step(speech: NSMutableAttributedString(string: "Sort the students by birthday. The first step is to separate them out into groups of 1."), solution: (8, 9), stepText: "Dec 20 goes to index 0"),
+        Step(speech: NSMutableAttributedString(string: ""), solution: (2, 10), stepText: "Mar 3 goes to index 1"),
+        Step(speech: NSMutableAttributedString(string: ""), solution: (3, 11), stepText: "May 12 goes to index 2"),
+        Step(speech: NSMutableAttributedString(string: ""), solution: (7, 12), stepText: "May 27 goes to index 3"),
+        Step(speech: NSMutableAttributedString(string: ""), solution: (4, 13), stepText: "July 30 goes to index 4"),
+        Step(speech: NSMutableAttributedString(string: ""), solution: (1, 14), stepText: "Sept 28 goes to index 5"),
+        Step(speech: NSMutableAttributedString(string: ""), solution: (6, 15), stepText: "Nov 17 goes to index 6"),
+        Step(speech: NSMutableAttributedString(string: ""), solution: (5, 16), stepText: "Dec 20 goes to index 7"),
+        Step(speech: NSMutableAttributedString(string: "That was easy - each group of 1 is already sorted. Next, combine groups to form groups of 2."), solution: (-1, -1), stepText: ""),
 //        Step(speech: NSMutableAttributedString(string: "There's no one on the red line yet, so `3` Liam goes to the first slot."), solution: (5, 7), stepText: "`5` goes to index 1"),
 //        Step(speech: NSMutableAttributedString(string: "`5` is higher than `3`, so `5` Felicia goes to the second slot after `3` Liam."), solution: (2, 6), stepText: "`2` goes to index 0"),
 //        Step(speech: NSMutableAttributedString(string: "`2` is lower than `3`, so `2` Mandy goes to the first slot and the others shift right."), solution: (4, 8), stepText: "`4` goes to index 3"),
 //        Step(speech: NSMutableAttributedString(string: "`4` is higher than `3` and lower than `5`, so `4` Alex goes to the third slot and `5` Felicia shifts right."), solution: (1, 6), stepText: "`1` goes to index 0"),
 //        Step(speech: NSMutableAttributedString(string: "`1` is lower than `2`, so `1` BB goes to the first slot and the others shift right."))
+        Step(speech: NSMutableAttributedString(string: "// TODO last step"))
     ]
 
     var hintMessage: String {
@@ -209,7 +227,7 @@ class MergeSortViewModel: SortingViewModel {
     }
 
     var completedAlert: String {
-        return "All the students are sorted by birthday - well done! Tap OK to exit."
+        return "All the students are sorted by birthday - well done! Go back to select your next game."
     }
 }
 

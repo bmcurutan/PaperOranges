@@ -120,6 +120,8 @@ class SortingViewController: UIViewController {
             UserDefaults.standard.setValue(true, forKey: SortingID.bubbleSort.rawValue)
         case .insertionSort:
             UserDefaults.standard.setValue(true, forKey: SortingID.insertionSort.rawValue)
+        case .mergeSort:
+            UserDefaults.standard.setValue(true, forKey: SortingID.mergeSort.rawValue)
         default:
             break
         }
@@ -229,7 +231,7 @@ extension SortingViewController: UITableViewDataSource {
 			return cell
         case .mergeSort:
             let cell = tableView.dequeueReusableCell(withIdentifier: "MergeSortButtonsCell", for: indexPath) as! MergeSortButtonsTableViewCell
-//            cell.delegate = self
+            cell.delegate = self
             if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) {
                 cell.addButtons(viewModel.solution)
             } else {
@@ -332,9 +334,7 @@ extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 			tableView.reloadDataAfterDelay { [weak self] in
                 guard let `self` = self, self.isLastStep else { return }
                 self.showConfetti()
-                self.showAlert(with: self.viewModel.completedAlert, completion: { [weak self] in
-                    self?.navigationController?.popViewController(animated: true)
-                })
+                self.showAlert(with: self.viewModel.completedAlert, completion: nil)
 			}
 			saveCompletedProgress()
 
@@ -389,9 +389,61 @@ extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
             tableView.reloadDataAfterDelay { [weak self] in
                 guard let `self` = self, self.isLastStep else { return }
                 self.showConfetti()
-                self.showAlert(with: self.viewModel.completedAlert, completion: { [weak self] in
-                    self?.navigationController?.popViewController(animated: true)
-                })
+                self.showAlert(with: self.viewModel.completedAlert, completion: nil)
+            }
+            saveCompletedProgress()
+
+        } else {
+            // Don't need to error out for the last step - nothing else to do
+            guard !isLastStep else { return }
+
+            // Incorrect solution
+            showError()
+            completion?(false)
+        }
+    }
+}
+
+extension SortingViewController: MergeSortButtonsTableViewCellDelegate {
+    func showMergeSortError() {
+        speechTitle = .error
+        reloadSection(.speaker)
+    }
+
+    func evaluateMergeSort(buttonID: Int, slotID: Int, with completion: ((Bool) -> Void)?) {
+        let solution = currentStep.solution
+        if buttonID == solution.0 && slotID == solution.1 {
+            // Successful solution
+            speechTitle = .success
+
+            // Update button data
+            if let buttonIndex = viewModel.sortingButtons.firstIndex(where: { $0.id == buttonID }),
+                let slotIndex = viewModel.slotButtons.firstIndex(where: { $0.id == slotID }) {
+                // If slot already has button data, shift everything to the right
+                // Only need to check for image and name to coincide with copyData
+                if viewModel.slotButtons[slotIndex].image != UIImage() && viewModel.slotButtons[slotIndex].name != nil {
+                    var loopIndex = viewModel.slotButtons.count - 1
+                    while loopIndex > slotIndex {
+                        let previousSlot = viewModel.slotButtons[loopIndex - 1]
+                        viewModel.slotButtons[loopIndex].image = previousSlot.image
+                        viewModel.slotButtons[loopIndex].name = previousSlot.name
+                        loopIndex -= 1
+                    }
+                }
+                viewModel.slotButtons[slotIndex] = viewModel.sortingButtons[buttonIndex]
+                viewModel.slotButtons[slotIndex].id = slotID // Restore original slot ID because it gets overwritten in addSlots
+                viewModel.sortingButtons[buttonIndex] = ButtonData(id: -1, isHidden: true)
+            }
+            completion?(true)
+            currentStepIndex += 1
+
+            // Reload speaker section first so it appears less jumpy
+            reloadSection(.speaker)
+
+            tableView.reloadDataAfterDelay { [weak self] in
+                guard let `self` = self, self.isLastStep else { return }
+                self.showConfetti()
+                self.showAlert(with: self.viewModel.completedAlert, completion: nil)
             }
             saveCompletedProgress()
 

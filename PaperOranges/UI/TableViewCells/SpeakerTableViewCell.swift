@@ -71,14 +71,15 @@ class SpeakerTableViewCell: UITableViewCell {
     func setText(title: String? = nil, hint: String? = nil, text: NSMutableAttributedString, ending: String? = nil) {
 		let attributedText = NSMutableAttributedString(string: "")
 		if let title = title {
-            attributedText.append("\(title)\n")
+            attributedText.append(title)
 		}
         if let hint = hint {
-            attributedText.append(NSMutableAttributedString(string: "\(hint)\n\n").setTextColor(.accentColor))
-        } else {
-            attributedText.append("\n")
+            attributedText.append(NSMutableAttributedString(string: "\n\(hint)").setTextColor(.accentColor))
         }
-		attributedText.append(text)
+        if (title != nil || hint != nil) && text.length != 0 {
+            attributedText.append("\n\n")
+            attributedText.append(text)
+        }
 		if let ending = ending {
 			attributedText.append("\n\n\(ending)")
 		}
