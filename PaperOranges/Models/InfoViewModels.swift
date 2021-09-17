@@ -14,7 +14,7 @@ protocol InfoViewModel {
 class MenuInfoViewModel: InfoViewModel {
 	var sections: [InfoSection] {
 		return [
-			InfoSection(image: #imageLiteral(resourceName: "hr_collaborate"), rows: menuRows) // TODO1 change image
+			InfoSection(image: #imageLiteral(resourceName: "hr_collaborate"), rows: menuRows)
 		]
 	}
 
@@ -24,7 +24,6 @@ class MenuInfoViewModel: InfoViewModel {
             ButtonData(id: 0, image: #imageLiteral(resourceName: "ic_gmail"), url: "mailto:info@paperoranges.com"),
             ButtonData(id: 1, image: #imageLiteral(resourceName: "ic_cart"), url: "https://www.paperoranges.com/shop/"),
             ButtonData(id: 2, image: #imageLiteral(resourceName: "ic_instagram"), url: "https://www.instagram.com/paper_oranges/"),
-//			ButtonData(image: #imageLiteral(resourceName: "ic_facebook"), url: "https://www.facebook.com/paperoranges/"), // TODO1 facebook link is broken
             ButtonData(id: 3, image: #imageLiteral(resourceName: "ic_medium"), url: "https://medium.com/paper-oranges")
         ]),
 		.textLink("Version \(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String) • ©\(Calendar.current.component(.year, from: Date())) Paper Oranges"),

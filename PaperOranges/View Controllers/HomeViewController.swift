@@ -15,7 +15,7 @@ class HomeViewController: UIViewController {
 	private var heroImageView: UIImageView = {
 		let imageView = UIImageView(image: #imageLiteral(resourceName: "hr_home"))
 		imageView.clipsToBounds = true
-		imageView.contentMode = .scaleAspectFill
+		imageView.contentMode = .scaleAspectFit
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		return imageView
 	}()
@@ -62,7 +62,6 @@ class HomeViewController: UIViewController {
 		view.addSubview(heroImageView)
 		heroImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
 		heroImageView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-		heroImageView.heightAnchor.constraint(equalToConstant: 160).isActive = true
 		view.rightAnchor.constraint(equalTo: heroImageView.rightAnchor).isActive = true
 
 		view.addSubview(tableView)
@@ -167,7 +166,7 @@ private class TopicTableViewCell: UITableViewCell {
 				button.setTitle(topic.title, for: .normal)
 			}
 			if !topic.isActive {
-                roundImageView.alpha = 0.5 // TODO get new asset, alpha is just temp
+                roundImageView.alpha = 0.5 
                 button.layer.borderColor = UIColor.borderColor.cgColor
 				button.setTitleColor(.secondaryTextColor, for: .normal)
 				button.isEnabled = false

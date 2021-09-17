@@ -88,11 +88,14 @@ class SortingViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if !UserDefaults.standard.bool(forKey: viewModel.educationID),
-           let rightButton = navigationItem.rightBarButtonItem?.value(forKey: "view") as? UIView,
-           let parent = navigationController?.view {
-            let tooltip = rightButton.addTooltip(to: parent, with: viewModel.educationText)
-            tooltip?.animate()
+        if !UserDefaults.standard.bool(forKey: viewModel.educationID) {
+           // Show tooltip education
+//           let rightButton = navigationItem.rightBarButtonItem?.value(forKey: "view") as? UIView,
+//           let parent = navigationController?.view {
+//            let tooltip = rightButton.addTooltip(to: parent, with: viewModel.educationText)
+//            tooltip?.animate()
+           // Show info modal
+            infoButtonTapped()
             UserDefaults.standard.setValue(true, forKey: viewModel.educationID)
         }
     }
