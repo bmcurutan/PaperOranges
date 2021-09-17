@@ -117,19 +117,19 @@ class BubbleSortViewModel: SortingViewModel {
     var slotButtons: [ButtonData] = []
 
 	var steps: [Step] = [
-		Step(speech: NSMutableAttributedString(string: "Sort the students alphabetically using Bubble Sort. Only two students may interact at a time."), solution: (0, 4), stepText: "Compare Alex and Mandy (indices 0 and 1)"),
-		Step(speech: NSMutableAttributedString(string: "A and M are already in order, so Alex and Mandy didn't swap places."), solution: (4, 2), stepText: "Compare Mandy and Felicia (indices 1 and 2)"),
-		Step(speech: NSMutableAttributedString(string: "F is before M, so Mandy and Felicia swapped places."), solution: (4, 3), stepText: "Compare Mandy and Liam (indices 2 and 3)"),
-		Step(speech: NSMutableAttributedString(string: "L is before M, so Mandy and Liam swapped places."), solution: (4, 1), stepText: "Compare Mandy and BB (indices 3 and 4)"),
-		Step(speech: NSMutableAttributedString(string: "B is before M, so Mandy and BB swapped places."), solution: (0, 2), stepText: "Compare Alex and Felicia (indices 0 and 1)"),
-		Step(speech: NSMutableAttributedString(string: "A is before F, so Alex and Felicia didn't swap places."), solution: (2, 3), stepText: "Compare Felicia and Liam (indices 1 and 2)"),
-		Step(speech: NSMutableAttributedString(string: "F is before L, so Felicia and Liam didn't swap places."), solution: (3, 1), stepText: "Compare Liam and BB (indices 2 and 3)"),
-		Step(speech: NSMutableAttributedString(string: "B is before L, so Liam and BB swapped places."), solution: (3, 4), stepText: "Compare Liam and Mandy (indices 3 and 4)"),
-		Step(speech: NSMutableAttributedString(string: "L is before M, so Liam and Mandy didn't swap places."), solution: (0, 2), stepText: "Compare Alex and Felicia (indices 0 and 1)"),
-		Step(speech: NSMutableAttributedString(string: "A is before F, so Alex and Felicia didn't swap places."), solution: (2, 1), stepText: "Compare Felicia and BB (indices 1 and 2)"),
-		Step(speech: NSMutableAttributedString(string: "B is before F, so Felicia and BB swapped places."), solution: (2, 3), stepText: "Compare Felicia and Liam (indices 2 and 3)"),
-		Step(speech: NSMutableAttributedString(string: "F is before L, so Felicia and Liam didn't swap places."), solution: (3, 4), stepText: "Compare Liam and Mandy (indices 3 and 4)"),
-		  Step(speech: NSMutableAttributedString(string: "L is before M, so Liam and Mandy didn't swap places."))
+		Step(speech: NSMutableAttributedString(string: "Sort the students alphabetically using Bubble Sort. Only two students may interact at a time."), solution: (0, 4), stepText: "Compare Alex and Mandy (indices 0 and 1) - no swapping"),
+		Step(speech: NSMutableAttributedString(string: "A and M are already in order, so Alex and Mandy didn't swap places."), solution: (4, 2), stepText: "Compare Mandy and Felicia (indices 1 and 2) - they swap places"),
+		Step(speech: NSMutableAttributedString(string: "F is before M, so Mandy and Felicia swapped places."), solution: (4, 3), stepText: "Compare Mandy and Liam (indices 2 and 3) - they swap places"),
+		Step(speech: NSMutableAttributedString(string: "L is before M, so Mandy and Liam swapped places."), solution: (4, 1), stepText: "Compare Mandy and BB (indices 3 and 4) - they swap places"),
+		Step(speech: NSMutableAttributedString(string: "B is before M, so Mandy and BB swapped places."), solution: (0, 2), stepText: "Compare Alex and Felicia (indices 0 and 1) - no swapping"),
+		Step(speech: NSMutableAttributedString(string: "A is before F, so Alex and Felicia didn't swap places."), solution: (2, 3), stepText: "Compare Felicia and Liam (indices 1 and 2) - no swapping"),
+		Step(speech: NSMutableAttributedString(string: "F is before L, so Felicia and Liam didn't swap places."), solution: (3, 1), stepText: "Compare Liam and BB (indices 2 and 3) - they swap places"),
+		Step(speech: NSMutableAttributedString(string: "B is before L, so Liam and BB swapped places."), solution: (3, 4), stepText: "Compare Liam and Mandy (indices 3 and 4) - no swapping"),
+		Step(speech: NSMutableAttributedString(string: "L is before M, so Liam and Mandy didn't swap places."), solution: (0, 2), stepText: "Compare Alex and Felicia (indices 0 and 1) - no swapping"),
+		Step(speech: NSMutableAttributedString(string: "A is before F, so Alex and Felicia didn't swap places."), solution: (2, 1), stepText: "Compare Felicia and BB (indices 1 and 2) - they swap places"),
+		Step(speech: NSMutableAttributedString(string: "B is before F, so Felicia and BB swapped places."), solution: (2, 3), stepText: "Compare Felicia and Liam (indices 2 and 3) - no swapping"),
+		Step(speech: NSMutableAttributedString(string: "F is before L, so Felicia and Liam didn't swap places."), solution: (3, 4), stepText: "Compare Liam and Mandy (indices 3 and 4) - no swapping"),
+        Step(speech: NSMutableAttributedString(string: "L is before M, so Liam and Mandy didn't swap places."))
 	]
 
     var hintMessage: String {
@@ -217,7 +217,7 @@ class MergeSortViewModel: SortingViewModel {
     var sections: [SortingSection] = [.speaker, .buttons]
 
     var sortingButtons: [ButtonData] = [
-        ButtonData(id: 8, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "`8`\nDec 20"),
+        ButtonData(id: 8, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "Dec 20\nBB"),
         ButtonData(id: 2, image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "`2`\nMar 3"),
         ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "`3`\nMay 12"),
         ButtonData(id: 7, image: #imageLiteral(resourceName: "av_sorting_tanwi"), name: "`7`\nNov 17"),
@@ -241,7 +241,7 @@ class MergeSortViewModel: SortingViewModel {
     var slotButtons: [ButtonData] = []
 
     var steps: [Step] = [
-        Step(speech: NSMutableAttributedString(string: "Sort the students by birthday. The first step is to separate out "), solution: (3, 6), stepText: "`3` goes to index 0")
+        Step(speech: NSMutableAttributedString(string: "Sort the students by birthday. The first step is to separate them out into groups of 1."), solution: (8, 1), stepText: "`` goes to index 0")
 //        Step(speech: NSMutableAttributedString(string: "There's no one on the red line yet, so `3` Liam goes to the first slot."), solution: (5, 7), stepText: "`5` goes to index 1"),
 //        Step(speech: NSMutableAttributedString(string: "`5` is higher than `3`, so `5` Felicia goes to the second slot after `3` Liam."), solution: (2, 6), stepText: "`2` goes to index 0"),
 //        Step(speech: NSMutableAttributedString(string: "`2` is lower than `3`, so `2` Mandy goes to the first slot and the others shift right."), solution: (4, 8), stepText: "`4` goes to index 3"),

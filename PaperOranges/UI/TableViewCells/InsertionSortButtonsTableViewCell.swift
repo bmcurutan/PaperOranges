@@ -5,8 +5,6 @@
 //  Created by Bianca Curutan on 1/14/21.
 //
 
-import Foundation
-
 import UIKit
 
 protocol InsertionSortButtonsTableViewCellDelegate {
@@ -39,7 +37,6 @@ class InsertionSortButtonsTableViewCell: SortingTableViewCell {
 	private var blueLineView: UIView = {
 		let view = UIView()
 		view.backgroundColor = UIColor.desertBlue.withAlphaComponent(0.4)
-		view.isHidden = true
 		view.translatesAutoresizingMaskIntoConstraints = false
 		return view
 	}()
@@ -47,7 +44,6 @@ class InsertionSortButtonsTableViewCell: SortingTableViewCell {
     private var redLineView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.desertRed.withAlphaComponent(0.4)
-        view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -83,11 +79,6 @@ class InsertionSortButtonsTableViewCell: SortingTableViewCell {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-
-    func showLines() {
-        blueLineView.isHidden = false
-        redLineView.isHidden = false
-    }
 
 	func addButtons(_ buttons: [ButtonData]) {
 		self.buttons = buttons

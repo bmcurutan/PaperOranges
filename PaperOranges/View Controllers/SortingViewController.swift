@@ -69,6 +69,7 @@ class SortingViewController: UIViewController {
 		tableView.register(SpeakerTableViewCell.self, forCellReuseIdentifier: "SpeakerCell")
 		tableView.register(BubbleSortButtonsTableViewCell.self, forCellReuseIdentifier: "BubbleSortButtonsCell")
 		tableView.register(InsertionSortButtonsTableViewCell.self, forCellReuseIdentifier: "InsertionSortButtonsCell")
+        tableView.register(MergeSortButtonsTableViewCell.self, forCellReuseIdentifier: "MergeSortButtonsCell")
 		tableView.register(StepsTableViewCell.self, forCellReuseIdentifier: "StepsCell")
 		tableView.separatorStyle = .none
 
@@ -211,7 +212,6 @@ extension SortingViewController: UITableViewDataSource {
 		case .insertionSort:
 			let cell = tableView.dequeueReusableCell(withIdentifier: "InsertionSortButtonsCell", for: indexPath) as! InsertionSortButtonsTableViewCell
 			cell.delegate = self
-            cell.showLines()
             if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) {
                 cell.addButtons(viewModel.solution)
             } else {
@@ -223,6 +223,20 @@ extension SortingViewController: UITableViewDataSource {
 				cell.disableAllButtons()
 			}
 			return cell
+        case .mergeSort:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MergeSortButtonsCell", for: indexPath) as! MergeSortButtonsTableViewCell
+//            cell.delegate = self
+            if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) {
+                cell.addButtons(viewModel.solution)
+            } else {
+                cell.addButtons(viewModel.sortingButtons)
+            }
+            cell.addSlots(viewModel.slotButtons)
+            // Disable all sorting buttons if sorting game was completed or user is on the last step
+            if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) || isLastStep {
+                cell.disableAllButtons()
+            }
+            return cell
 		default:
 			return UITableViewCell() // Shouldn't happen
 		}
