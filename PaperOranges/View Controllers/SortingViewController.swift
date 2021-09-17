@@ -70,7 +70,7 @@ class SortingViewController: UIViewController {
 		tableView.register(BubbleSortButtonsTableViewCell.self, forCellReuseIdentifier: "BubbleSortButtonsCell")
 		tableView.register(InsertionSortButtonsTableViewCell.self, forCellReuseIdentifier: "InsertionSortButtonsCell")
         tableView.register(MergeSortButtonsTableViewCell.self, forCellReuseIdentifier: "MergeSortButtonsCell")
-		tableView.register(StepsTableViewCell.self, forCellReuseIdentifier: "StepsCell")
+		tableView.register(StepTableViewCell.self, forCellReuseIdentifier: "StepCell")
 		tableView.separatorStyle = .none
 
 		view.addSubview(tableView)
@@ -83,7 +83,6 @@ class SortingViewController: UIViewController {
 		if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) {
 			speechTitle = .completed
 			currentStepIndex = viewModel.steps.count - 1
-			viewModel.addStepsSection()
 		}
 	}
 
@@ -152,7 +151,12 @@ class SortingViewController: UIViewController {
 
 extension SortingViewController: UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return 1
+        switch viewModel.sections[section] {
+        case .steps:
+            return viewModel.steps.count - 1
+        default:
+            return 1
+        }
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -162,7 +166,7 @@ extension SortingViewController: UITableViewDataSource {
 		case .buttons:
 			return buttonsCellForRow(at: indexPath)
 		case .steps:
-			return stepsCellForRow(at: indexPath)
+			return stepCellForRow(at: indexPath)
 		}
 	}
 
@@ -242,13 +246,16 @@ extension SortingViewController: UITableViewDataSource {
 		}
 	}
 
-	private func stepsCellForRow(at indexPath: IndexPath) -> StepsTableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "StepsCell", for: indexPath) as! StepsTableViewCell
-		// Completed steps are steps up to (but not including) current step
-		let endIndex = currentStepIndex - 1
-		if viewModel.steps.indices.contains(endIndex) {
-			cell.stepsText = viewModel.steps[0...endIndex].map { $0.stepText }
-		}
+	private func stepCellForRow(at indexPath: IndexPath) -> StepTableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "StepCell", for: indexPath) as! StepTableViewCell
+        // Only show completed steps
+        if indexPath.row < currentStepIndex,
+           let text = viewModel.steps[indexPath.row].stepText {
+                cell.stepText = "\(indexPath.row + 1). \(text)"
+        } else {
+            cell.stepText = nil
+            return cell
+        }
 		return cell
 	}
 }
@@ -264,9 +271,9 @@ extension SortingViewController: UITableViewDelegate {
 
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		switch viewModel.sections[section] {
-		case let .steps(title, _):
-			let header = SectionHeaderView(title: title)
-            header.progressView.setProgress(Float(currentStepIndex + 1) / Float(viewModel.steps.count), animated: true)
+		case .steps:
+			let header = SectionHeaderView(title: "Steps")
+            header.progressView.setProgress(Float(currentStepIndex) / Float(viewModel.steps.count - 1), animated: true)
             return header
 		default:
 			return UIView()
@@ -288,7 +295,6 @@ extension SortingViewController: SpeakerTableViewCellDelegate {
 		if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) && !isCompletedCurrently {
 			// Reset to uncompleted state
 			UserDefaults.standard.setValue(false, forKey: viewModel.id.rawValue)
-			viewModel.removeStepsSection()
 			speechTitle = .start
 			currentStepIndex = 0
 			tableView.reloadData()
@@ -323,10 +329,6 @@ extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 			// Reload speaker section first so it appears less jumpy
             reloadSection(.speaker)
 
-			// If current step index is > 0, there is at least one completed step so add steps section
-			if currentStepIndex > 0 {
-				viewModel.addStepsSection()
-			}
 			tableView.reloadDataAfterDelay { [weak self] in
                 guard let `self` = self, self.isLastStep else { return }
                 self.showConfetti()
@@ -384,10 +386,6 @@ extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
             // Reload speaker section first so it appears less jumpy
             reloadSection(.speaker)
 
-            // If current step index is > 0, there is at least one completed step so add steps section
-            if currentStepIndex > 0 {
-                viewModel.addStepsSection()
-            }
             tableView.reloadDataAfterDelay { [weak self] in
                 guard let `self` = self, self.isLastStep else { return }
                 self.showConfetti()

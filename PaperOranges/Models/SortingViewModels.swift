@@ -18,8 +18,6 @@ protocol SortingViewModel {
     var educationText: String { get }
 	// Steps
 	var steps: [Step] { get } // Should be have at least two steps
-	mutating func addStepsSection()
-	mutating func removeStepsSection()
 	// Messages
 	var startMessage: String { get }
 	var endingMessage: String { get }
@@ -66,36 +64,12 @@ extension SortingViewModel {
 		attributedText.append(NSMutableAttributedString(string: "to reset your progress and play the game again."))
 		return attributedText
 	}
-
-    mutating func addStepsSection() {
-        if sections.filter({
-            switch $0 {
-            case .steps:
-                return true
-            default:
-                return false
-            }
-        }).count == 0 {
-            sections.append(.steps("Steps", steps))
-        }
-    }
-
-    mutating func removeStepsSection() {
-        sections.removeAll(where: {
-            switch $0 {
-            case .steps:
-                return true
-            default:
-                return false
-            }
-        })
-    }
 }
 
 class BubbleSortViewModel: SortingViewModel {
 	var id: SortingID = .bubbleSort
 
-	var sections: [SortingSection] = [.speaker, .buttons]
+    var sections: [SortingSection] = [.speaker, .buttons, .steps]
 
 	var sortingButtons: [ButtonData] = [
         ButtonData(id: 0, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "Alex"),
@@ -144,23 +118,23 @@ class BubbleSortViewModel: SortingViewModel {
 class InsertionSortViewModel: SortingViewModel {
 	var id: SortingID = .insertionSort
 	
-	var sections: [SortingSection] = [.speaker, .buttons]
+    var sections: [SortingSection] = [.speaker, .buttons, .steps]
 
     var sortingButtons: [ButtonData] = [
-		ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "`3`\nLiam"),
-        ButtonData(id: 5, image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "`5`\nFelicia"),
-        ButtonData(id: 2, image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "`2`\nMandy"),
-        ButtonData(id: 4, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "`4`\nAlex"),
-        ButtonData(id: 1, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "`1`\nBB")
+		ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "3"),
+        ButtonData(id: 5, image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "5"),
+        ButtonData(id: 2, image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "2"),
+        ButtonData(id: 4, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "4"),
+        ButtonData(id: 1, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "1")
 	]
 
     // Solution determines which button and slot to select
     var solution: [ButtonData] = [
-        ButtonData(id: 1, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "`1`\nBB"),
-        ButtonData(id: 2, image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "`2`\nMandy"),
-        ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "`3`\nLiam"),
-        ButtonData(id: 4, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "`4`\nAlex"),
-        ButtonData(id: 5, image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "`5`\nFelicia")
+        ButtonData(id: 1, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "1"),
+        ButtonData(id: 2, image: #imageLiteral(resourceName: "av_sorting_mandy"), name: "2"),
+        ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "3"),
+        ButtonData(id: 4, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "4"),
+        ButtonData(id: 5, image: #imageLiteral(resourceName: "av_sorting_felicia"), name: "5")
     ]
 
     // e.g., buttonIDs = [1, 2, 3], slotIDs = [4, 5, 6] - differentiate between buttons and slots
@@ -175,12 +149,12 @@ class InsertionSortViewModel: SortingViewModel {
     ]
 
 	var steps: [Step] = [
-		Step(speech: NSMutableAttributedString(string: "Sort the students by height 1-5 using Insertion Sort. Move each student from the blue line to the red line, filling the slots from left to right."), solution: (3, 6), stepText: "`3` goes to index 0"),
-        Step(speech: NSMutableAttributedString(string: "There's no one on the red line yet, so `3` Liam goes to the first slot."), solution: (5, 7), stepText: "`5` goes to index 1"),
-        Step(speech: NSMutableAttributedString(string: "`5` is higher than `3`, so `5` Felicia goes to the second slot after `3` Liam."), solution: (2, 6), stepText: "`2` goes to index 0"),
-        Step(speech: NSMutableAttributedString(string: "`2` is lower than `3`, so `2` Mandy goes to the first slot and the others shift right."), solution: (4, 8), stepText: "`4` goes to index 3"),
-        Step(speech: NSMutableAttributedString(string: "`4` is higher than `3` and lower than `5`, so `4` Alex goes to the third slot and `5` Felicia shifts right."), solution: (1, 6), stepText: "`1` goes to index 0"),
-        Step(speech: NSMutableAttributedString(string: "`1` is lower than `2`, so `1` BB goes to the first slot and the others shift right."))
+		Step(speech: NSMutableAttributedString(string: "Sort the students by height 1-5 using Insertion Sort. Move each student from the blue line to the red line, filling the slots from left to right."), solution: (3, 6), stepText: "3 goes to index 0 - no shifting"),
+        Step(speech: NSMutableAttributedString(string: "There's no one on the red line yet, so 3 goes to the first slot."), solution: (5, 7), stepText: "5 goes to index 1 - no shifting"),
+        Step(speech: NSMutableAttributedString(string: "5 is higher than 3, so 5 goes to the second slot after 3."), solution: (2, 6), stepText: "2 goes to index 0 - 3 and 5 shift right"),
+        Step(speech: NSMutableAttributedString(string: "2 is lower than 3, so 2 goes to the first slot and the others shift right."), solution: (4, 8), stepText: "4 goes to index 3 - 5 shifts right"),
+        Step(speech: NSMutableAttributedString(string: "4 is higher than 3 and lower than 5, so 4 goes to the third slot and 5 Felicia shifts right."), solution: (1, 6), stepText: "1 goes to index 0 - 2, 3, 4, and 5 shift right"),
+        Step(speech: NSMutableAttributedString(string: "1 is lower than 2, so 1 goes to the first slot and the others shift right."))
 	]
 
     var hintMessage: String {
@@ -192,29 +166,10 @@ class InsertionSortViewModel: SortingViewModel {
     }
 }
 
-enum SortingSection: Equatable {
-	case speaker
-	case buttons
-	case steps(String = "Steps", [Step]) // title, steps
-
-    static func == (lhs: SortingSection, rhs: SortingSection) -> Bool {
-        switch (lhs, rhs) {
-        case (.speaker, .speaker):
-            return true
-        case (.buttons, .buttons):
-            return true
-        case (let .steps(title0, steps0), let .steps(title1, steps1)):
-            return title0 == title1 && steps0 == steps1
-        default:
-            return false
-        }
-    }
-}
-
 class MergeSortViewModel: SortingViewModel {
     var id: SortingID = .mergeSort
 
-    var sections: [SortingSection] = [.speaker, .buttons]
+    var sections: [SortingSection] = [.speaker, .buttons, .steps]
 
     var sortingButtons: [ButtonData] = [
         ButtonData(id: 8, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "Dec 20\nBB"),
@@ -255,6 +210,25 @@ class MergeSortViewModel: SortingViewModel {
 
     var completedAlert: String {
         return "All the students are sorted by birthday - well done! Tap OK to exit."
+    }
+}
+
+enum SortingSection: Equatable {
+    case speaker
+    case buttons
+    case steps
+
+    static func == (lhs: SortingSection, rhs: SortingSection) -> Bool {
+        switch (lhs, rhs) {
+        case (.speaker, .speaker):
+            return true
+        case (.buttons, .buttons):
+            return true
+        case (.steps, .steps):
+            return true
+        default:
+            return false
+        }
     }
 }
 

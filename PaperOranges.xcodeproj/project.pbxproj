@@ -15,7 +15,7 @@
 		67129BC825AF9532003B4DCA /* BubbleSortButtonsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BC725AF9532003B4DCA /* BubbleSortButtonsTableViewCell.swift */; };
 		67129BCE25AFAA33003B4DCA /* PersonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BCD25AFAA33003B4DCA /* PersonTableViewCell.swift */; };
 		67129BD125AFAA4B003B4DCA /* DescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BD025AFAA4B003B4DCA /* DescriptionTableViewCell.swift */; };
-		67129BE725B14BC7003B4DCA /* StepsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BE625B14BC7003B4DCA /* StepsTableViewCell.swift */; };
+		67129BE725B14BC7003B4DCA /* StepTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BE625B14BC7003B4DCA /* StepTableViewCell.swift */; };
 		67129BEA25B14BE7003B4DCA /* SpeakerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BE925B14BE7003B4DCA /* SpeakerTableViewCell.swift */; };
 		67129BED25B14F83003B4DCA /* LinkButtonsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BEC25B14F83003B4DCA /* LinkButtonsTableViewCell.swift */; };
 		67129BF125B15114003B4DCA /* InsertionSortButtonsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BF025B15114003B4DCA /* InsertionSortButtonsTableViewCell.swift */; };
@@ -52,7 +52,7 @@
 		67129BC725AF9532003B4DCA /* BubbleSortButtonsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleSortButtonsTableViewCell.swift; sourceTree = "<group>"; };
 		67129BCD25AFAA33003B4DCA /* PersonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonTableViewCell.swift; sourceTree = "<group>"; };
 		67129BD025AFAA4B003B4DCA /* DescriptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionTableViewCell.swift; sourceTree = "<group>"; };
-		67129BE625B14BC7003B4DCA /* StepsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepsTableViewCell.swift; sourceTree = "<group>"; };
+		67129BE625B14BC7003B4DCA /* StepTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepTableViewCell.swift; sourceTree = "<group>"; };
 		67129BE925B14BE7003B4DCA /* SpeakerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakerTableViewCell.swift; sourceTree = "<group>"; };
 		67129BEC25B14F83003B4DCA /* LinkButtonsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkButtonsTableViewCell.swift; sourceTree = "<group>"; };
 		67129BF025B15114003B4DCA /* InsertionSortButtonsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertionSortButtonsTableViewCell.swift; sourceTree = "<group>"; };
@@ -104,7 +104,7 @@
 				67129BCD25AFAA33003B4DCA /* PersonTableViewCell.swift */,
 				670DEF3D25F4594C00EE27CF /* SortingTableViewCell.swift */,
 				67129BE925B14BE7003B4DCA /* SpeakerTableViewCell.swift */,
-				67129BE625B14BC7003B4DCA /* StepsTableViewCell.swift */,
+				67129BE625B14BC7003B4DCA /* StepTableViewCell.swift */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -296,7 +296,7 @@
 				67129BEA25B14BE7003B4DCA /* SpeakerTableViewCell.swift in Sources */,
 				67E105C025AD1F7000684D1B /* HeroView.swift in Sources */,
 				67129BBA25AEDBCE003B4DCA /* SAConfettiView+Ext.swift in Sources */,
-				67129BE725B14BC7003B4DCA /* StepsTableViewCell.swift in Sources */,
+				67129BE725B14BC7003B4DCA /* StepTableViewCell.swift in Sources */,
 				6794C0C225ABD4CB000399FB /* HomeViewModel.swift in Sources */,
 				6777C8A325EA19C300062751 /* Tooltip.swift in Sources */,
 				670DEF3625F4317A00EE27CF /* UIDevice+Ext.swift in Sources */,
