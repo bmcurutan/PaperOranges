@@ -319,6 +319,8 @@ extension SortingViewController: ButtonTableViewCellDelegate {
                 evaluate(sortID0: step.solution.0, sortID1: step.solution.1, isForced: true, completion: nil)
             case .insertionSort:
                 evaluate(buttonID: step.solution.0, slotID: step.solution.1, isForced: true, completion: nil)
+            case .mergeSort:
+                print("// TODO")
             default:
                 break
             }
