@@ -9,8 +9,8 @@ import UIKit
 
 protocol MergeSortButtonsTableViewCellDelegate {
     func showMergeSortError()
-    func evaluateButtonAndSlot(buttonID: Int, slotID: Int, with completion: ((Bool) -> Void)?)
-    func evaluateSlots(slotID0: Int, slotID1: Int, with completion: ((Bool) -> Void)?)
+    func evaluateButtonAndSlot(buttonID: Int, slotID: Int, completion: ((Bool) -> Void)?)
+    func evaluateSlots(slotID0: Int, slotID1: Int, completion: ((Bool) -> Void)?)
 }
 
 // Hack: Hardcoded/expected number of slots (8) for each round (4)
@@ -137,7 +137,7 @@ class MergeSortButtonsTableViewCell: SortingTableViewCell {
         for (index, slot) in slots.enumerated() {
             let imageLabelButton = ImageLabelButton()
             imageLabelButton.layer.borderColor = UIColor.borderColor.cgColor
-            imageLabelButton.layer.borderWidth = 1
+            imageLabelButton.layer.borderWidth = slot.isHidden ? 0 : 1
             imageLabelButton.delegate = self
             imageLabelButton.name = slot.name
             imageLabelButton.image = slot.image
@@ -281,7 +281,7 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
                     return
                 }
 
-                // If evaluation is successful, make copy of the button
+                // If evaluation is successful, make a copy of the button
                 let copy = button.createCopy()
                 copy.frame = self.buttonsStackView.convert(button.frame, to: self.contentView)
                 self.contentView.addSubview(copy)
@@ -325,25 +325,36 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
             index0 < slots.count - 1,
             let index1 = slots[index0 + 1...slots.count - 1].firstIndex(where: { $0.isSelected }) else { return }
 
+        var stackView1 = slotsStackView1
+        var stackView2 = slotsStackView2
+
         var slotButton0: ImageLabelButton?
         var slotButton1: ImageLabelButton?
         if round1IndexRange.contains(index0) {
             slotButton0 = slotsStackView1.arrangedSubviews[index0] as? ImageLabelButton
+            stackView1 = slotsStackView1
         } else if round2IndexRange.contains(index0) {
             slotButton0 = slotsStackView2.arrangedSubviews[index0 - 8] as? ImageLabelButton
+            stackView1 = slotsStackView2
         } else if round3IndexRange.contains(index0) {
             slotButton0 = slotsStackView3.arrangedSubviews[index0 - 16] as? ImageLabelButton
+            stackView1 = slotsStackView3
         } else if round4IndexRange.contains(index0) {
             slotButton0 = slotsStackView4.arrangedSubviews[index0 - 24] as? ImageLabelButton
+            stackView1 = slotsStackView4
         }
         if round1IndexRange.contains(index1) {
             slotButton1 = slotsStackView1.arrangedSubviews[index1] as? ImageLabelButton
+            stackView2 = slotsStackView1
         } else if round2IndexRange.contains(index1) {
             slotButton1 = slotsStackView2.arrangedSubviews[index1 - 8] as? ImageLabelButton
+            stackView2 = slotsStackView2
         } else if round3IndexRange.contains(index1) {
             slotButton1 = slotsStackView3.arrangedSubviews[index1 - 16] as? ImageLabelButton
+            stackView2 = slotsStackView3
         } else if round4IndexRange.contains(index1) {
             slotButton1 = slotsStackView4.arrangedSubviews[index1 - 24] as? ImageLabelButton
+            stackView2 = slotsStackView4
         }
 
         guard let slot0 = slotButton0, let slot1 = slotButton1 else { return }
@@ -358,9 +369,9 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
                 return
             }
 
-            // If evaluation is successful, make copy of the button
+            // If evaluation is successful, make a copy of the button
             let copy = slot0.createCopy()
-            copy.frame = self.slotsStackView1.convert(slot0.frame, to: self.contentView)
+            copy.frame = stackView1.convert(slot0.frame, to: self.contentView)
             self.contentView.addSubview(copy)
 
             // Hide the original button - use alpha instead of removing to maintain arranged subviews positions
@@ -368,7 +379,7 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
 
             // Animate the buttons moving
             UIView.animate(withDuration: 0.3, animations: {
-                copy.frame.origin =  self.slotsStackView2.convert(slot1.frame, to: self.contentView).origin
+                copy.frame.origin = stackView2.convert(slot1.frame, to: self.contentView).origin
             }) { _ in
                 slot1.copyData(from: copy)
                 // Remove copy

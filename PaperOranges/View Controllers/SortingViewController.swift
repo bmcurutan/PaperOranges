@@ -71,6 +71,7 @@ class SortingViewController: UIViewController {
 		tableView.register(InsertionSortButtonsTableViewCell.self, forCellReuseIdentifier: "InsertionSortButtonsCell")
         tableView.register(MergeSortButtonsTableViewCell.self, forCellReuseIdentifier: "MergeSortButtonsCell")
 		tableView.register(StepTableViewCell.self, forCellReuseIdentifier: "StepCell")
+        tableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: "HelpButtonCell")
 		tableView.separatorStyle = .none
 
 		view.addSubview(tableView)
@@ -169,6 +170,11 @@ extension SortingViewController: UITableViewDataSource {
 			return buttonsCellForRow(at: indexPath)
 		case .steps:
 			return stepCellForRow(at: indexPath)
+        case .help:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HelpButtonCell", for: indexPath) as! ButtonTableViewCell
+            cell.delegate = self
+            cell.helpButton.isHidden = currentStepIndex >= viewModel.steps.count - 1
+            return cell
 		}
 	}
 
@@ -193,7 +199,7 @@ extension SortingViewController: UITableViewDataSource {
             hint = viewModel.hintMessage
 		case .completed:
 			title = viewModel.completedMessage
-		case .none:
+        case .none:
 			title = nil
 		}
         cell.setText(title: title, hint: hint, text: speech, ending: speechEnding)
@@ -264,7 +270,7 @@ extension SortingViewController: UITableViewDataSource {
 
 extension SortingViewController: UITableViewDelegate {
 	func numberOfSections(in tableView: UITableView) -> Int {
-		return viewModel.sections.count
+        return viewModel.sections.count
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -301,8 +307,16 @@ extension SortingViewController: SpeakerTableViewCellDelegate {
 			currentStepIndex = 0
 			tableView.reloadData()
 		}
-		// Otherwise do nothing
 	}
+}
+
+extension SortingViewController: ButtonTableViewCellDelegate {
+    func buttonTapped() {
+        if viewModel.steps.indices.contains(currentStepIndex) {
+            let step = viewModel.steps[currentStepIndex]
+            evaluate(sortID0: step.solution.0, sortID1: step.solution.1, isForced: true, completion: nil)
+        }
+    }
 }
 
 extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
@@ -310,11 +324,11 @@ extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 		// Do nothing
 	}
 
-	func evaluate(sortID0: Int, sortID1: Int, with completion: ((BubbleSortState) -> Void)?) {
+    func evaluate(sortID0: Int, sortID1: Int, isForced: Bool, completion: ((BubbleSortState) -> Void)?) {
 		let solution = currentStep.solution
 		if (sortID0 == solution.0 && sortID1 == solution.1) || (sortID1 == solution.0 && sortID0 == solution.1) {
-			// Successful solution
-			speechTitle = .success
+			// Successful (or forced/help) solution
+            speechTitle = isForced ? .none : .success
 			// Buttons are already in order
 			if sortID0 < sortID1 {
                 completion?(.successNoSwap)
@@ -356,7 +370,7 @@ extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
         reloadSection(.speaker)
     }
 
-    func evaluate(buttonID: Int, slotID: Int, with completion: ((Bool) -> Void)?) {
+    func evaluate(buttonID: Int, slotID: Int, completion: ((Bool) -> Void)?) {
         let solution = currentStep.solution
         if buttonID == solution.0 && slotID == solution.1 {
             // Successful solution
@@ -410,7 +424,7 @@ extension SortingViewController: MergeSortButtonsTableViewCellDelegate {
         reloadSection(.speaker)
     }
 
-    func evaluateButtonAndSlot(buttonID: Int, slotID: Int, with completion: ((Bool) -> Void)?) {
+    func evaluateButtonAndSlot(buttonID: Int, slotID: Int, completion: ((Bool) -> Void)?) {
         let solution = currentStep.solution
         if buttonID == solution.0 && slotID == solution.1 {
             // Successful solution
@@ -457,7 +471,7 @@ extension SortingViewController: MergeSortButtonsTableViewCellDelegate {
         }
     }
 
-    func evaluateSlots(slotID0: Int, slotID1: Int, with completion: ((Bool) -> Void)?) {
+    func evaluateSlots(slotID0: Int, slotID1: Int, completion: ((Bool) -> Void)?) {
         let solution = currentStep.solution
         if slotID0 == solution.0 && slotID1 == solution.1 {
             // Successful solution

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol BubbleSortButtonsTableViewCellDelegate {
-	func evaluate(sortID0: Int, sortID1: Int, with completion: ((BubbleSortState) -> Void)?)
+    func evaluate(sortID0: Int, sortID1: Int, isForced: Bool, completion: ((BubbleSortState) -> Void)?)
 }
 
 class BubbleSortButtonsTableViewCell: SortingTableViewCell {
@@ -83,7 +83,7 @@ extension BubbleSortButtonsTableViewCell: ImageLabelButtonDelegate {
             return
         }
 
-        delegate?.evaluate(sortID0: button0.tag, sortID1: button1.tag) { [weak self] sortState in
+        delegate?.evaluate(sortID0: button0.tag, sortID1: button1.tag, isForced: false) { [weak self] sortState in
             guard let `self` = self else { return }
 
             switch sortState {

@@ -9,7 +9,7 @@ import UIKit
 
 protocol InsertionSortButtonsTableViewCellDelegate {
 	func showError() 
-    func evaluate(buttonID: Int, slotID: Int, with completion: ((Bool) -> Void)?)
+    func evaluate(buttonID: Int, slotID: Int, completion: ((Bool) -> Void)?)
 }
 
 class InsertionSortButtonsTableViewCell: SortingTableViewCell {

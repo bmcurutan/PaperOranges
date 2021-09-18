@@ -26,7 +26,7 @@ class SpeakerTableViewCell: UITableViewCell {
 
 	private var speechBubbleLabel: UILabel = {
 		let label = UILabel()
-		label.font = label.font.withSize(16)
+        label.font = UIFont.systemFont(ofSize: 16)
 		label.lineBreakMode = .byWordWrapping
 		label.numberOfLines = 0
 		label.textColor = .primaryTextColor
@@ -76,10 +76,10 @@ class SpeakerTableViewCell: UITableViewCell {
         if let hint = hint {
             attributedText.append(NSMutableAttributedString(string: "\n\(hint)").setTextColor(.accentColor))
         }
-        if (title != nil || hint != nil) && text.length != 0 {
+        if title != nil || hint != nil {
             attributedText.append("\n\n")
-            attributedText.append(text)
         }
+        attributedText.append(text)
 		if let ending = ending {
 			attributedText.append("\n\n\(ending)")
 		}

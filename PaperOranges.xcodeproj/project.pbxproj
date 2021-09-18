@@ -21,6 +21,9 @@
 		67129BF125B15114003B4DCA /* InsertionSortButtonsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67129BF025B15114003B4DCA /* InsertionSortButtonsTableViewCell.swift */; };
 		6744E56125B2217300E0B1DA /* UIAlertController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6744E56025B2217300E0B1DA /* UIAlertController+Ext.swift */; };
 		6771158126F53A3B003BC6F1 /* MergeSortButtonsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6771158026F53A3B003BC6F1 /* MergeSortButtonsTableViewCell.swift */; };
+		6771158D26F5AE8C003BC6F1 /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6771158C26F5AE8C003BC6F1 /* UIButton+Ext.swift */; };
+		6771159126F5B5EA003BC6F1 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6771159026F5B5EA003BC6F1 /* ButtonTableViewCell.swift */; };
+		6771159426F5B60A003BC6F1 /* TopicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6771159326F5B60A003BC6F1 /* TopicTableViewCell.swift */; };
 		6777C8A325EA19C300062751 /* Tooltip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6777C8A225EA19C300062751 /* Tooltip.swift */; };
 		6794C08B25AADC8B000399FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6794C08A25AADC8B000399FB /* AppDelegate.swift */; };
 		6794C08D25AADC8B000399FB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6794C08C25AADC8B000399FB /* SceneDelegate.swift */; };
@@ -58,6 +61,9 @@
 		67129BF025B15114003B4DCA /* InsertionSortButtonsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertionSortButtonsTableViewCell.swift; sourceTree = "<group>"; };
 		6744E56025B2217300E0B1DA /* UIAlertController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Ext.swift"; sourceTree = "<group>"; };
 		6771158026F53A3B003BC6F1 /* MergeSortButtonsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeSortButtonsTableViewCell.swift; sourceTree = "<group>"; };
+		6771158C26F5AE8C003BC6F1 /* UIButton+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Ext.swift"; sourceTree = "<group>"; };
+		6771159026F5B5EA003BC6F1 /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
+		6771159326F5B60A003BC6F1 /* TopicTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicTableViewCell.swift; sourceTree = "<group>"; };
 		6777C8A225EA19C300062751 /* Tooltip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tooltip.swift; sourceTree = "<group>"; };
 		6794C08725AADC8B000399FB /* PaperOranges.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaperOranges.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6794C08A25AADC8B000399FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -105,6 +111,8 @@
 				670DEF3D25F4594C00EE27CF /* SortingTableViewCell.swift */,
 				67129BE925B14BE7003B4DCA /* SpeakerTableViewCell.swift */,
 				67129BE625B14BC7003B4DCA /* StepTableViewCell.swift */,
+				6771159026F5B5EA003BC6F1 /* ButtonTableViewCell.swift */,
+				6771159326F5B60A003BC6F1 /* TopicTableViewCell.swift */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -172,6 +180,7 @@
 				67129BB925AEDBCE003B4DCA /* SAConfettiView+Ext.swift */,
 				6744E56025B2217300E0B1DA /* UIAlertController+Ext.swift */,
 				6794C0B525AAE65A000399FB /* UIColor+Ext.swift */,
+				6771158C26F5AE8C003BC6F1 /* UIButton+Ext.swift */,
 				670DEF3525F4317A00EE27CF /* UIDevice+Ext.swift */,
 				67129BC025AF88CB003B4DCA /* UIImage+Ext.swift */,
 				67E105CE25AE88B600684D1B /* UITableView+Ext.swift */,
@@ -272,7 +281,9 @@
 				67E105BD25AD1EC200684D1B /* InfoViewModels.swift in Sources */,
 				6794C0D125AC0C3F000399FB /* RoundImageView.swift in Sources */,
 				67129BD125AFAA4B003B4DCA /* DescriptionTableViewCell.swift in Sources */,
+				6771158D26F5AE8C003BC6F1 /* UIButton+Ext.swift in Sources */,
 				67E105C525AD2E3000684D1B /* UIView+Ext.swift in Sources */,
+				6771159426F5B60A003BC6F1 /* TopicTableViewCell.swift in Sources */,
 				670DEF3E25F4594C00EE27CF /* SortingTableViewCell.swift in Sources */,
 				6771158126F53A3B003BC6F1 /* MergeSortButtonsTableViewCell.swift in Sources */,
 				6794C08F25AADC8B000399FB /* HomeViewController.swift in Sources */,
@@ -280,6 +291,7 @@
 				67E105CF25AE88B600684D1B /* UITableView+Ext.swift in Sources */,
 				6794C0B625AAE65A000399FB /* UIColor+Ext.swift in Sources */,
 				6794C0CD25AC09C2000399FB /* SortingViewModels.swift in Sources */,
+				6771159126F5B5EA003BC6F1 /* ButtonTableViewCell.swift in Sources */,
 				67E105AA25AC125C00684D1B /* NSMutableAttributedString+Ext.swift in Sources */,
 				67129BC125AF88CB003B4DCA /* UIImage+Ext.swift in Sources */,
 				6794C08B25AADC8B000399FB /* AppDelegate.swift in Sources */,
