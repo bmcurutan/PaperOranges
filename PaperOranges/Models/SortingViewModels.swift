@@ -118,7 +118,7 @@ class BubbleSortViewModel: SortingViewModel {
 class InsertionSortViewModel: SortingViewModel {
 	var id: SortingID = .insertionSort
 	
-    var sections: [SortingSection] = [.speaker, .buttons, .steps]
+    var sections: [SortingSection] = [.speaker, .buttons, .steps, .help]
 
     var sortingButtons: [ButtonData] = [
 		ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "3"),

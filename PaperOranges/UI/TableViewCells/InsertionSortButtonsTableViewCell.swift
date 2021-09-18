@@ -9,7 +9,7 @@ import UIKit
 
 protocol InsertionSortButtonsTableViewCellDelegate {
 	func showError() 
-    func evaluate(buttonID: Int, slotID: Int, completion: ((Bool) -> Void)?)
+    func evaluate(buttonID: Int, slotID: Int, isForced: Bool, completion: ((Bool) -> Void)?)
 }
 
 class InsertionSortButtonsTableViewCell: SortingTableViewCell {
@@ -195,7 +195,7 @@ extension InsertionSortButtonsTableViewCell: ImageLabelButtonDelegate {
             // One button and one slot selected
             // Re-calculated indices because don't know if button/slot was selected first/second
 
-			delegate?.evaluate(buttonID: button.tag, slotID: slot.tag) { [weak self] isSuccess in
+            delegate?.evaluate(buttonID: button.tag, slotID: slot.tag, isForced: false) { [weak self] isSuccess in
 				guard let `self` = self else { return }
 
 				guard isSuccess else {

@@ -314,7 +314,14 @@ extension SortingViewController: ButtonTableViewCellDelegate {
     func buttonTapped() {
         if viewModel.steps.indices.contains(currentStepIndex) {
             let step = viewModel.steps[currentStepIndex]
-            evaluate(sortID0: step.solution.0, sortID1: step.solution.1, isForced: true, completion: nil)
+            switch viewModel.id {
+            case .bubbleSort:
+                evaluate(sortID0: step.solution.0, sortID1: step.solution.1, isForced: true, completion: nil)
+            case .insertionSort:
+                evaluate(buttonID: step.solution.0, slotID: step.solution.1, isForced: true, completion: nil)
+            default:
+                break
+            }
         }
     }
 }
@@ -370,11 +377,11 @@ extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
         reloadSection(.speaker)
     }
 
-    func evaluate(buttonID: Int, slotID: Int, completion: ((Bool) -> Void)?) {
+    func evaluate(buttonID: Int, slotID: Int, isForced: Bool, completion: ((Bool) -> Void)?) {
         let solution = currentStep.solution
         if buttonID == solution.0 && slotID == solution.1 {
             // Successful solution
-            speechTitle = .success
+            speechTitle = isForced ? .none : .success
 
             // Update button data
             if let buttonIndex = viewModel.sortingButtons.firstIndex(where: { $0.id == buttonID }),
