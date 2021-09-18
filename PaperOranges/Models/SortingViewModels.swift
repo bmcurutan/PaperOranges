@@ -241,7 +241,8 @@ class MergeSortViewModel: SortingViewModel {
         Step(speech: NSMutableAttributedString(string: "Let's keep separating the students out into groups of 1."), solution: (1, 14), stepText: "Sept 28 goes to index 5"),
         Step(speech: NSMutableAttributedString(string: "Let's keep separating the students out into groups of 1."), solution: (6, 15), stepText: "Nov 17 goes to index 6"),
         Step(speech: NSMutableAttributedString(string: "Let's keep separating the students out into groups of 1."), solution: (5, 16), stepText: "Dec 20 goes to index 7"),
-        Step(speech: NSMutableAttributedString(string: "And each group of 1 is already sorted! Next, combine groups to form sorted groups of 2 using the second row of slots."), solution: (-1, -1), stepText: ""),
+        Step(speech: NSMutableAttributedString(string: "Note that each group of 1 is already sorted. Next, combine groups to form sorted groups of 2 using the second row of slots."), solution: (9, 18), stepText: "Dec 20 goes to index 1"),
+        Step(speech: NSMutableAttributedString(string: "Let's keep separating the students out into sorted groups of 2."), solution: (10, 17), stepText: "Mar 3 goes to index 0"),
         Step(speech: NSMutableAttributedString(string: "// TODO last step"))
     ]
 

@@ -9,7 +9,8 @@ import UIKit
 
 protocol MergeSortButtonsTableViewCellDelegate {
     func showMergeSortError()
-    func evaluateMergeSort(buttonID: Int, slotID: Int, with completion: ((Bool) -> Void)?)
+    func evaluateButtonAndSlot(buttonID: Int, slotID: Int, with completion: ((Bool) -> Void)?)
+    func evaluateSlots(slotID0: Int, slotID1: Int, with completion: ((Bool) -> Void)?)
 }
 
 // Hack: Hardcoded/expected number of slots (8) for each round (4)
@@ -220,9 +221,7 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
             guard slots.filter({ $0.isSelected }).count == 2,
                 let index0 = slots.firstIndex(where: { $0.isSelected }),
                 index0 < slots.count - 1,
-                let index1 = slots[index0 + 1...slots.count - 1].firstIndex(where: { $0.isSelected }) else {
-                return
-            }
+                let index1 = slots[index0 + 1...slots.count - 1].firstIndex(where: { $0.isSelected }) else { return }
 
             var slot0: ImageLabelButton?
             var slot1: ImageLabelButton?
@@ -230,16 +229,16 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
                 slot0 = slotsStackView1.arrangedSubviews[index0] as? ImageLabelButton
                 slot1 = slotsStackView1.arrangedSubviews[index1] as? ImageLabelButton
             } else if round2IndexRange.contains(index0) && round2IndexRange.contains(index1) {
-                slot0 = slotsStackView2.arrangedSubviews[index0] as? ImageLabelButton
-                slot1 = slotsStackView2.arrangedSubviews[index1] as? ImageLabelButton
+                slot0 = slotsStackView2.arrangedSubviews[index0 - 8] as? ImageLabelButton
+                slot1 = slotsStackView2.arrangedSubviews[index1 - 8] as? ImageLabelButton
             } else if round3IndexRange.contains(index0) && round3IndexRange.contains(index1) {
-                slot0 = slotsStackView3.arrangedSubviews[index0] as? ImageLabelButton
-                slot1 = slotsStackView3.arrangedSubviews[index1] as? ImageLabelButton
+                slot0 = slotsStackView3.arrangedSubviews[index0 - 16] as? ImageLabelButton
+                slot1 = slotsStackView3.arrangedSubviews[index1 - 16] as? ImageLabelButton
             } else if round4IndexRange.contains(index0) && round4IndexRange.contains(index1) {
-                slot0 = slotsStackView4.arrangedSubviews[index0] as? ImageLabelButton
-                slot1 = slotsStackView4.arrangedSubviews[index1] as? ImageLabelButton
+                slot0 = slotsStackView4.arrangedSubviews[index0 - 24] as? ImageLabelButton
+                slot1 = slotsStackView4.arrangedSubviews[index1 - 24] as? ImageLabelButton
             } else {
-                // TODO rounds 2-4
+                evaluateSlots()
             }
 
             resetButtonsUI([slot0, slot1])
@@ -254,6 +253,7 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
             let buttonIndex = buttons.firstIndex(where: { $0.isSelected }),
             let slotIndex = slots.firstIndex(where: { $0.isSelected }),
             let button = buttonsStackView.arrangedSubviews[buttonIndex] as? ImageLabelButton {
+            // TODO merge this with evaluateSlots() ??
             // One button and one slot selected
             // Re-calculated indices because don't know if button/slot was selected first/second
 
@@ -270,7 +270,7 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
 
             guard let slot = slotButton else { return }
 
-            delegate?.evaluateMergeSort(buttonID: button.tag, slotID: slot.tag) { [weak self] isSuccess in
+            delegate?.evaluateButtonAndSlot(buttonID: button.tag, slotID: slot.tag) { [weak self] isSuccess in
                 guard let `self` = self else { return }
 
                 guard isSuccess else {
@@ -316,6 +316,66 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
         }
         slots.indices.forEach { index in
             slots[index].isSelected = false
+        }
+    }
+
+    private func evaluateSlots() {
+        guard let index0 = slots.firstIndex(where: { $0.isSelected }),
+            index0 < slots.count - 1,
+            let index1 = slots[index0 + 1...slots.count - 1].firstIndex(where: { $0.isSelected }) else { return }
+
+        var slotButton0: ImageLabelButton?
+        var slotButton1: ImageLabelButton?
+        if round1IndexRange.contains(index0) {
+            slotButton0 = slotsStackView1.arrangedSubviews[index0] as? ImageLabelButton
+        } else if round2IndexRange.contains(index0) {
+            slotButton0 = slotsStackView2.arrangedSubviews[index0 - 8] as? ImageLabelButton
+        } else if round3IndexRange.contains(index0) {
+            slotButton0 = slotsStackView3.arrangedSubviews[index0 - 16] as? ImageLabelButton
+        } else if round4IndexRange.contains(index0) {
+            slotButton0 = slotsStackView4.arrangedSubviews[index0 - 24] as? ImageLabelButton
+        }
+        if round1IndexRange.contains(index1) {
+            slotButton1 = slotsStackView1.arrangedSubviews[index1] as? ImageLabelButton
+        } else if round2IndexRange.contains(index1) {
+            slotButton1 = slotsStackView2.arrangedSubviews[index1 - 8] as? ImageLabelButton
+        } else if round3IndexRange.contains(index1) {
+            slotButton1 = slotsStackView3.arrangedSubviews[index1 - 16] as? ImageLabelButton
+        } else if round4IndexRange.contains(index1) {
+            slotButton1 = slotsStackView4.arrangedSubviews[index1 - 24] as? ImageLabelButton
+        }
+
+        guard let slot0 = slotButton0, let slot1 = slotButton1 else { return }
+
+        delegate?.evaluateSlots(slotID0: slot0.tag, slotID1: slot1.tag) { [weak self] isSuccess in
+            guard let `self` = self else { return }
+
+            guard isSuccess else {
+                // Error - reset selection UI
+                self.resetSelection(button: slot0, slot: slot1)
+                self.shakeButtons([slot0, slot1])
+                return
+            }
+
+            // If evaluation is successful, make copy of the button
+            let copy = slot0.createCopy()
+            copy.frame = self.slotsStackView1.convert(slot0.frame, to: self.contentView)
+            self.contentView.addSubview(copy)
+
+            // Hide the original button - use alpha instead of removing to maintain arranged subviews positions
+            slot0.alpha = 0
+
+            // Animate the buttons moving
+            UIView.animate(withDuration: 0.3, animations: {
+                copy.frame.origin =  self.slotsStackView2.convert(slot1.frame, to: self.contentView).origin
+            }) { _ in
+                slot1.copyData(from: copy)
+                // Remove copy
+                copy.removeFromSuperview()
+            }
+
+            // Reset selection UI
+            self.resetSelection(button: slot0, slot: slot1)
         }
     }
 }

@@ -410,7 +410,7 @@ extension SortingViewController: MergeSortButtonsTableViewCellDelegate {
         reloadSection(.speaker)
     }
 
-    func evaluateMergeSort(buttonID: Int, slotID: Int, with completion: ((Bool) -> Void)?) {
+    func evaluateButtonAndSlot(buttonID: Int, slotID: Int, with completion: ((Bool) -> Void)?) {
         let solution = currentStep.solution
         if buttonID == solution.0 && slotID == solution.1 {
             // Successful solution
@@ -433,6 +433,42 @@ extension SortingViewController: MergeSortButtonsTableViewCellDelegate {
                 viewModel.slotButtons[slotIndex] = viewModel.sortingButtons[buttonIndex]
                 viewModel.slotButtons[slotIndex].id = slotID // Restore original slot ID because it gets overwritten in addSlots
                 viewModel.sortingButtons[buttonIndex] = ButtonData(id: -1, isHidden: true)
+            }
+            completion?(true)
+            currentStepIndex += 1
+
+            // Reload speaker section first so it appears less jumpy
+            reloadSection(.speaker)
+
+            tableView.reloadDataAfterDelay { [weak self] in
+                guard let `self` = self, self.isLastStep else { return }
+                self.showConfetti()
+                self.showAlert(with: self.viewModel.completedAlert, completion: nil)
+            }
+            saveCompletedProgress()
+
+        } else {
+            // Don't need to error out for the last step - nothing else to do
+            guard !isLastStep else { return }
+
+            // Incorrect solution
+            showError()
+            completion?(false)
+        }
+    }
+
+    func evaluateSlots(slotID0: Int, slotID1: Int, with completion: ((Bool) -> Void)?) {
+        let solution = currentStep.solution
+        if slotID0 == solution.0 && slotID1 == solution.1 {
+            // Successful solution
+            speechTitle = .success
+
+            // Update data
+            if let slot0Index = viewModel.slotButtons.firstIndex(where: { $0.id == slotID0 }),
+                let slot1Index = viewModel.slotButtons.firstIndex(where: { $0.id == slotID1 }) {
+                viewModel.slotButtons[slot1Index] = viewModel.slotButtons[slot0Index]
+                viewModel.slotButtons[slot1Index].id = slotID1 // Restore original slot ID because it gets overwritten in addSlots
+                viewModel.slotButtons[slot0Index] = ButtonData(id: -1, isHidden: true)
             }
             completion?(true)
             currentStepIndex += 1
