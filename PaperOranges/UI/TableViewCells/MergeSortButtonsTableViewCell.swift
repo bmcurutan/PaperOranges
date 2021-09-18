@@ -239,6 +239,7 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
                 slot1 = slotsStackView4.arrangedSubviews[index1 - 24] as? ImageLabelButton
             } else {
                 evaluateSlots()
+                return
             }
 
             resetButtonsUI([slot0, slot1])
