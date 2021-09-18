@@ -35,7 +35,7 @@ extension SortingViewModel {
     }
 
     var educationText: String {
-        return "Tap here for help with getting started."
+        return "Stuck? Tap here for the answer"
     }
 
 	var startMessage: String {
@@ -69,7 +69,7 @@ extension SortingViewModel {
 class BubbleSortViewModel: SortingViewModel {
 	var id: SortingID = .bubbleSort
 
-    var sections: [SortingSection] = [.speaker, .buttons, .steps, .help]
+    var sections: [SortingSection] = [.speaker, .buttons, .help, .steps]
 
 	var sortingButtons: [ButtonData] = [
         ButtonData(id: 0, image: #imageLiteral(resourceName: "av_sorting_alex"), name: "Alex"),
@@ -118,7 +118,7 @@ class BubbleSortViewModel: SortingViewModel {
 class InsertionSortViewModel: SortingViewModel {
 	var id: SortingID = .insertionSort
 	
-    var sections: [SortingSection] = [.speaker, .buttons, .steps, .help]
+    var sections: [SortingSection] = [.speaker, .buttons, .help, .steps]
 
     var sortingButtons: [ButtonData] = [
 		ButtonData(id: 3, image: #imageLiteral(resourceName: "av_sorting_liam"), name: "3"),
@@ -169,7 +169,7 @@ class InsertionSortViewModel: SortingViewModel {
 class MergeSortViewModel: SortingViewModel {
     var id: SortingID = .mergeSort
 
-    var sections: [SortingSection] = [.speaker, .buttons, .steps, .help]
+    var sections: [SortingSection] = [.speaker, .buttons, .help, .steps]
 
     var sortingButtons: [ButtonData] = [
         ButtonData(id: 8, image: #imageLiteral(resourceName: "av_sorting_bb"), name: "Dec\n20"),
@@ -234,38 +234,38 @@ class MergeSortViewModel: SortingViewModel {
 
     var steps: [Step] = [
         Step(speech: NSMutableAttributedString(string: "Sort the students by birthday. The first step is to separate them out into groups of 1 using the first row of slots."), solution: (8, 9), stepText: "Dec 20 goes to group 1, index 0"),
-        Step(speech: NSMutableAttributedString(string: "Dec 20 goes to group 1. Let's keep going."), solution: (2, 10), stepText: "Mar 3 goes to group 2, index 0"),
-        Step(speech: NSMutableAttributedString(string: "Mar 3 goes to group 2. Let's keep going."), solution: (3, 11), stepText: "May 12 goes to group 3, index 0"),
-        Step(speech: NSMutableAttributedString(string: "May 12 goes to group 3. Let's keep going."), solution: (7, 12), stepText: "Nov 17 goes to group 4, index 0"),
-        Step(speech: NSMutableAttributedString(string: "Nov 17 goes to group 4. Let's keep going."), solution: (4, 13), stepText: "May 27 goes to group 5, index 0"),
-        Step(speech: NSMutableAttributedString(string: "May 27 goes to group 5. Let's keep going."), solution: (1, 14), stepText: "Jan 1 goes to group 6, index 0"),
-        Step(speech: NSMutableAttributedString(string: "Jan 1 goes to group 6. Let's keep going."), solution: (6, 15), stepText: "Sept 28 goes to group 7, index 0"),
-        Step(speech: NSMutableAttributedString(string: "Sept 28 goes to group 7. Let's keep going."), solution: (5, 16), stepText: "July 30 goes to group 8, index 0"),
-        Step(speech: NSMutableAttributedString(string: "July 30 goes to group 8. Note that each group of 1 is already sorted. Next, combine groups to form sorted groups of 2 using the second row of slots."), solution: (9, 18), stepText: "Dec 20 goes to group 1, index 1"),
-        Step(speech: NSMutableAttributedString(string: "Dec 20 goes to group 1, second slot. Let's keep going."), solution: (10, 17), stepText: "Mar 3 goes to group 1, index 0"),
-        Step(speech: NSMutableAttributedString(string: "Mar 3 goes to group 1, first slot. Let's keep going."), solution: (11, 19), stepText: "May 12 goes to group 2, index 0"),
-        Step(speech: NSMutableAttributedString(string: "May 12 goes to group 2, first slot. Let's keep going."), solution: (12, 20), stepText: "Nov 17 goes to group 2, index 1"),
-        Step(speech: NSMutableAttributedString(string: "Nov 17 goes to group 2, second slot. Let's keep going."), solution: (13, 22), stepText: "May 27 goes to group 3, index 1"),
-        Step(speech: NSMutableAttributedString(string: "May 27 goes to group 3, second slot. Let's keep going."), solution: (14, 21), stepText: "Jan 1 goes to group 3, index 0"),
-        Step(speech: NSMutableAttributedString(string: "Jan 1 goes to group 3, first slot. Let's keep going."), solution: (15, 24), stepText: "Sept 28 goes to group 4, index 1"),
-        Step(speech: NSMutableAttributedString(string: "Sept 28 goes to group 4, second slot. Let's keep going."), solution: (16, 23), stepText: "July 30 goes to group 4, index 0"),
-        Step(speech: NSMutableAttributedString(string: "July 30 goes to group 4, first slot, so we end up with 4 sorted pairs. Now merge each pair with another pair to form groups of 4 using the third row of slots."), solution: (17, 25), stepText: "Mar 3 goes to group 1, index 0"),
-        Step(speech: NSMutableAttributedString(string: "Mar 3 goes to group 1, first slot. Let's keep going."), solution: (18, 28), stepText: "Dec 20 goes to group 1, index 3"),
-        Step(speech: NSMutableAttributedString(string: "Dec 20 goes to group 1, fourth slot. Let's keep going."), solution: (19, 26), stepText: "May 12 goes to group 1, index 1"), // TODO
-        Step(speech: NSMutableAttributedString(string: "Let's keep separating the students out into sorted groups of 4."), solution: (20, 27), stepText: "Nov 17 goes to group 1, index 2"),
-        Step(speech: NSMutableAttributedString(string: "Let's keep separating the students out into sorted groups of 4."), solution: (21, 29), stepText: "Jan 1 goes to group 2, index 0"),
-        Step(speech: NSMutableAttributedString(string: "Let's keep separating the students out into sorted groups of 4."), solution: (22, 30), stepText: "May 27 goes to group 2, index 1"),
-        Step(speech: NSMutableAttributedString(string: "Let's keep separating the students out into sorted groups of 4."), solution: (23, 31), stepText: "July 30 goes to group 2, index 2"),
-        Step(speech: NSMutableAttributedString(string: "Let's keep separating the students out into sorted groups of 4."), solution: (24, 32), stepText: "Sept 28 goes to group 2, index 3"),
-        Step(speech: NSMutableAttributedString(string: "Finally, the students need to merge their groups of 4 to form one final group of 8."), solution: (25, 34), stepText: "Mar 3 goes to index 1"),
-        Step(speech: NSMutableAttributedString(string: "Let's keep arranging the students into a sorted group of 8."), solution: (26, 35), stepText: "May 12 goes to index 2"),
-        Step(speech: NSMutableAttributedString(string: "Let's keep arranging the students into a sorted group of 8."), solution: (27, 39), stepText: "Nov 17 goes to index 6"),
-        Step(speech: NSMutableAttributedString(string: "Let's keep arranging the students into a sorted group of 8."), solution: (28, 40), stepText: "Dec 20 goes to index 7"),
-        Step(speech: NSMutableAttributedString(string: "Let's keep arranging the students into a sorted group of 8."), solution: (29, 33), stepText: "Jan 1 goes to index 0"),
-        Step(speech: NSMutableAttributedString(string: "Let's keep arranging the students into a sorted group of 8."), solution: (30, 36), stepText: "May 27 goes to index 3"),
-        Step(speech: NSMutableAttributedString(string: "Let's keep arranging the students into a sorted group of 8."), solution: (31, 37), stepText: "July 30 goes to index 4"),
-        Step(speech: NSMutableAttributedString(string: "Let's keep arranging the students into a sorted group of 8."), solution: (32, 38), stepText: "Sept 28 goes to index 5"),
-        Step(speech: NSMutableAttributedString(string: "// TODO last step"))
+        Step(speech: NSMutableAttributedString(string: "Dec 20 goes to group 1."), solution: (2, 10), stepText: "Mar 3 goes to group 2, index 0"),
+        Step(speech: NSMutableAttributedString(string: "Mar 3 goes to group 2."), solution: (3, 11), stepText: "May 12 goes to group 3, index 0"),
+        Step(speech: NSMutableAttributedString(string: "May 12 goes to group 3."), solution: (7, 12), stepText: "Nov 17 goes to group 4, index 0"),
+        Step(speech: NSMutableAttributedString(string: "Nov 17 goes to group 4."), solution: (4, 13), stepText: "May 27 goes to group 5, index 0"),
+        Step(speech: NSMutableAttributedString(string: "May 27 goes to group 5."), solution: (1, 14), stepText: "Jan 1 goes to group 6, index 0"),
+        Step(speech: NSMutableAttributedString(string: "Jan 1 goes to group 6."), solution: (6, 15), stepText: "Sept 28 goes to group 7, index 0"),
+        Step(speech: NSMutableAttributedString(string: "Sept 28 goes to group 7."), solution: (5, 16), stepText: "July 30 goes to group 8, index 0"),
+        Step(speech: NSMutableAttributedString(string: "July 30 goes to group 8. Note that each group of 1 is already sorted.\n\nNext, combine groups to form sorted groups of 2 using the second row of slots."), solution: (9, 18), stepText: "Dec 20 goes to group 1, index 1"),
+        Step(speech: NSMutableAttributedString(string: "Dec 20 goes to group 1, second slot."), solution: (10, 17), stepText: "Mar 3 goes to group 1, index 0"),
+        Step(speech: NSMutableAttributedString(string: "Mar 3 goes to group 1, first slot."), solution: (11, 19), stepText: "May 12 goes to group 2, index 0"),
+        Step(speech: NSMutableAttributedString(string: "May 12 goes to group 2, first slot."), solution: (12, 20), stepText: "Nov 17 goes to group 2, index 1"),
+        Step(speech: NSMutableAttributedString(string: "Nov 17 goes to group 2, second slot."), solution: (13, 22), stepText: "May 27 goes to group 3, index 1"),
+        Step(speech: NSMutableAttributedString(string: "May 27 goes to group 3, second slot."), solution: (14, 21), stepText: "Jan 1 goes to group 3, index 0"),
+        Step(speech: NSMutableAttributedString(string: "Jan 1 goes to group 3, first slot."), solution: (15, 24), stepText: "Sept 28 goes to group 4, index 1"),
+        Step(speech: NSMutableAttributedString(string: "Sept 28 goes to group 4, second slot."), solution: (16, 23), stepText: "July 30 goes to group 4, index 0"),
+        Step(speech: NSMutableAttributedString(string: "July 30 goes to group 4, first slot, so we end up with 4 sorted pairs.\n\nNow merge each pair with another pair to form groups of 4 using the third row of slots."), solution: (17, 25), stepText: "Mar 3 goes to group 1, index 0"),
+        Step(speech: NSMutableAttributedString(string: "Mar 3 goes to group 1, first slot."), solution: (18, 28), stepText: "Dec 20 goes to group 1, index 3"),
+        Step(speech: NSMutableAttributedString(string: "Dec 20 goes to group 1, last slot."), solution: (19, 26), stepText: "May 12 goes to group 1, index 1"),
+        Step(speech: NSMutableAttributedString(string: "May 12 goes to group 1, second slot."), solution: (20, 27), stepText: "Nov 17 goes to group 1, index 2"),
+        Step(speech: NSMutableAttributedString(string: "Nov 17 goes to group 1, third slot."), solution: (21, 29), stepText: "Jan 1 goes to group 2, index 0"),
+        Step(speech: NSMutableAttributedString(string: "Jan 1 goes to group 2, first slot."), solution: (22, 30), stepText: "May 27 goes to group 2, index 1"),
+        Step(speech: NSMutableAttributedString(string: "May 27 goes to group 2, second slot."), solution: (23, 31), stepText: "July 30 goes to group 2, index 2"),
+        Step(speech: NSMutableAttributedString(string: "July 30 goes to group 2, third slot."), solution: (24, 32), stepText: "Sept 28 goes to group 2, index 3"),
+        Step(speech: NSMutableAttributedString(string: "And Sept 28 goes to group 2, last slot.\n\nFinally, the students need to merge their groups of 4 to form one final group of 8."), solution: (25, 34), stepText: "Mar 3 goes to index 1"),
+        Step(speech: NSMutableAttributedString(string: "Mar 3 goes to the second slot."), solution: (26, 35), stepText: "May 12 goes to index 2"),
+        Step(speech: NSMutableAttributedString(string: "May 12 goes to the third slot."), solution: (27, 39), stepText: "Nov 17 goes to index 6"),
+        Step(speech: NSMutableAttributedString(string: "Nov 17 goes to the seventh slot."), solution: (28, 40), stepText: "Dec 20 goes to index 7"),
+        Step(speech: NSMutableAttributedString(string: "Dec 20 goes to the last slot."), solution: (29, 33), stepText: "Jan 1 goes to index 0"),
+        Step(speech: NSMutableAttributedString(string: "Jan 1 goes to the first slot."), solution: (30, 36), stepText: "May 27 goes to index 3"),
+        Step(speech: NSMutableAttributedString(string: "May 27 goes to the fourth slot."), solution: (31, 37), stepText: "July 30 goes to index 4"),
+        Step(speech: NSMutableAttributedString(string: "July 30 goes to the fifth slot."), solution: (32, 38), stepText: "Sept 28 goes to index 5"),
+        Step(speech: NSMutableAttributedString(string: "And Sept 28 goes to the sixth slot."))
     ]
 
     var hintMessage: String {

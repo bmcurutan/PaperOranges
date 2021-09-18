@@ -27,7 +27,7 @@ class SortingViewController: UIViewController {
 		// Only detect the last step if not also the first step
 		return currentStepIndex != 0 && currentStepIndex == viewModel.steps.count - 1
 	}
-	private var isCompletedCurrently: Bool = false // Detects if sorting game was completed during current instance
+	private var isCurrentlyCompleted: Bool = false // Detects if sorting game was completed during current instance
 
 	private var tableView: UITableView = {
 		let tableView = UITableView()
@@ -90,11 +90,6 @@ class SortingViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if !UserDefaults.standard.bool(forKey: viewModel.educationID) {
-           // Show tooltip education
-//           let rightButton = navigationItem.rightBarButtonItem?.value(forKey: "view") as? UIView,
-//           let parent = navigationController?.view {
-//            let tooltip = rightButton.addTooltip(to: parent, with: viewModel.educationText)
-//            tooltip?.animate()
            // Show info modal
             infoButtonTapped()
             UserDefaults.standard.setValue(true, forKey: viewModel.educationID)
@@ -126,7 +121,7 @@ class SortingViewController: UIViewController {
         default:
             break
         }
-        isCompletedCurrently = true
+        isCurrentlyCompleted = true
     }
 
     private func reloadSection(_ section: SortingSection) {
@@ -173,7 +168,7 @@ extension SortingViewController: UITableViewDataSource {
         case .help:
             let cell = tableView.dequeueReusableCell(withIdentifier: "HelpButtonCell", for: indexPath) as! ButtonTableViewCell
             cell.delegate = self
-            cell.helpButton.isHidden = currentStepIndex >= viewModel.steps.count - 1
+            cell.button.isHidden = currentStepIndex >= viewModel.steps.count - 1
             return cell
 		}
 	}
@@ -181,7 +176,7 @@ extension SortingViewController: UITableViewDataSource {
 	private func speakerCellForRow(at indexPath: IndexPath) -> SpeakerTableViewCell {
 		// Overwrite current step speech if sorting game was completed
 		var speech = currentStep.speech
-		if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) && !isCompletedCurrently {
+		if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) && !isCurrentlyCompleted {
 			speech = viewModel.completedSpeech
 		}
 
@@ -300,7 +295,7 @@ extension SortingViewController: UITableViewDelegate {
 
 extension SortingViewController: SpeakerTableViewCellDelegate {
 	func speechBubbleTapped() {
-		if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) && !isCompletedCurrently {
+		if UserDefaults.standard.bool(forKey: viewModel.id.rawValue) && !isCurrentlyCompleted {
 			// Reset to uncompleted state
 			UserDefaults.standard.setValue(false, forKey: viewModel.id.rawValue)
 			speechTitle = .start
@@ -313,14 +308,18 @@ extension SortingViewController: SpeakerTableViewCellDelegate {
 extension SortingViewController: ButtonTableViewCellDelegate {
     func buttonTapped() {
         if viewModel.steps.indices.contains(currentStepIndex) {
-            let step = viewModel.steps[currentStepIndex]
+            let solution = viewModel.steps[currentStepIndex].solution
             switch viewModel.id {
             case .bubbleSort:
-                evaluate(sortID0: step.solution.0, sortID1: step.solution.1, isForced: true, completion: nil)
+                evaluate(sortID0: solution.0, sortID1: solution.1, isForced: true, completion: nil)
             case .insertionSort:
-                evaluate(buttonID: step.solution.0, slotID: step.solution.1, isForced: true, completion: nil)
+                evaluate(buttonID: solution.0, slotID: solution.1, isForced: true, completion: nil)
             case .mergeSort:
-                print("// TODO")
+                if solution.0 <= 8 {
+                    evaluateButtonAndSlot(buttonID: solution.0, slotID: solution.1, isForced: true, completion: nil)
+                } else {
+                    evaluateSlots(slotID0: solution.0, slotID1: solution.1, isForced: true, completion: nil)
+                }
             default:
                 break
             }
@@ -433,11 +432,11 @@ extension SortingViewController: MergeSortButtonsTableViewCellDelegate {
         reloadSection(.speaker)
     }
 
-    func evaluateButtonAndSlot(buttonID: Int, slotID: Int, completion: ((Bool) -> Void)?) {
+    func evaluateButtonAndSlot(buttonID: Int, slotID: Int, isForced: Bool, completion: ((Bool) -> Void)?) {
         let solution = currentStep.solution
         if buttonID == solution.0 && slotID == solution.1 {
             // Successful solution
-            speechTitle = .success
+            speechTitle = isForced ? .none : .success
 
             // Update button data
             if let buttonIndex = viewModel.sortingButtons.firstIndex(where: { $0.id == buttonID }),
@@ -480,7 +479,7 @@ extension SortingViewController: MergeSortButtonsTableViewCellDelegate {
         }
     }
 
-    func evaluateSlots(slotID0: Int, slotID1: Int, completion: ((Bool) -> Void)?) {
+    func evaluateSlots(slotID0: Int, slotID1: Int, isForced: Bool, completion: ((Bool) -> Void)?) {
         let solution = currentStep.solution
         if slotID0 == solution.0 && slotID1 == solution.1 {
             // Successful solution

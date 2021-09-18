@@ -14,7 +14,7 @@ protocol ButtonTableViewCellDelegate {
 class ButtonTableViewCell: UITableViewCell {
     var delegate: ButtonTableViewCellDelegate?
 
-    var helpButton: UIButton = {
+    var button: UIButton = {
         let button = UIButton()
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.primaryButtonColor.cgColor
@@ -25,7 +25,7 @@ class ButtonTableViewCell: UITableViewCell {
         button.titleLabel?.textAlignment = .center
         button.setBackgroundColor(.white, for: .normal)
         button.setBackgroundColor(.primaryButtonColor, for: .highlighted)
-        button.setTitle("HELP", for: .normal)
+        button.setTitle("SHOW ANSWER", for: .normal)
         button.setTitleColor(.primaryButtonColor, for: .normal)
         button.setTitleColor(.white, for: .highlighted)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -36,11 +36,11 @@ class ButtonTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .backgroundColor
 
-        contentView.addSubview(helpButton)
-        helpButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8).isActive = true
-        contentView.bottomAnchor.constraint(equalTo: helpButton.bottomAnchor).isActive = true
-        helpButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        helpButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        contentView.addSubview(button)
+        button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: button.bottomAnchor).isActive = true
+        contentView.rightAnchor.constraint(equalTo: button.rightAnchor, constant: 16).isActive = true
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
 
     required init?(coder: NSCoder) {

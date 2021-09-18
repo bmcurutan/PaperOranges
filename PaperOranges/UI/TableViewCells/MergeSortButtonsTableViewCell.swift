@@ -9,8 +9,8 @@ import UIKit
 
 protocol MergeSortButtonsTableViewCellDelegate {
     func showMergeSortError()
-    func evaluateButtonAndSlot(buttonID: Int, slotID: Int, completion: ((Bool) -> Void)?)
-    func evaluateSlots(slotID0: Int, slotID1: Int, completion: ((Bool) -> Void)?)
+    func evaluateButtonAndSlot(buttonID: Int, slotID: Int, isForced: Bool, completion: ((Bool) -> Void)?)
+    func evaluateSlots(slotID0: Int, slotID1: Int, isForced: Bool, completion: ((Bool) -> Void)?)
 }
 
 // Hack: Hardcoded/expected number of slots (8) for each round (4)
@@ -144,21 +144,26 @@ class MergeSortButtonsTableViewCell: SortingTableViewCell {
             imageLabelButton.tag = slot.id
 
             if index < 8 { // Round 1
+                // Use background color to show different groups
+                // Indices - 1 | 2 | 3 | 4 | 5 | 6 | 7
+                if index % 2 == 1 {
+                    imageLabelButton.backgroundColor = UIColor.desertRed.withAlphaComponent(0.2)
+                }
                 slotsStackView1.addArrangedSubview(imageLabelButton)
             } else if index < 16 { // Round 2
-                // Use background color to show different groups
-                // Indices 8 9 | 10 11 | 12 13 | 14 15
+                // Indices - 8 9 | 10 11 | 12 13 | 14 15
                 if index == 10 || index == 11 || index == 14 || index == 15 {
                     imageLabelButton.backgroundColor = UIColor.desertRed.withAlphaComponent(0.2)
                 }
                 slotsStackView2.addArrangedSubview(imageLabelButton)
             } else if index < 24 { // Round 3
-                // Indices 16 17 18 19 | 20 21 22 23
+                // Indices - 16 17 18 19 | 20 21 22 23
                 if index == 20 || index == 21 || index == 22 || index == 23 {
                     imageLabelButton.backgroundColor = UIColor.desertRed.withAlphaComponent(0.2)
                 }
                 slotsStackView3.addArrangedSubview(imageLabelButton)
             } else { // Round 4
+                // Indices - 24 25 26 27 28 29 30 31 
                 imageLabelButton.backgroundColor = UIColor.desertRed.withAlphaComponent(0.2)
                 slotsStackView4.addArrangedSubview(imageLabelButton)
             }
@@ -271,7 +276,7 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
 
             guard let slot = slotButton else { return }
 
-            delegate?.evaluateButtonAndSlot(buttonID: button.tag, slotID: slot.tag) { [weak self] isSuccess in
+            delegate?.evaluateButtonAndSlot(buttonID: button.tag, slotID: slot.tag, isForced: false) { [weak self] isSuccess in
                 guard let `self` = self else { return }
 
                 guard isSuccess else {
@@ -359,7 +364,7 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
 
         guard let slot0 = slotButton0, let slot1 = slotButton1 else { return }
 
-        delegate?.evaluateSlots(slotID0: slot0.tag, slotID1: slot1.tag) { [weak self] isSuccess in
+        delegate?.evaluateSlots(slotID0: slot0.tag, slotID1: slot1.tag, isForced: false) { [weak self] isSuccess in
             guard let `self` = self else { return }
 
             guard isSuccess else {
