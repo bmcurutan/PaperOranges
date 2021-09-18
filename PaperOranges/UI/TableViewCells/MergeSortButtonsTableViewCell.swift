@@ -32,12 +32,26 @@ class MergeSortButtonsTableViewCell: SortingTableViewCell {
         return stackView
     }()
 
+    private var blueLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.desertBlue.withAlphaComponent(0.5)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private let slotsStackView1: UIStackView = {
         let stackView = UIStackView()
         stackView.distribution = .fillEqually
         stackView.spacing = 2
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
+    }()
+
+    private var redLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.desertRed.withAlphaComponent(0.5)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     private let slotsStackView2: UIStackView = {
@@ -48,12 +62,26 @@ class MergeSortButtonsTableViewCell: SortingTableViewCell {
         return stackView
     }()
 
+    private var tealLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.desertTeal.withAlphaComponent(0.5)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private let slotsStackView3: UIStackView = {
         let stackView = UIStackView()
         stackView.distribution = .fillEqually
         stackView.spacing = 2
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
+    }()
+
+    private var yellowLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.desertYellow.withAlphaComponent(0.5)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     private let slotsStackView4: UIStackView = {
@@ -73,26 +101,50 @@ class MergeSortButtonsTableViewCell: SortingTableViewCell {
         buttonsStackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
         contentView.rightAnchor.constraint(equalTo: buttonsStackView.rightAnchor, constant: 16).isActive = true
 
+        contentView.addSubview(blueLineView)
+        blueLineView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        contentView.rightAnchor.constraint(equalTo: blueLineView.rightAnchor).isActive = true
+        blueLineView.heightAnchor.constraint(equalToConstant: 16).isActive = true
+
         contentView.addSubview(slotsStackView1)
         slotsStackView1.topAnchor.constraint(equalTo: buttonsStackView.bottomAnchor, constant: 8).isActive = true
         slotsStackView1.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
         contentView.rightAnchor.constraint(equalTo: slotsStackView1.rightAnchor, constant: 16).isActive = true
+        blueLineView.centerYAnchor.constraint(equalTo: slotsStackView1.centerYAnchor).isActive = true
+
+        contentView.addSubview(redLineView)
+        redLineView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        contentView.rightAnchor.constraint(equalTo: redLineView.rightAnchor).isActive = true
+        redLineView.heightAnchor.constraint(equalToConstant: 16).isActive = true
 
         contentView.addSubview(slotsStackView2)
         slotsStackView2.topAnchor.constraint(equalTo: slotsStackView1.bottomAnchor, constant: 8).isActive = true
         slotsStackView2.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
         contentView.rightAnchor.constraint(equalTo: slotsStackView2.rightAnchor, constant: 16).isActive = true
+        redLineView.centerYAnchor.constraint(equalTo: slotsStackView2.centerYAnchor).isActive = true
+
+        contentView.addSubview(tealLineView)
+        tealLineView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        contentView.rightAnchor.constraint(equalTo: tealLineView.rightAnchor).isActive = true
+        tealLineView.heightAnchor.constraint(equalToConstant: 16).isActive = true
 
         contentView.addSubview(slotsStackView3)
         slotsStackView3.topAnchor.constraint(equalTo: slotsStackView2.bottomAnchor, constant: 8).isActive = true
         slotsStackView3.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
         contentView.rightAnchor.constraint(equalTo: slotsStackView3.rightAnchor, constant: 16).isActive = true
+        tealLineView.centerYAnchor.constraint(equalTo: slotsStackView3.centerYAnchor).isActive = true
+
+        contentView.addSubview(yellowLineView)
+        yellowLineView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        contentView.rightAnchor.constraint(equalTo: yellowLineView.rightAnchor).isActive = true
+        yellowLineView.heightAnchor.constraint(equalToConstant: 16).isActive = true
 
         contentView.addSubview(slotsStackView4)
         slotsStackView4.topAnchor.constraint(equalTo: slotsStackView3.bottomAnchor, constant: 8).isActive = true
         slotsStackView4.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
         contentView.bottomAnchor.constraint(equalTo: slotsStackView4.bottomAnchor, constant: 16).isActive = true
         contentView.rightAnchor.constraint(equalTo: slotsStackView4.rightAnchor, constant: 16).isActive = true
+        yellowLineView.centerYAnchor.constraint(equalTo: slotsStackView4.centerYAnchor).isActive = true
     }
 
     required init?(coder: NSCoder) {
@@ -112,7 +164,7 @@ class MergeSortButtonsTableViewCell: SortingTableViewCell {
             imageLabelButton.alpha = button.isHidden ? 0 : 1 // Hide button - use alpha instead of removing to maintain arranged subviews positions
             imageLabelButton.image = button.image
             imageLabelButton.isUserInteractionEnabled = !button.isHidden
-            imageLabelButton.name = button.name
+            imageLabelButton.text = button.name
             imageLabelButton.tag = button.id
             buttonsStackView.addArrangedSubview(imageLabelButton)
         }
@@ -139,32 +191,46 @@ class MergeSortButtonsTableViewCell: SortingTableViewCell {
             imageLabelButton.layer.borderColor = UIColor.borderColor.cgColor
             imageLabelButton.layer.borderWidth = slot.isHidden ? 0 : 1
             imageLabelButton.delegate = self
-            imageLabelButton.name = slot.name
+            imageLabelButton.text = slot.name
             imageLabelButton.image = slot.image
             imageLabelButton.tag = slot.id
 
-            if index < 8 { // Round 1
-                // Use background color to show different groups
-                // Indices - 1 | 2 | 3 | 4 | 5 | 6 | 7
-                if index % 2 == 1 {
-                    imageLabelButton.backgroundColor = UIColor.desertRed.withAlphaComponent(0.2)
+            switch index {
+            case let i where i < 8:
+                // Groups 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
+                if slot.name == "\n" {
+                    imageLabelButton.setTitle("\(i + 1)", for: .normal)
                 }
                 slotsStackView1.addArrangedSubview(imageLabelButton)
-            } else if index < 16 { // Round 2
-                // Indices - 8 9 | 10 11 | 12 13 | 14 15
-                if index == 10 || index == 11 || index == 14 || index == 15 {
-                    imageLabelButton.backgroundColor = UIColor.desertRed.withAlphaComponent(0.2)
+            case let i where i < 16:
+                // Groups 1 | 2 | 3 | 4
+                if slot.name == "\n" {
+                    if i == 8 || i == 9 {
+                        imageLabelButton.setTitle("1", for: .normal)
+                    } else if i == 10 || i == 11 {
+                        imageLabelButton.setTitle("2", for: .normal)
+                    } else if i == 12 || i == 13 {
+                        imageLabelButton.setTitle("3", for: .normal)
+                    } else if i == 14 || i == 15 {
+                        imageLabelButton.setTitle("4", for: .normal)
+                    }
                 }
                 slotsStackView2.addArrangedSubview(imageLabelButton)
-            } else if index < 24 { // Round 3
-                // Indices - 16 17 18 19 | 20 21 22 23
-                if index == 20 || index == 21 || index == 22 || index == 23 {
-                    imageLabelButton.backgroundColor = UIColor.desertRed.withAlphaComponent(0.2)
+            case let i where i < 24:
+                // Groups 1 | 2
+                if slot.name == "\n" {
+                    if i == 16 || i == 17 || i == 18 || i == 19 {
+                        imageLabelButton.setTitle("1", for: .normal)
+                    } else if i == 20 || i == 21 || i == 22 || i == 23 {
+                        imageLabelButton.setTitle("2", for: .normal)
+                    }
                 }
                 slotsStackView3.addArrangedSubview(imageLabelButton)
-            } else { // Round 4
-                // Indices - 24 25 26 27 28 29 30 31 
-                imageLabelButton.backgroundColor = UIColor.desertRed.withAlphaComponent(0.2)
+            default:
+                // Group 1
+                if slot.name == "\n" {
+                    imageLabelButton.setTitle("1", for: .normal)
+                }
                 slotsStackView4.addArrangedSubview(imageLabelButton)
             }
         }

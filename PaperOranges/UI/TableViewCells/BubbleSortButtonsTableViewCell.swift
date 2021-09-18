@@ -51,7 +51,7 @@ class BubbleSortButtonsTableViewCell: SortingTableViewCell {
 			let imageLabelButton = ImageLabelButton()
 			imageLabelButton.delegate = self
 			imageLabelButton.image = button.image
-			imageLabelButton.name = button.name
+			imageLabelButton.text = button.name
             imageLabelButton.tag = button.id
 			stackView.addArrangedSubview(imageLabelButton)
 		}

@@ -20,9 +20,9 @@ class ImageLabelButton: UIButton {
 		}
 	}
 
-	var name: String? {
+	var text: String? {
 		didSet {
-			nameLabel.text = name
+			textLabel.text = text 
 		}
 	}
 
@@ -42,7 +42,7 @@ class ImageLabelButton: UIButton {
 		return imageView
 	}()
 
-	private var nameLabel: UILabel = {
+	private var textLabel: UILabel = {
 		let label = UILabel()
 		label.font = UIFont.boldSystemFont(ofSize: 12)
 		label.lineBreakMode = .byWordWrapping
@@ -59,6 +59,7 @@ class ImageLabelButton: UIButton {
 		layer.masksToBounds = true
         backgroundColor = UIColor.backgroundColor.withAlphaComponent(0.4)
 		setBackgroundImage(UIImage.withColor(UIColor.highlightColor.withAlphaComponent(0.4)), for: .highlighted)
+        titleLabel?.font = UIFont.systemFont(ofSize: 14)
 
 		addSubview(roundImageView)
 		roundImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
@@ -66,11 +67,11 @@ class ImageLabelButton: UIButton {
 		roundImageView.widthAnchor.constraint(equalToConstant: 56).isActive = true
 		roundImageView.heightAnchor.constraint(equalToConstant: 56).isActive = true
 
-		addSubview(nameLabel)
-		nameLabel.topAnchor.constraint(equalTo: roundImageView.bottomAnchor, constant: 8).isActive = true
-		nameLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 8).isActive = true
-		bottomAnchor.constraint(equalTo: nameLabel.bottomAnchor).isActive = true
-		rightAnchor.constraint(equalTo: nameLabel.rightAnchor, constant: 8).isActive = true
+		addSubview(textLabel)
+		textLabel.topAnchor.constraint(equalTo: roundImageView.bottomAnchor, constant: 8).isActive = true
+		textLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 8).isActive = true
+		bottomAnchor.constraint(equalTo: textLabel.bottomAnchor).isActive = true
+		rightAnchor.constraint(equalTo: textLabel.rightAnchor, constant: 8).isActive = true
 
 		addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 	}
@@ -88,14 +89,14 @@ class ImageLabelButton: UIButton {
 	func createCopy() -> ImageLabelButton {
 		let button = ImageLabelButton()
 		button.image = image
-		button.name = name
+		button.text = text
 		button.isSelected = isSelected
 		return button
 	}
 
 	func copyData(from button: ImageLabelButton) {
 		image = button.image
-		name = button.name
+		text = button.text
 		// Doesn't include isSelected state
 	}
 }

@@ -37,7 +37,7 @@ extension UIColor {
 	}
 
 	static var primaryButtonColor: UIColor {
-		return UIColor(red: 42/255, green: 157/255, blue: 143/255, alpha: 1.0) // #2A9D8F Teal
+		return desertTeal
 	}
 
 	static var highlightColor: UIColor {
@@ -50,5 +50,13 @@ extension UIColor {
 
     static var desertRed: UIColor {
         return UIColor(red: 188/255, green: 33/255, blue: 45/255, alpha: 1.0) // #BC212D Red
+    }
+
+    static var desertYellow: UIColor {
+        return UIColor(red: 234/255, green: 174/255, blue: 58/255, alpha: 1.0) // EAAE3A Yellow
+    }
+
+    static var desertTeal: UIColor {
+        return UIColor(red: 42/255, green: 157/255, blue: 143/255, alpha: 1.0) // #2A9D8F Teal
     }
 }

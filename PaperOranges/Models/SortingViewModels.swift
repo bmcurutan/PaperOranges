@@ -233,7 +233,7 @@ class MergeSortViewModel: SortingViewModel {
     ]
 
     var steps: [Step] = [
-        Step(speech: NSMutableAttributedString(string: "Sort the students by birthday. The first step is to separate them out into groups of 1 using the first row of slots."), solution: (8, 9), stepText: "Dec 20 goes to group 1, index 0"),
+        Step(speech: NSMutableAttributedString(string: "Sort the students by birthday. The first step is to separate them out into groups of 1 using the blue (first) row of slots."), solution: (8, 9), stepText: "Dec 20 goes to group 1, index 0"),
         Step(speech: NSMutableAttributedString(string: "Dec 20 goes to group 1."), solution: (2, 10), stepText: "Mar 3 goes to group 2, index 0"),
         Step(speech: NSMutableAttributedString(string: "Mar 3 goes to group 2."), solution: (3, 11), stepText: "May 12 goes to group 3, index 0"),
         Step(speech: NSMutableAttributedString(string: "May 12 goes to group 3."), solution: (7, 12), stepText: "Nov 17 goes to group 4, index 0"),
@@ -241,7 +241,7 @@ class MergeSortViewModel: SortingViewModel {
         Step(speech: NSMutableAttributedString(string: "May 27 goes to group 5."), solution: (1, 14), stepText: "Jan 1 goes to group 6, index 0"),
         Step(speech: NSMutableAttributedString(string: "Jan 1 goes to group 6."), solution: (6, 15), stepText: "Sept 28 goes to group 7, index 0"),
         Step(speech: NSMutableAttributedString(string: "Sept 28 goes to group 7."), solution: (5, 16), stepText: "July 30 goes to group 8, index 0"),
-        Step(speech: NSMutableAttributedString(string: "July 30 goes to group 8. Note that each group of 1 is already sorted.\n\nNext, combine groups to form sorted groups of 2 using the second row of slots."), solution: (9, 18), stepText: "Dec 20 goes to group 1, index 1"),
+        Step(speech: NSMutableAttributedString(string: "July 30 goes to group 8. Note that each group of 1 is already sorted.\n\nNext, combine groups to form sorted groups of 2 using the red (second) row of slots."), solution: (9, 18), stepText: "Dec 20 goes to group 1, index 1"),
         Step(speech: NSMutableAttributedString(string: "Dec 20 goes to group 1, second slot."), solution: (10, 17), stepText: "Mar 3 goes to group 1, index 0"),
         Step(speech: NSMutableAttributedString(string: "Mar 3 goes to group 1, first slot."), solution: (11, 19), stepText: "May 12 goes to group 2, index 0"),
         Step(speech: NSMutableAttributedString(string: "May 12 goes to group 2, first slot."), solution: (12, 20), stepText: "Nov 17 goes to group 2, index 1"),
@@ -249,7 +249,7 @@ class MergeSortViewModel: SortingViewModel {
         Step(speech: NSMutableAttributedString(string: "May 27 goes to group 3, second slot."), solution: (14, 21), stepText: "Jan 1 goes to group 3, index 0"),
         Step(speech: NSMutableAttributedString(string: "Jan 1 goes to group 3, first slot."), solution: (15, 24), stepText: "Sept 28 goes to group 4, index 1"),
         Step(speech: NSMutableAttributedString(string: "Sept 28 goes to group 4, second slot."), solution: (16, 23), stepText: "July 30 goes to group 4, index 0"),
-        Step(speech: NSMutableAttributedString(string: "July 30 goes to group 4, first slot, so we end up with 4 sorted pairs.\n\nNow merge each pair with another pair to form groups of 4 using the third row of slots."), solution: (17, 25), stepText: "Mar 3 goes to group 1, index 0"),
+        Step(speech: NSMutableAttributedString(string: "July 30 goes to group 4, first slot, so we end up with 4 sorted pairs.\n\nNow merge each pair with another pair to form groups of 4 using the green (third) row of slots."), solution: (17, 25), stepText: "Mar 3 goes to group 1, index 0"),
         Step(speech: NSMutableAttributedString(string: "Mar 3 goes to group 1, first slot."), solution: (18, 28), stepText: "Dec 20 goes to group 1, index 3"),
         Step(speech: NSMutableAttributedString(string: "Dec 20 goes to group 1, last slot."), solution: (19, 26), stepText: "May 12 goes to group 1, index 1"),
         Step(speech: NSMutableAttributedString(string: "May 12 goes to group 1, second slot."), solution: (20, 27), stepText: "Nov 17 goes to group 1, index 2"),
@@ -257,7 +257,7 @@ class MergeSortViewModel: SortingViewModel {
         Step(speech: NSMutableAttributedString(string: "Jan 1 goes to group 2, first slot."), solution: (22, 30), stepText: "May 27 goes to group 2, index 1"),
         Step(speech: NSMutableAttributedString(string: "May 27 goes to group 2, second slot."), solution: (23, 31), stepText: "July 30 goes to group 2, index 2"),
         Step(speech: NSMutableAttributedString(string: "July 30 goes to group 2, third slot."), solution: (24, 32), stepText: "Sept 28 goes to group 2, index 3"),
-        Step(speech: NSMutableAttributedString(string: "And Sept 28 goes to group 2, last slot.\n\nFinally, the students need to merge their groups of 4 to form one final group of 8."), solution: (25, 34), stepText: "Mar 3 goes to index 1"),
+        Step(speech: NSMutableAttributedString(string: "And Sept 28 goes to group 2, last slot.\n\nFinally, the students need to merge their groups of 4 to form one final group of 8 using the yellow (last) row of slots."), solution: (25, 34), stepText: "Mar 3 goes to index 1"),
         Step(speech: NSMutableAttributedString(string: "Mar 3 goes to the second slot."), solution: (26, 35), stepText: "May 12 goes to index 2"),
         Step(speech: NSMutableAttributedString(string: "May 12 goes to the third slot."), solution: (27, 39), stepText: "Nov 17 goes to index 6"),
         Step(speech: NSMutableAttributedString(string: "Nov 17 goes to the seventh slot."), solution: (28, 40), stepText: "Dec 20 goes to index 7"),

@@ -23,8 +23,8 @@ class ButtonTableViewCell: UITableViewCell {
         button.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.titleLabel?.textAlignment = .center
-        button.setBackgroundColor(.white, for: .normal)
-        button.setBackgroundColor(.primaryButtonColor, for: .highlighted)
+        button.setBackgroundImage(UIImage.withColor(UIColor.white), for: .normal)
+        button.setBackgroundImage(UIImage.withColor(UIColor.primaryButtonColor), for: .highlighted)
         button.setTitle("SHOW ANSWER", for: .normal)
         button.setTitleColor(.primaryButtonColor, for: .normal)
         button.setTitleColor(.white, for: .highlighted)

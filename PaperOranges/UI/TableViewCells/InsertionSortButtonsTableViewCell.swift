@@ -36,14 +36,14 @@ class InsertionSortButtonsTableViewCell: SortingTableViewCell {
 
 	private var blueLineView: UIView = {
 		let view = UIView()
-		view.backgroundColor = UIColor.desertBlue.withAlphaComponent(0.4)
+		view.backgroundColor = UIColor.desertBlue.withAlphaComponent(0.5)
 		view.translatesAutoresizingMaskIntoConstraints = false
 		return view
 	}()
 
     private var redLineView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.desertRed.withAlphaComponent(0.4)
+        view.backgroundColor = UIColor.desertRed.withAlphaComponent(0.5)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -53,27 +53,27 @@ class InsertionSortButtonsTableViewCell: SortingTableViewCell {
 		contentView.backgroundColor = .backgroundColor
 
 		contentView.addSubview(blueLineView)
-        blueLineView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 36).isActive = true
         blueLineView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
 		contentView.rightAnchor.constraint(equalTo: blueLineView.rightAnchor).isActive = true
-        blueLineView.heightAnchor.constraint(equalToConstant: 8).isActive = true
+        blueLineView.heightAnchor.constraint(equalToConstant: 16).isActive = true
 
 		contentView.addSubview(buttonsStackView)
 		buttonsStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8).isActive = true
 		buttonsStackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
 		contentView.rightAnchor.constraint(equalTo: buttonsStackView.rightAnchor, constant: 16).isActive = true
+        blueLineView.centerYAnchor.constraint(equalTo: buttonsStackView.centerYAnchor).isActive = true
 
         contentView.addSubview(redLineView)
-        redLineView.topAnchor.constraint(equalTo: buttonsStackView.bottomAnchor, constant: 36).isActive = true
         redLineView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
         contentView.rightAnchor.constraint(equalTo: redLineView.rightAnchor).isActive = true
-        redLineView.heightAnchor.constraint(equalToConstant: 8).isActive = true
+        redLineView.heightAnchor.constraint(equalToConstant: 16).isActive = true
 
 		contentView.addSubview(slotsStackView)
 		slotsStackView.topAnchor.constraint(equalTo: buttonsStackView.bottomAnchor, constant: 8).isActive = true
 		slotsStackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
 		contentView.bottomAnchor.constraint(equalTo: slotsStackView.bottomAnchor, constant: 16).isActive = true
 		contentView.rightAnchor.constraint(equalTo: slotsStackView.rightAnchor, constant: 16).isActive = true
+        redLineView.centerYAnchor.constraint(equalTo: slotsStackView.centerYAnchor).isActive = true
 	}
 
 	required init?(coder: NSCoder) {
@@ -93,7 +93,7 @@ class InsertionSortButtonsTableViewCell: SortingTableViewCell {
             imageLabelButton.alpha = button.isHidden ? 0 : 1 // Hide button - use alpha instead of removing to maintain arranged subviews positions
 			imageLabelButton.image = button.image
             imageLabelButton.isUserInteractionEnabled = !button.isHidden
-			imageLabelButton.name = button.name
+			imageLabelButton.text = button.name
             imageLabelButton.tag = button.id
 			buttonsStackView.addArrangedSubview(imageLabelButton)
         }
@@ -111,7 +111,7 @@ class InsertionSortButtonsTableViewCell: SortingTableViewCell {
             imageLabelButton.layer.borderColor = UIColor.borderColor.cgColor
             imageLabelButton.layer.borderWidth = 1
             imageLabelButton.delegate = self
-            imageLabelButton.name = slot.name
+            imageLabelButton.text = slot.name
             imageLabelButton.image = slot.image
             imageLabelButton.tag = slot.id
             slotsStackView.addArrangedSubview(imageLabelButton)
