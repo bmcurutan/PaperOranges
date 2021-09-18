@@ -31,7 +31,7 @@ class ImageLabelButton: UIButton {
 			if isSelected {
 				backgroundColor = UIColor.highlightColor.withAlphaComponent(0.4)
 			} else {
-                backgroundColor = UIColor.backgroundColor.withAlphaComponent(0.4)
+                backgroundColor = isHidden ? .clear : UIColor.backgroundColor.withAlphaComponent(0.4) 
 			}
 		}
 	}

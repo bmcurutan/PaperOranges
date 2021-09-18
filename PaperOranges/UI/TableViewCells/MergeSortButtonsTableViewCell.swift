@@ -190,6 +190,8 @@ class MergeSortButtonsTableViewCell: SortingTableViewCell {
             let imageLabelButton = ImageLabelButton()
             imageLabelButton.layer.borderColor = UIColor.borderColor.cgColor
             imageLabelButton.layer.borderWidth = slot.isHidden ? 0 : 1
+            imageLabelButton.backgroundColor = slot.isHidden ? .clear : UIColor.backgroundColor.withAlphaComponent(0.4)
+            imageLabelButton.isUserInteractionEnabled = !slot.isHidden
             imageLabelButton.delegate = self
             imageLabelButton.text = slot.name
             imageLabelButton.image = slot.image

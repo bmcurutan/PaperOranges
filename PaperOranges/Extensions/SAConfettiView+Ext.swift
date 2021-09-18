@@ -12,7 +12,7 @@ import QuartzCore
 public class SAConfettiView: UIView {
 	var emitter = CAEmitterLayer()
 
-	public var colors: [UIColor] = [.accentColor, .secondaryAccentColor, .primaryButtonColor, .highlightColor]
+	public var colors: [UIColor] = [.desertRed, .desertBlue, .desertTeal, .desertYellow]
 	public var intensity: Float = 0.8
 	private var active: Bool = false
 
