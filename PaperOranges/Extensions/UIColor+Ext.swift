@@ -53,7 +53,7 @@ extension UIColor {
     }
 
     static var desertYellow: UIColor {
-        return UIColor(red: 233/255, green: 196/255, blue: 106/255, alpha: 1.0) // #E9C46A Yellow
+        return UIColor(red: 234/255, green: 174/255, blue: 58/255, alpha: 1.0) // EAAE3A Yellow
     }
 
     static var desertTeal: UIColor {
