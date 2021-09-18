@@ -12,11 +12,17 @@ protocol MergeSortButtonsTableViewCellDelegate {
     func evaluateMergeSort(buttonID: Int, slotID: Int, with completion: ((Bool) -> Void)?)
 }
 
+// Hack: Hardcoded/expected number of slots (8) for each round (4)
 class MergeSortButtonsTableViewCell: SortingTableViewCell {
     var delegate: MergeSortButtonsTableViewCellDelegate?
 
     private var buttons: [ButtonData] = []
     private var slots: [ButtonData] = []
+
+    private let round1IndexRange = 0...7
+    private let round2IndexRange = 8...15
+    private let round3IndexRange = 16...23
+    private let round4IndexRange = 24...31
 
     private let buttonsStackView: UIStackView = {
         let stackView = UIStackView()
@@ -25,10 +31,34 @@ class MergeSortButtonsTableViewCell: SortingTableViewCell {
         return stackView
     }()
 
-    private let slotsStackView: UIStackView = {
+    private let slotsStackView1: UIStackView = {
         let stackView = UIStackView()
         stackView.distribution = .fillEqually
-        stackView.spacing = 4
+        stackView.spacing = 2
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    private let slotsStackView2: UIStackView = {
+        let stackView = UIStackView()
+        stackView.distribution = .fillEqually
+        stackView.spacing = 2
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    private let slotsStackView3: UIStackView = {
+        let stackView = UIStackView()
+        stackView.distribution = .fillEqually
+        stackView.spacing = 2
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    private let slotsStackView4: UIStackView = {
+        let stackView = UIStackView()
+        stackView.distribution = .fillEqually
+        stackView.spacing = 2
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -42,11 +72,26 @@ class MergeSortButtonsTableViewCell: SortingTableViewCell {
         buttonsStackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
         contentView.rightAnchor.constraint(equalTo: buttonsStackView.rightAnchor, constant: 16).isActive = true
 
-        contentView.addSubview(slotsStackView)
-        slotsStackView.topAnchor.constraint(equalTo: buttonsStackView.bottomAnchor, constant: 8).isActive = true
-        slotsStackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
-        contentView.bottomAnchor.constraint(equalTo: slotsStackView.bottomAnchor, constant: 16).isActive = true
-        contentView.rightAnchor.constraint(equalTo: slotsStackView.rightAnchor, constant: 16).isActive = true
+        contentView.addSubview(slotsStackView1)
+        slotsStackView1.topAnchor.constraint(equalTo: buttonsStackView.bottomAnchor, constant: 8).isActive = true
+        slotsStackView1.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
+        contentView.rightAnchor.constraint(equalTo: slotsStackView1.rightAnchor, constant: 16).isActive = true
+
+        contentView.addSubview(slotsStackView2)
+        slotsStackView2.topAnchor.constraint(equalTo: slotsStackView1.bottomAnchor, constant: 8).isActive = true
+        slotsStackView2.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
+        contentView.rightAnchor.constraint(equalTo: slotsStackView2.rightAnchor, constant: 16).isActive = true
+
+        contentView.addSubview(slotsStackView3)
+        slotsStackView3.topAnchor.constraint(equalTo: slotsStackView2.bottomAnchor, constant: 8).isActive = true
+        slotsStackView3.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
+        contentView.rightAnchor.constraint(equalTo: slotsStackView3.rightAnchor, constant: 16).isActive = true
+
+        contentView.addSubview(slotsStackView4)
+        slotsStackView4.topAnchor.constraint(equalTo: slotsStackView3.bottomAnchor, constant: 8).isActive = true
+        slotsStackView4.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: slotsStackView4.bottomAnchor, constant: 16).isActive = true
+        contentView.rightAnchor.constraint(equalTo: slotsStackView4.rightAnchor, constant: 16).isActive = true
     }
 
     required init?(coder: NSCoder) {
@@ -74,12 +119,21 @@ class MergeSortButtonsTableViewCell: SortingTableViewCell {
 
     func addSlots(_ slots: [ButtonData]) {
         self.slots = slots
-        // Reset button stack view
-        slotsStackView.arrangedSubviews.forEach {
+        // Reset button stack views
+        slotsStackView1.arrangedSubviews.forEach {
+            $0.removeFromSuperview()
+        }
+        slotsStackView2.arrangedSubviews.forEach {
+            $0.removeFromSuperview()
+        }
+        slotsStackView3.arrangedSubviews.forEach {
+            $0.removeFromSuperview()
+        }
+        slotsStackView4.arrangedSubviews.forEach {
             $0.removeFromSuperview()
         }
 
-        slots.forEach { slot in
+        for (index, slot) in slots.enumerated() {
             let imageLabelButton = ImageLabelButton()
             imageLabelButton.layer.borderColor = UIColor.borderColor.cgColor
             imageLabelButton.layer.borderWidth = 1
@@ -87,7 +141,26 @@ class MergeSortButtonsTableViewCell: SortingTableViewCell {
             imageLabelButton.name = slot.name
             imageLabelButton.image = slot.image
             imageLabelButton.tag = slot.id
-            slotsStackView.addArrangedSubview(imageLabelButton)
+
+            if index < 8 { // Round 1
+                slotsStackView1.addArrangedSubview(imageLabelButton)
+            } else if index < 16 { // Round 2
+                // Use background color to show different groups
+                // Indices 8 9 | 10 11 | 12 13 | 14 15
+                if index == 10 || index == 11 || index == 14 || index == 15 {
+                    imageLabelButton.backgroundColor = UIColor.desertRed.withAlphaComponent(0.2)
+                }
+                slotsStackView2.addArrangedSubview(imageLabelButton)
+            } else if index < 24 { // Round 3
+                // Indices 16 17 18 19 | 20 21 22 23
+                if index == 20 || index == 21 || index == 22 || index == 23 {
+                    imageLabelButton.backgroundColor = UIColor.desertRed.withAlphaComponent(0.2)
+                }
+                slotsStackView3.addArrangedSubview(imageLabelButton)
+            } else { // Round 4
+                imageLabelButton.backgroundColor = UIColor.desertRed.withAlphaComponent(0.2)
+                slotsStackView4.addArrangedSubview(imageLabelButton)
+            }
         }
     }
 
@@ -97,7 +170,7 @@ class MergeSortButtonsTableViewCell: SortingTableViewCell {
                 button.isUserInteractionEnabled = false
             }
         }
-        slotsStackView.arrangedSubviews.forEach { button in
+        slotsStackView1.arrangedSubviews.forEach { button in
             if let button = button as? UIButton {
                 button.isUserInteractionEnabled = false
             }
@@ -143,15 +216,32 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
             delegate?.showMergeSortError()
 
         } else if selectedSlotsCount > 1, senderSlotIndex > -1 {
-            // Only one slot may be selected at a time
+            // Only one slot per stack view may be selected at a time
             guard slots.filter({ $0.isSelected }).count == 2,
                 let index0 = slots.firstIndex(where: { $0.isSelected }),
                 index0 < slots.count - 1,
-                let index1 = slots[index0 + 1...slots.count - 1].firstIndex(where: { $0.isSelected }),
-                let slot0 = slotsStackView.arrangedSubviews[index0] as? ImageLabelButton,
-                let slot1 = slotsStackView.arrangedSubviews[index1] as? ImageLabelButton else {
+                let index1 = slots[index0 + 1...slots.count - 1].firstIndex(where: { $0.isSelected }) else {
                 return
             }
+
+            var slot0: ImageLabelButton?
+            var slot1: ImageLabelButton?
+            if round1IndexRange.contains(index0) && round1IndexRange.contains(index1) {
+                slot0 = slotsStackView1.arrangedSubviews[index0] as? ImageLabelButton
+                slot1 = slotsStackView1.arrangedSubviews[index1] as? ImageLabelButton
+            } else if round2IndexRange.contains(index0) && round2IndexRange.contains(index1) {
+                slot0 = slotsStackView2.arrangedSubviews[index0] as? ImageLabelButton
+                slot1 = slotsStackView2.arrangedSubviews[index1] as? ImageLabelButton
+            } else if round3IndexRange.contains(index0) && round3IndexRange.contains(index1) {
+                slot0 = slotsStackView3.arrangedSubviews[index0] as? ImageLabelButton
+                slot1 = slotsStackView3.arrangedSubviews[index1] as? ImageLabelButton
+            } else if round4IndexRange.contains(index0) && round4IndexRange.contains(index1) {
+                slot0 = slotsStackView4.arrangedSubviews[index0] as? ImageLabelButton
+                slot1 = slotsStackView4.arrangedSubviews[index1] as? ImageLabelButton
+            } else {
+                // TODO rounds 2-4
+            }
+
             resetButtonsUI([slot0, slot1])
             // Update slot data
             slots.indices.forEach { index in
@@ -163,10 +253,22 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
         } else if selectedButtonsCount == 1, selectedSlotsCount == 1,
             let buttonIndex = buttons.firstIndex(where: { $0.isSelected }),
             let slotIndex = slots.firstIndex(where: { $0.isSelected }),
-            let button = buttonsStackView.arrangedSubviews[buttonIndex] as? ImageLabelButton,
-            let slot = slotsStackView.arrangedSubviews[slotIndex] as? ImageLabelButton {
+            let button = buttonsStackView.arrangedSubviews[buttonIndex] as? ImageLabelButton {
             // One button and one slot selected
             // Re-calculated indices because don't know if button/slot was selected first/second
+
+            var slotButton: ImageLabelButton?
+            if round1IndexRange.contains(slotIndex) {
+                slotButton = slotsStackView1.arrangedSubviews[slotIndex] as? ImageLabelButton
+            } else if round2IndexRange.contains(slotIndex) {
+                slotButton = slotsStackView2.arrangedSubviews[slotIndex - 8] as? ImageLabelButton
+            } else if round3IndexRange.contains(slotIndex) {
+                slotButton = slotsStackView3.arrangedSubviews[slotIndex - 16] as? ImageLabelButton
+            } else if round4IndexRange.contains(slotIndex) {
+                slotButton = slotsStackView4.arrangedSubviews[slotIndex - 24] as? ImageLabelButton
+            }
+
+            guard let slot = slotButton else { return }
 
             delegate?.evaluateMergeSort(buttonID: button.tag, slotID: slot.tag) { [weak self] isSuccess in
                 guard let `self` = self else { return }
@@ -188,7 +290,7 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
 
                 // Animate the buttons moving
                 UIView.animate(withDuration: 0.3, animations: {
-                    copy.frame.origin =  self.slotsStackView.convert(slot.frame, to: self.contentView).origin
+                    copy.frame.origin =  self.slotsStackView1.convert(slot.frame, to: self.contentView).origin
                 }) { _ in
                     slot.copyData(from: copy)
                     // Remove copy
@@ -201,11 +303,11 @@ extension MergeSortButtonsTableViewCell: ImageLabelButtonDelegate {
         }
     }
 
-    private func resetSelection(button: ImageLabelButton, slot: ImageLabelButton) {
+    private func resetSelection(button: ImageLabelButton, slot: ImageLabelButton?) {
         // Update button UI
         UIView.animate(withDuration: 0.3, animations: {
             button.isSelected = false
-            slot.isSelected = false
+            slot?.isSelected = false
         })
 
         // Update button and slot data
