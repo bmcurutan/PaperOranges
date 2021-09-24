@@ -27,6 +27,7 @@ protocol SortingViewModel {
 	var completedMessage: String { get }
 	var completedSpeech: NSMutableAttributedString { get }
     var completedAlert: String { get }
+    var backAlert: String { get }
 }
 
 extension SortingViewModel {
@@ -64,6 +65,10 @@ extension SortingViewModel {
 		attributedText.append(NSMutableAttributedString(string: "to reset your progress and play the game again."))
 		return attributedText
 	}
+
+    var backAlert: String {
+        return "Are you sure? Your progress will be lost."
+    }
 }
 
 class BubbleSortViewModel: SortingViewModel {

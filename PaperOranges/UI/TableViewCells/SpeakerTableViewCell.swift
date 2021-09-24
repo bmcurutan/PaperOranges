@@ -74,7 +74,7 @@ class SpeakerTableViewCell: UITableViewCell {
             attributedText.append(title)
 		}
         if let hint = hint {
-            attributedText.append(NSMutableAttributedString(string: "\n\(hint)").setTextColor(.accentColor))
+            attributedText.append(NSMutableAttributedString(string: "\n\n\(hint)").setTextColor(.accentColor))
         }
         if title != nil || hint != nil {
             attributedText.append("\n\n")

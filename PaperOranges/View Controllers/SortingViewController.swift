@@ -52,6 +52,10 @@ class SortingViewController: UIViewController {
 		super.viewDidLoad()
 		view.backgroundColor = .backgroundColor
 
+        navigationItem.hidesBackButton = true
+        let backButton = UIBarButtonItem(title: "← Back", style: .plain, target: self, action: #selector(backButtonTapped))
+        navigationItem.leftBarButtonItem = backButton
+
 		let rightButton: UIButton = {
             let image = #imageLiteral(resourceName: "ic_help")
             let button = UIButton(type: .custom)
@@ -94,6 +98,14 @@ class SortingViewController: UIViewController {
             infoButtonTapped()
             UserDefaults.standard.setValue(true, forKey: viewModel.educationID)
         }
+    }
+
+    @objc private func backButtonTapped() {
+        let alert = UIAlertController(with: traitCollection.userInterfaceStyle, title: viewModel.backAlert, completion: { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        present(alert, animated: true)
     }
 
 	@objc private func infoButtonTapped() {
@@ -141,8 +153,8 @@ class SortingViewController: UIViewController {
         confettiView.perform(#selector(UIView.removeFromSuperview), with: nil, afterDelay: 2.0)
     }
 
-    private func showAlert(with title: String?, completion: (() -> Void)?) {
-        let alert = UIAlertController(with: traitCollection.userInterfaceStyle, title: title, completion: completion)
+    private func showBasicAlert(with title: String?) {
+        let alert = UIAlertController(with: traitCollection.userInterfaceStyle, title: title, completion: nil)
         present(alert, animated: true)
     }
 }
@@ -356,7 +368,7 @@ extension SortingViewController: BubbleSortButtonsTableViewCellDelegate {
 			tableView.reloadDataAfterDelay { [weak self] in
                 guard let `self` = self, self.isLastStep else { return }
                 self.showConfetti()
-                self.showAlert(with: self.viewModel.completedAlert, completion: nil)
+                self.showBasicAlert(with: self.viewModel.completedAlert)
 			}
 			saveCompletedProgress()
 
@@ -411,7 +423,7 @@ extension SortingViewController: InsertionSortButtonsTableViewCellDelegate {
             tableView.reloadDataAfterDelay { [weak self] in
                 guard let `self` = self, self.isLastStep else { return }
                 self.showConfetti()
-                self.showAlert(with: self.viewModel.completedAlert, completion: nil)
+                self.showBasicAlert(with: self.viewModel.completedAlert)
             }
             saveCompletedProgress()
 
@@ -465,7 +477,7 @@ extension SortingViewController: MergeSortButtonsTableViewCellDelegate {
             tableView.reloadDataAfterDelay { [weak self] in
                 guard let `self` = self, self.isLastStep else { return }
                 self.showConfetti()
-                self.showAlert(with: self.viewModel.completedAlert, completion: nil)
+                self.showBasicAlert(with: self.viewModel.completedAlert)
             }
             saveCompletedProgress()
 
@@ -501,7 +513,7 @@ extension SortingViewController: MergeSortButtonsTableViewCellDelegate {
             tableView.reloadDataAfterDelay { [weak self] in
                 guard let `self` = self, self.isLastStep else { return }
                 self.showConfetti()
-                self.showAlert(with: self.viewModel.completedAlert, completion: nil)
+                self.showBasicAlert(with: self.viewModel.completedAlert)
             }
             saveCompletedProgress()
 
