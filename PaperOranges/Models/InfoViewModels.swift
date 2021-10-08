@@ -19,7 +19,7 @@ class MenuInfoViewModel: InfoViewModel {
 	private var menuRows: [Info] = [
 		.description("What is Paper Oranges?", "Paper Oranges is a community and storytelling platform to elevate the voices of people in tech. We partner with creators of color to develop educational materials related to science, technology, engineering, art and math (STEAM) and featuring a diverse cast of characters."),
 		.buttons([
-            ButtonData(id: 0, image: #imageLiteral(resourceName: "ic_gmail"), url: "mailto:info@paperoranges.com"),
+            ButtonData(id: 0, image: #imageLiteral(resourceName: "ic_gmail"), url: "mailto:paperorangespublishing@gmail.com"),
             ButtonData(id: 1, image: #imageLiteral(resourceName: "ic_cart"), url: "https://www.paperoranges.com/shop/"),
             ButtonData(id: 2, image: #imageLiteral(resourceName: "ic_instagram"), url: "https://www.instagram.com/paper_oranges/"),
             ButtonData(id: 3, image: #imageLiteral(resourceName: "ic_medium"), url: "https://medium.com/paper-oranges")

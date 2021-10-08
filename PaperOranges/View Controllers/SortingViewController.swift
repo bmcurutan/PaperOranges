@@ -101,6 +101,11 @@ class SortingViewController: UIViewController {
     }
 
     @objc private func backButtonTapped() {
+        guard currentStepIndex > 0 else {
+            navigationController?.popViewController(animated: true)
+            return
+        }
+        
         let alert = UIAlertController(with: traitCollection.userInterfaceStyle, title: viewModel.backAlert, completion: { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         })
